@@ -2,15 +2,21 @@ import os
 from setuptools import setup, find_packages
 
 
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+def readme():
+    """print long description"""
+    with open('README.md') as f:
+        return f.read()
 
+long_description = (
+    "This is a mkdocs plugin that could enable the mermaid graph."
+    "Please follow the instruction in reame to enable this plugin"
+)
 
 setup(
     name='mkdocs-mermaid-plugin',
     version='0.0.2',
     description='A MkDocs plugin that support mermaid graph',
-    long_description=read('README.md'),
+    long_description=long_description,
     keywords='mkdocs python markdown mermaid',
     url='https://github.com/pugong/mkdocs-mermaid-plugin',
     author='pugong',
