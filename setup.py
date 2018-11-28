@@ -8,14 +8,14 @@ def readme():
         return f.read()
 
 long_description = (
-    "This is a mkdocs plugin that could enable the mermaid graph."
+    "This is a mkdocs plugin that could enable the mermaid graph in the markdown file."
     "Please follow the instruction in reame to enable this plugin"
 )
 
 setup(
     name='mkdocs-mermaid-plugin',
-    version='0.0.2',
-    description='A MkDocs plugin that support mermaid graph',
+    version='0.1',
+    description='A MkDocs plugin that support mermaid graph in markdown file',
     long_description=long_description,
     keywords='mkdocs python markdown mermaid',
     url='https://github.com/pugong/mkdocs-mermaid-plugin',
