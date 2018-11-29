@@ -14,7 +14,7 @@ long_description = (
 
 setup(
     name='mkdocs-mermaid-plugin',
-    version='0.1',
+    version='0.1.1',
     description='A MkDocs plugin that support mermaid graph in markdown file',
     long_description=long_description,
     keywords='mkdocs python markdown mermaid',
