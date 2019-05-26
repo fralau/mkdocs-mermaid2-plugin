@@ -1,6 +1,13 @@
 from mkdocs.plugins import BasePlugin
 from bs4 import BeautifulSoup
 
+try:
+    unicode
+except NameError:
+    # Python 3 doesn't have `unicode` as `str`s are all Unicode.
+    unicode = str
+
+
 class MarkdownMermaidPlugin(BasePlugin):
    
     def on_post_page(self, output_content, config, **kwargs):
