@@ -1,4 +1,4 @@
-# mkdocs-markdownextradata-plugin
+# mkdocs-mermaid2-plugin
 
 A MkDocs plugin that renders mermaid graph to mermaid style.
 
