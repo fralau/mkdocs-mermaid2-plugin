@@ -2,7 +2,7 @@ import os
 from setuptools import setup, find_packages
 
 
-VERSION = '0.1.3'
+VERSION = '0.1.5'
 
 def readme():
     """print long description"""
@@ -17,7 +17,7 @@ long_description = (
 )
 
 setup(
-    name='mkdocs-mermaid-plugin2',
+    name='mkdocs-mermaid2-plugin',
     version=VERSION,
     description='A MkDocs plugin for including mermaid graphs in markdown sources',
     long_description=long_description,
@@ -26,7 +26,7 @@ setup(
     author='pugong, Fralau',
     author_email='pugong.liu@gmail.com, fralau2035@yahoo.com',
     license='MIT',
-    python_requires='>=2.7',
+    python_requires='>=3.5',
     install_requires=[
         'setuptools>=18.5',
         'beautifulsoup4>=4.6.3',
@@ -37,8 +37,6 @@ setup(
         'Intended Audience :: Developers',
         'Intended Audience :: Information Technology',
         'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
@@ -47,7 +45,7 @@ setup(
     packages=find_packages(exclude=['*.tests']),
     entry_points={
         'mkdocs.plugins': [
-            'markdownmermaid2 = markdownmermaid.plugin:MarkdownMermaidPlugin'
+            'mermaid2 = mermaid2.plugin:MarkdownMermaidPlugin'
         ]
     }
 )

@@ -1,6 +1,10 @@
 # mkdocs-mermaid2-plugin
 
-A MkDocs plugin that renders mermaid graph to mermaid style.
+An [MkDocs](https://www.mkdocs.org/) plugin that renders textual graph
+descriptions into [Mermaid](https://mermaid-js.github.io/mermaid) graphs
+(flow charts, sequence diagrams, pie charts, etc.).
+
+
 
 > This is a fork from
 > [Pugong Liu's excellent project](https://github.com/pugong/mkdocs-mermaid-plugin), 
@@ -8,23 +12,84 @@ A MkDocs plugin that renders mermaid graph to mermaid style.
 > well as new functions.
 
 
+
+<!-- To update, run the following command:
+markdown-toc -i README.md 
+-->
+
+<!-- toc -->
+
+- [Note for users of version < 1.0.5](#note-for-users-of-version--105)
+- [How it works](#how-it-works)
+- [Installation](#installation)
+  * [Automatic](#automatic)
+  * [Manual](#manual)
+- [Configuration](#configuration)
+- [Usage](#usage)
+  * [General Principle](#general-principle)
+  * [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
+  * [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
+  * [Tip: Adding Hyperlinks to a Diagram](#tip-adding-hyperlinks-to-a-diagram)
+
+<!-- tocstop -->
+
+## Note for users of version < 1.0.5
+For users of versions before 0.1.5, 
+note that the names were harmonized/simplified. 
+The name of the installed
+application has changed (now _mkdocs-mermaid2-plugin_ instead of 
+_mkdocs-mermaid-plugin2_). Also, the reference within the configuration 
+file of mkdocs is now _mermaid2_ instead of _markdownmermaid2_.
+
+Before reinstalling, uninstall the previous version:
+
+    pip uninstall mkdocs-mermaid-plugin2
+
+Also change the reference in the `mkdocs.yml` file of your mkdocs project: 
+
+    plugins:
+      ...
+      - mermaid2:
+
+
+
+## How it works
+This plugin transfers the Mermaid code (text) describing the graph 
+into the final HTML page:
+
+    <div class="mermaid">
+    ...
+    <\div>
+
+It also inserts a call to the 
+[javascript library](https://github.com/mermaid-js/mermaid) :
+
+    <script>
+    mermaid.initialize(...)
+    </script>
+
+The user's browser will then read this code and render it on the fly.
+
+> No svg/png images are harmed during the rendering of that graph.
+
+
 ## Installation
 
 ### Automatic
-Install the package with pip:
+Clone this repository and install the package with pip:
 
 ```bash
-pip install mkdocs-mermaid-plugin2
+pip install mkdocs-mermaid2-plugin
 ```
 
 ### Manual
-Clone this repository:
+Clone this repository into a local directory and:
 
 ```bash
 python setup.py install
 ```
 
-## Installation
+## Configuration
 
 To enable this plugin, you need to declare it in your config file
 (`mkdocs.yml`).
@@ -38,7 +103,7 @@ no as needed).
 ```yaml
 plugins:
     - search
-    - markdownmermaid2
+    - mermaid2
 
 extra_javascript:
     - https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js
@@ -53,9 +118,9 @@ extra_javascript:
 ## Usage
 
 ### General Principle
-In order to insert a mermaid diagram in a markdown page, simply 
+In order to insert a Mermaid diagram in a markdown page, simply 
 type it using the mermaid syntax,
-and surround it with the code fence for mermaid:
+and surround it with the code fence for Mermaid:
 
 
     ```mermaid
@@ -73,7 +138,7 @@ and surround it with the code fence for mermaid:
   [Mermaid Live Editor](https://mermaid-js.github.io/mermaid-live-editor).
 
 
-### Adding arguments to the initialize sequence
+### Adding arguments to the Mermaid engine
 
 By default, the plugin automatically inserts 
 the a Javascript command `mermaid.initialize();`
@@ -105,7 +170,7 @@ It is possible to add hyperlinks to a  diagram, e.g.:
 box1[An <b>important</b> <a href="http://google.com">link</a>] 
 ```
 
-**By default, however, this is not going to work.**
+> By default, however, this is not going to work.
 
 To enable this function, you need to relax mermaid's security level,
 ([since version 8.2](https://mermaid-js.github.io/mermaid/#/?id=special-note-regarding-version-82)).
