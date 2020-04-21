@@ -13,13 +13,13 @@ descriptions into [Mermaid](https://mermaid-js.github.io/mermaid) graphs
 
 
 
-<!-- To update, run the following command:
+<!-- To update the toc, run the following command:
 markdown-toc -i README.md 
 -->
 
 <!-- toc -->
 
-- [Note for users of version < 1.0.5](#note-for-users-of-version--105)
+- [Note for users of version < 0.1.5](#note-for-users-of-version--015)
 - [How it works](#how-it-works)
 - [Installation](#installation)
   * [Automatic](#automatic)
@@ -33,7 +33,7 @@ markdown-toc -i README.md
 
 <!-- tocstop -->
 
-## Note for users of version < 1.0.5
+## Note for users of version < 0.1.5
 For users of versions before 0.1.5, 
 note that the names were harmonized/simplified. 
 The name of the installed
@@ -153,7 +153,7 @@ Simply add those arguments in the config file, e.g.
 ```yaml
 plugins:
     - search
-    - markdownmermaid2:
+    - mermaid2:
         arguments:
           theme: 'dark'
 
@@ -182,7 +182,7 @@ If that is OK with you, you can set the argument in the configuration of the
 plugin:
 
 ```yaml
-    - markdownmermaid2:
+    - mermaid2:
         arguments:
           securityLevel: 'loose'
 ```
