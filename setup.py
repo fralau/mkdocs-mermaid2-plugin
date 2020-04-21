@@ -2,7 +2,7 @@ import os
 from setuptools import setup, find_packages
 
 
-VERSION = '0.1.5'
+VERSION = '0.1.6'
 
 def readme():
     """print long description"""
@@ -22,7 +22,7 @@ setup(
     description='A MkDocs plugin for including mermaid graphs in markdown sources',
     long_description=long_description,
     keywords='mkdocs python markdown mermaid',
-    url='https://github.com/pugong/mkdocs-mermaid-plugin',
+    url='https://github.com/fralau/mkdocs-mermaid2-plugin',
     author='pugong, Fralau',
     author_email='pugong.liu@gmail.com, fralau2035@yahoo.com',
     license='MIT',

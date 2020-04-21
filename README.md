@@ -76,14 +76,14 @@ The user's browser will then read this code and render it on the fly.
 ## Installation
 
 ### Automatic
-Clone this repository and install the package with pip:
+
 
 ```bash
 pip install mkdocs-mermaid2-plugin
 ```
 
 ### Manual
-Clone this repository into a local directory and:
+Clone this repository in a local directory and install the package:
 
 ```bash
 python setup.py install
