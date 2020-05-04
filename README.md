@@ -30,6 +30,10 @@ markdown-toc -i README.md
   * [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
   * [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
   * [Tip: Adding Hyperlinks to a Diagram](#tip-adding-hyperlinks-to-a-diagram)
+- [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
+  * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
+  * [Is the diagram correctly fenced?](#is-the-diagram-correctly-fenced)
+  * [Is the diagram syntactically correct?](#is-the-diagram-syntactically-correct)
 
 <!-- tocstop -->
 
@@ -186,3 +190,45 @@ plugin:
         arguments:
           securityLevel: 'loose'
 ```
+
+## Troubleshooting: the mermaid diagram is not being displayed
+
+> To start with, use a simple diagram that you know is syntactically correct.
+
+e.g.
+
+    ```mermaid
+    graph TD
+    A[Client] --> B[Load Balancer]
+    B --> C[Server01]
+    B --> D[Server02]
+    ```
+
+### Is mkdocs' version up to date (>= 1.1) ?
+
+Use `mkdocs -v`.
+
+If not, update it:
+
+    pip install mkdocs --upgrade
+
+### Is the diagram correctly fenced?
+
+In the markdown document, a mermaid diagram should be preceded by:
+    
+    ```mermaid
+
+It should be followed by:
+
+    ```
+
+
+### Is the diagram syntactically correct?
+
+A syntactically incorrect diagram will likely fail silently
+(this is a known issue).
+
+It should start with a valid preamble like `graph TD`.
+
+In case of doubt, you may want to test your diagram in the
+[Mermaid Live Editor](https://mermaid-js.github.io/mermaid-live-editor).
