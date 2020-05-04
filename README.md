@@ -29,9 +29,11 @@ markdown-toc -i README.md
   * [General Principle](#general-principle)
   * [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
   * [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
+  * [Testing](#testing)
   * [Tip: Adding Hyperlinks to a Diagram](#tip-adding-hyperlinks-to-a-diagram)
 - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
   * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
+  * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
   * [Is the diagram correctly fenced?](#is-the-diagram-correctly-fenced)
   * [Is the diagram syntactically correct?](#is-the-diagram-syntactically-correct)
 
@@ -166,6 +168,16 @@ extra_javascript:
     - https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js
 ```
 
+### Testing
+
+To test your website with a diagram, restart the mkdocs server:
+
+    mkdocs serve
+
+Connect to the webpage on the localhost
+(by default: `https://localhost:8000`)
+
+
 ### Tip: Adding Hyperlinks to a Diagram
 
 It is possible to add hyperlinks to a  diagram, e.g.:
@@ -191,6 +203,7 @@ plugin:
           securityLevel: 'loose'
 ```
 
+
 ## Troubleshooting: the mermaid diagram is not being displayed
 
 > To start with, use a simple diagram that you know is syntactically correct.
@@ -211,6 +224,17 @@ Use `mkdocs -v`.
 If not, update it:
 
     pip install mkdocs --upgrade
+
+
+### Is the javascript library properly called?
+
+In order to work, the proper javascript library must called from
+the html page.
+
+The configuration file (`mkdocs.yml`) should contain the following line:
+
+    extra_javascript:
+        - https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js
 
 ### Is the diagram correctly fenced?
 
