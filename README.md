@@ -36,6 +36,7 @@ markdown-toc -i README.md
   * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
   * [Is the diagram correctly fenced?](#is-the-diagram-correctly-fenced)
   * [Is the diagram syntactically correct?](#is-the-diagram-syntactically-correct)
+  * [I can't have highlighting of code and mermaid diagrams at the same time!](#i-cant-have-highlighting-of-code-and-mermaid-diagrams-at-the-same-time)
 
 <!-- tocstop -->
 
@@ -174,7 +175,7 @@ To test your website with a diagram, restart the mkdocs server:
 
     mkdocs serve
 
-Connect to the webpage on the localhost
+In your browser, open the webpage on the localhost
 (by default: `https://localhost:8000`)
 
 
@@ -244,7 +245,7 @@ In the markdown document, a mermaid diagram should be preceded by:
 
 It should be followed by:
 
-    ```
+    \```
 
 
 ### Is the diagram syntactically correct?
@@ -256,3 +257,33 @@ It should start with a valid preamble like `graph TD`.
 
 In case of doubt, you may want to test your diagram in the
 [Mermaid Live Editor](https://mermaid-js.github.io/mermaid-live-editor).
+
+
+### I can't have highlighting of code and mermaid diagrams at the same time!
+
+!!! Warning "Symptom"
+    The mermaid code is not transformed into a diagram,
+    but processed as code to be displayed (colors, etc.).
+
+
+The likely reason is that you have a markdown extension that interprets
+all fenced code as code to display.
+
+**Do not use the [codehilite](https://squidfunk.github.io/mkdocs-material/extensions/codehilite/) markdown extension.**
+
+Instead, use [PyMdown's superfences](https://facelessuser.github.io/pymdown-extensions/extensions/superfences/).
+
+In the config file (`mkdocs.yaml`):
+
+```yaml
+markdown_extensions:
+  - pymdownx.superfences:
+      # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_div_format
+```
+
+I means "take the fenced parts marked with mermaid, and turn them
+into `class='mermaid'`,  and format it as `div` (and not `pre`).
