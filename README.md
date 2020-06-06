@@ -31,12 +31,15 @@ markdown-toc -i README.md
   * [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
   * [Testing](#testing)
   * [Tip: Adding Hyperlinks to a Diagram](#tip-adding-hyperlinks-to-a-diagram)
+- [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
+  * [Introduction](#introduction)
+  * [Use of markdown extensions](#use-of-markdown-extensions)
+  * [Declaring the superfences extension](#declaring-the-superfences-extension)
 - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
   * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
   * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
   * [Is the diagram correctly fenced?](#is-the-diagram-correctly-fenced)
   * [Is the diagram syntactically correct?](#is-the-diagram-syntactically-correct)
-  * [I can't have highlighting of code and mermaid diagrams at the same time!](#i-cant-have-highlighting-of-code-and-mermaid-diagrams-at-the-same-time)
 
 <!-- tocstop -->
 
@@ -205,6 +208,51 @@ plugin:
 ```
 
 
+## Using Mermaid and code highlighting at the same time
+
+### Introduction
+
+It is quite natural that we want to display **mermaid diagrams**,
+while having usual **code highlighting** (for bash, python, etc.).
+
+### Use of markdown extensions
+**Symptom**: The mermaid code is not transformed into a diagram,
+but processed as code to be displayed (colors, etc.).
+
+
+The likely reason is that you have a markdown extension that interprets
+all fenced code as code to display, and it prevents the mkdocs-mermaid2
+plugin from doing its job.
+
+**Do not use the [codehilite](https://squidfunk.github.io/mkdocs-material/extensions/codehilite/) markdown extension.**
+
+Instead, use [facelessusers](https://github.com/facelessuser)'s splendid 
+[PyMdown's superfences](https://facelessuser.github.io/pymdown-extensions/extensions/superfences/); and use the 
+**[custom fences](https://facelessuser.github.io/pymdown-extensions/extensions/superfences/#custom-fences)**
+facility.
+
+
+### Declaring the superfences extension
+In the config file (`mkdocs.yaml`):
+
+```yaml
+markdown_extensions:
+  - pymdownx.superfences:
+      # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid
+```
+
+It means: 
+
+1. Take the fenced parts marked with mermaid
+2. Turn them into `class='mermaid'`.
+3. To format those pieces, use the function `fence_mermaid`, 
+   from the mermaid2 package.
+
+
 ## Troubleshooting: the mermaid diagram is not being displayed
 
 > To start with, use a simple diagram that you know is syntactically correct.
@@ -245,7 +293,7 @@ In the markdown document, a mermaid diagram should be preceded by:
 
 It should be followed by:
 
-    \```
+    ```
 
 
 ### Is the diagram syntactically correct?
@@ -259,31 +307,7 @@ In case of doubt, you may want to test your diagram in the
 [Mermaid Live Editor](https://mermaid-js.github.io/mermaid-live-editor).
 
 
-### I can't have highlighting of code and mermaid diagrams at the same time!
-
-!!! Warning "Symptom"
-    The mermaid code is not transformed into a diagram,
-    but processed as code to be displayed (colors, etc.).
+> Note, however, that the Mermaid Live Editor **does not
+> support loose mode** (with HTML code in the mermaid code).
 
 
-The likely reason is that you have a markdown extension that interprets
-all fenced code as code to display.
-
-**Do not use the [codehilite](https://squidfunk.github.io/mkdocs-material/extensions/codehilite/) markdown extension.**
-
-Instead, use [PyMdown's superfences](https://facelessuser.github.io/pymdown-extensions/extensions/superfences/).
-
-In the config file (`mkdocs.yaml`):
-
-```yaml
-markdown_extensions:
-  - pymdownx.superfences:
-      # make exceptions to highlighting of code:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:pymdownx.superfences.fence_div_format
-```
-
-I means "take the fenced parts marked with mermaid, and turn them
-into `class='mermaid'`,  and format it as `div` (and not `pre`).

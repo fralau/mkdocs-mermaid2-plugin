@@ -43,15 +43,18 @@ class MarkdownMermaidPlugin(BasePlugin):
         "Generate the HTML code for all code items marked as 'mermaid'"
         soup = BeautifulSoup(output_content, 'html.parser')
         mermaids = soup.find_all("code",class_="mermaid")
-        hasMermaid = 0
+        has_mermaid = False
+        # print("PROCESSING MERMAID (%s)" % len(mermaids))
         for mermaid in mermaids:
-            hasMermaid = 1
+            assert "gt" not in mermaid.text
+            # print("+++ IN PLUGIN +++\n", mermaid.text, "\n+++")
+            has_mermaid = True
             # replace code with div
             mermaid.name="div"
             # replace <pre> 
             mermaid.parent.replace_with(mermaid)
 
-        if(hasMermaid==1):
+        if has_mermaid:
             new_tag = soup.new_tag("script")
             # get the additional configuration:
             mermaid_args = self.config['arguments']

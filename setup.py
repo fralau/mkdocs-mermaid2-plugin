@@ -2,14 +2,14 @@ import os
 from setuptools import setup, find_packages
 
 
-VERSION = '0.1.7'
+VERSION = '0.2.1'
 
 def readme():
     """print long description"""
     with open('README.md') as f:
         return f.read()
 
-long_description = (
+LONG_DESCRIPTION = (
     "A mkdocs plugin that interprets mermaid graphs in the markdown file."
     "To install, please follow instructions in the readme file."
     "This is a fork of the Pugong Liu's excellent project, "
@@ -20,7 +20,7 @@ setup(
     name='mkdocs-mermaid2-plugin',
     version=VERSION,
     description='A MkDocs plugin for including mermaid graphs in markdown sources',
-    long_description=long_description,
+    long_description=LONG_DESCRIPTION,
     keywords='mkdocs python markdown mermaid',
     url='https://github.com/fralau/mkdocs-mermaid2-plugin',
     author='pugong, Fralau',

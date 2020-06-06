@@ -1,0 +1,28 @@
+site_name: Test for mermaid
+site_description: We are testing mermaid
+docs_dir: docs # indispensable or readthedocs will fail
+theme: 
+  name: material
+
+nav:
+  - Main: index.md
+  - Second: second.md
+
+plugins:
+  - search
+  - mermaid2:
+      arguments:
+        securityLevel: 'loose'
+        theme: dark # we want also that to work
+
+markdown_extensions:
+  - pymdownx.superfences:
+      # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid
+          #format: !!python/name:pymdownx.superfences.fence_div_format
+
+extra_javascript:
+     - https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js
