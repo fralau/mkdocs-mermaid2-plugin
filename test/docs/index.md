@@ -6,6 +6,7 @@ This is a test of Mermaid:
 ```mermaid
 graph TD
     hello --> world
+    world --> world2
 ```
 
 > If you don't see a graph here, it's broken.
@@ -22,6 +23,7 @@ This code exploits the 'loose' security level.
 ```mermaid
 graph LR
     hello["<b>Hello</b>"] --> world["<big><i>World</i></big>"]
+    world --> pandoc['hello']
 ```
 
 ## Superfence
