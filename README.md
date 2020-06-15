@@ -253,6 +253,13 @@ It means:
    from the mermaid2 package.
 
 
+> **IMPORTANT:** Note that the superfences will be slightly more demanding with
+> HTML tags inside a mermaid diagram: 
+> **take care to always close the HTML tags that require it**
+> (e.g. `<small>` must have its corresponding `</small>` tag).
+> Otherwise, the extension system will attempt to close those tags 
+> and it will break the diagram.
+
 ## Troubleshooting: the mermaid diagram is not being displayed
 
 > To start with, use a simple diagram that you know is syntactically correct.

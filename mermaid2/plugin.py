@@ -8,13 +8,6 @@ from mkdocs.config.config_options import Type as PluginType
 from bs4 import BeautifulSoup
 
 
-try:
-    unicode
-except NameError:
-    # Python 3 doesn't have `unicode` as `str`s are all Unicode.
-    unicode = str
-
-
 class MarkdownMermaidPlugin(BasePlugin):
     """
     Plugin for interpreting Mermaid code
@@ -41,14 +34,14 @@ class MarkdownMermaidPlugin(BasePlugin):
 
     def on_post_page(self, output_content, config, **kwargs):
         "Generate the HTML code for all code items marked as 'mermaid'"
+        # print("--RAW--\n", output_content, "\n------")
         soup = BeautifulSoup(output_content, 'html.parser')
         mermaids = soup.find_all("code",class_="mermaid")
-        has_mermaid = False
+        has_mermaid = bool(len(mermaids))
         # print("PROCESSING MERMAID (%s)" % len(mermaids))
         for mermaid in mermaids:
-            assert "gt" not in mermaid.text
-            # print("+++ IN PLUGIN +++\n", mermaid.text, "\n+++")
-            has_mermaid = True
+            # print("+++ IN PLUGIN +++\n", str(mermaid), "\n+++")
+            #has_mermaid = True
             # replace code with div
             mermaid.name="div"
             # replace <pre> 
@@ -63,4 +56,4 @@ class MarkdownMermaidPlugin(BasePlugin):
             new_tag.string="mermaid.initialize(%s);" % json.dumps(mermaid_args) 
             soup.body.append(new_tag)
             
-        return unicode(soup)
+        return str(soup)

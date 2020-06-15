@@ -22,7 +22,7 @@ def fence_mermaid(source, language, css_class, options, md,
             custom_fences:
                 - name: mermaid
                 class: mermaid
-                format: !!python/name:mermaid2.fence_div_raw
+                format: !!python/name:mermaid2.fence_mermaid
     """
 
     if id_value:

@@ -1,8 +1,13 @@
-site_name: Test for mermaid
-site_description: We are testing mermaid
+site_name: Makedoc2 (Library)
+site_description: Documentation of the makedoc2 library/utility
 docs_dir: docs # indispensable or readthedocs will fail
 theme: 
   name: material
+  language: en
+  font: "Open Sans"
+  favicon: img/settlenext.ico
+  logo: img/settlenext_square.png
+copyright: 'SettleNext Laurent Franceschetti 2020'
 
 nav:
   - Main: index.md
@@ -10,12 +15,14 @@ nav:
 
 plugins:
   - search
+  - macros
   - mermaid2:
       arguments:
         securityLevel: 'loose'
         theme: dark # we want also that to work
 
 markdown_extensions:
+  - admonition
   - pymdownx.superfences:
       # make exceptions to highlighting of code:
       custom_fences:
