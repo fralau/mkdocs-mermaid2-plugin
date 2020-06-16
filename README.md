@@ -260,6 +260,20 @@ It means:
 > Otherwise, the extension system will attempt to close those tags 
 > and it will break the diagram.
 
+## Compatibility
+
+Here is a short list of comptabilities and incompatibilities for
+the mermaid plugin:
+
+Item | Type | Status | Note 
+--|--|--|--
+**admonition** | extension | YES | 
+**footnotes** | extension | YES | 
+**minify** | plugin | NO | Breaks the mermaid diagrams.
+**pymdownx.highlight** | extension | NO | Use [pymdownx.superfences](#declaring-the-superfences-extension)
+**pymdownx.superfences** | extension | OK | [see paragraph](#declaring-the-superfences-extension)
+**search** | plugin | OK | Do not forget to declare it in `config.yml`.
+
 ## Troubleshooting: the mermaid diagram is not being displayed
 
 > To start with, use a simple diagram that you know is syntactically correct.
@@ -281,6 +295,10 @@ If not, update it:
 
     pip install mkdocs --upgrade
 
+Or, if you cloned this repo:
+
+    python setup.py install
+
 
 ### Is the javascript library properly called?
 
@@ -292,15 +310,7 @@ The configuration file (`mkdocs.yml`) should contain the following line:
     extra_javascript:
         - https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js
 
-### Is the diagram correctly fenced?
 
-In the markdown document, a mermaid diagram should be preceded by:
-    
-    ```mermaid
-
-It should be followed by:
-
-    ```
 
 
 ### Is the diagram syntactically correct?
@@ -318,3 +328,12 @@ In case of doubt, you may want to test your diagram in the
 > support loose mode** (with HTML code in the mermaid code).
 
 
+### Is the diagram correctly fenced?
+
+In the markdown document, a mermaid diagram should be preceded by:
+    
+    ```mermaid
+
+    It should be followed by:
+
+    ```

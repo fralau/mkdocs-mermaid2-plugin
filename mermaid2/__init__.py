@@ -29,6 +29,6 @@ def fence_mermaid(source, language, css_class, options, md,
         id_value = ' id="{}"'.format(id_value)
     classes = css_class if classes is None else ' '.join(classes + [css_class])
 
-    html = '<code%s class="%s">%s</code>' % (id_value, classes, source)
+    html = '<code%s class="%s">%s\n</code>' % (id_value, classes, source)
     # print("--- Mermaid ---\n", html, "\n------")
     return html

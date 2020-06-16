@@ -1,13 +1,11 @@
-site_name: Makedoc2 (Library)
-site_description: Documentation of the makedoc2 library/utility
+site_name: Mermaid test
+site_description: Test for mermaid
 docs_dir: docs # indispensable or readthedocs will fail
 theme: 
   name: material
   language: en
   font: "Open Sans"
-  favicon: img/settlenext.ico
-  logo: img/settlenext_square.png
-copyright: 'SettleNext Laurent Franceschetti 2020'
+
 
 nav:
   - Main: index.md
@@ -31,4 +29,4 @@ markdown_extensions:
           format: !!python/name:mermaid2.fence_mermaid
 
 extra_javascript:
-     - https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js
+     - https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js
