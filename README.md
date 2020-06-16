@@ -35,11 +35,12 @@ markdown-toc -i README.md
   * [Introduction](#introduction)
   * [Use of markdown extensions](#use-of-markdown-extensions)
   * [Declaring the superfences extension](#declaring-the-superfences-extension)
+- [Compatibility](#compatibility)
 - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
   * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
   * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
-  * [Is the diagram correctly fenced?](#is-the-diagram-correctly-fenced)
   * [Is the diagram syntactically correct?](#is-the-diagram-syntactically-correct)
+  * [Is the diagram correctly fenced?](#is-the-diagram-correctly-fenced)
 
 <!-- tocstop -->
 
