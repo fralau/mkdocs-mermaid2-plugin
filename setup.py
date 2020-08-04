@@ -2,7 +2,7 @@ import os
 from setuptools import setup, find_packages
 
 
-VERSION = '0.2.4'
+VERSION = '0.3.0'
 
 def readme():
     """print long description"""
@@ -31,16 +31,20 @@ setup(
         'setuptools>=18.5',
         'beautifulsoup4>=4.6.3',
         'mkdocs>=1.0.4',
+        'jsbeautifier',
+        'pyyaml', # for testing
+        'mkdocs-material' # for testing
     ],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Intended Audience :: Information Technology',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7'
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8'
     ],
     packages=find_packages(exclude=['*.tests']),
     entry_points={

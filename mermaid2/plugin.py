@@ -1,12 +1,13 @@
 """
 Main plugin module 
 """
-import json
+#import json
 
 from mkdocs.plugins import BasePlugin
 from mkdocs.config.config_options import Type as PluginType
 from bs4 import BeautifulSoup
 
+from . import pyjs
 
 class MarkdownMermaidPlugin(BasePlugin):
     """
@@ -53,7 +54,7 @@ class MarkdownMermaidPlugin(BasePlugin):
             mermaid_args = self.config['arguments']
             assert isinstance(mermaid_args, dict)
             # initialization command
-            new_tag.string="mermaid.initialize(%s);" % json.dumps(mermaid_args) 
+            new_tag.string="mermaid.initialize(%s);" % pyjs.dumps(mermaid_args) 
             soup.body.append(new_tag)
             
         return str(soup)

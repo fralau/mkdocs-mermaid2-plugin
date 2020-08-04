@@ -6,6 +6,7 @@ descriptions into [Mermaid](https://mermaid-js.github.io/mermaid) graphs
 
 
 
+
 > This is a fork from
 > [Pugong Liu's excellent project](https://github.com/pugong/mkdocs-mermaid-plugin), 
 > which is no longer maintained. It offers expanded documentation as
@@ -30,12 +31,16 @@ markdown-toc -i README.md
   * [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
   * [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
   * [Testing](#testing)
+  * [Adding a Javascript callback function](#adding-a-javascript-callback-function)
+    + [Use Case](#use-case)
+    + [Method](#method)
   * [Tip: Adding Hyperlinks to a Diagram](#tip-adding-hyperlinks-to-a-diagram)
-- [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
-  * [Introduction](#introduction)
-  * [Use of markdown extensions](#use-of-markdown-extensions)
-  * [Declaring the superfences extension](#declaring-the-superfences-extension)
 - [Compatibility](#compatibility)
+  * [List](#list)
+  * [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
+    + [Usage](#usage-1)
+    + [Use of markdown extensions](#use-of-markdown-extensions)
+    + [Declaring the superfences extension](#declaring-the-superfences-extension)
 - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
   * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
   * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
@@ -65,7 +70,7 @@ Also change the reference in the `mkdocs.yml` file of your mkdocs project:
 
 
 ## How it works
-This plugin transfers the Mermaid code (text) describing the graph 
+This plugin transfers the Mermaid code (text) describing the diagram 
 into the final HTML page:
 
     <div class="mermaid">
@@ -78,6 +83,12 @@ It also inserts a call to the
     <script>
     mermaid.initialize(...)
     </script>
+
+To interpret that code it needs a call to the Mermaid library:
+```javascript
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js">
+</script>
+```
 
 The user's browser will then read this code and render it on the fly.
 
@@ -117,10 +128,10 @@ plugins:
     - mermaid2
 
 extra_javascript:
-    - https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js
+    - https://unpkg.com/mermaid/dist/mermaid.min.js
 ```
 
-> **Note:** Don't forget to include the mermaid.min.js (local or remotely) in your `mkdocs.yml`
+> **Note:** Don't forget to include the mermaid.min.js (local or remotely) in your `mkdocs.yml`. If you want to be on the safe side, you may want to specify a version that you know is workin, e.g. `https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js` 
 
 > **Note:**  If you declare plugins you need to declare _all_ of them, 
 > including `search` (which would otherwise have been installed by default.)
@@ -170,7 +181,7 @@ plugins:
 
 
 extra_javascript:
-    - https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js
+    - https://unpkg.com/mermaid/dist/mermaid.min.js
 ```
 
 ### Testing
@@ -182,6 +193,62 @@ To test your website with a diagram, restart the mkdocs server:
 In your browser, open the webpage on the localhost
 (by default: `https://localhost:8000`)
 
+
+### Adding a Javascript callback function
+
+_New in 0.3.0_
+
+#### Use Case
+To make modifications that are not possible with css, it can be useful
+to insert a callback function (Javascript) into the target HTML page.
+
+This can be done using the standard pattern, e.g.:
+
+```javascript
+<script src="js/extra.js">
+<script>mermaid.initialize({
+    theme: "dark",
+    mermaid: {
+        callback: myMermaidCallbackFunction
+    }
+});</script>
+```
+
+In this case, `myMermaidCallbackFunction`is located in
+the `js/extra.js` on the site's root directory. 
+
+Here is a simplistic example:
+
+```
+// js/extra.js
+function myMermaidCallbackFunction(id) {
+  console.log('myMermaidCallbackFunction', id);
+```
+
+> You will see the results if you display the browser's console.
+
+#### Method
+This can be translated into the config (`mkdocs.yaml`) file as:
+
+```yaml
+plugins:
+  - mermaid2:
+      arguments:
+        theme: dark
+        mermaid:
+            callback: ^myMermaidCallbackFunction
+
+extra_javascript:
+  - https://unpkg.com/mermaid/dist/mermaid.min.js
+  - js/extra.js
+```
+
+1. Note that **the name of the function must be preceded by a ^ (caret)**
+   to signify it's a literal and not a string.
+2. Consider the **directory path** for the script
+   as **relative to the document directory** (`docs`).
+   Mkdocs will then put it in the proper place in the hierarchy of the
+   html pages.
 
 ### Tip: Adding Hyperlinks to a Diagram
 
@@ -209,14 +276,30 @@ plugin:
 ```
 
 
-## Using Mermaid and code highlighting at the same time
+## Compatibility
 
-### Introduction
+### List
+Here is a short list of comptabilities and incompatibilities for
+the mermaid plugin:
+
+Item | Type | Status | Note 
+--|--|--|--
+**admonition** | extension | YES | 
+**footnotes** | extension | YES | 
+**minify** | plugin | NO | Breaks the mermaid diagrams.
+**pymdownx.highlight** | extension | NO | Use [pymdownx.superfences](#declaring-the-superfences-extension)
+**pymdownx.superfences** | extension | OK | [see paragraph](#declaring-the-superfences-extension)
+**search** | plugin | OK | Do not forget to declare it in `config.yml`.
+
+
+### Using Mermaid and code highlighting at the same time
+
+#### Usage
 
 It is quite natural that we want to display **mermaid diagrams**,
 while having usual **code highlighting** (for bash, python, etc.).
 
-### Use of markdown extensions
+#### Use of markdown extensions
 **Symptom**: The mermaid code is not transformed into a diagram,
 but processed as code to be displayed (colors, etc.).
 
@@ -233,7 +316,7 @@ Instead, use [facelessusers](https://github.com/facelessuser)'s splendid
 facility.
 
 
-### Declaring the superfences extension
+#### Declaring the superfences extension
 In the config file (`mkdocs.yaml`):
 
 ```yaml
@@ -261,19 +344,10 @@ It means:
 > Otherwise, the extension system will attempt to close those tags 
 > and it will break the diagram.
 
-## Compatibility
 
-Here is a short list of comptabilities and incompatibilities for
-the mermaid plugin:
 
-Item | Type | Status | Note 
---|--|--|--
-**admonition** | extension | YES | 
-**footnotes** | extension | YES | 
-**minify** | plugin | NO | Breaks the mermaid diagrams.
-**pymdownx.highlight** | extension | NO | Use [pymdownx.superfences](#declaring-the-superfences-extension)
-**pymdownx.superfences** | extension | OK | [see paragraph](#declaring-the-superfences-extension)
-**search** | plugin | OK | Do not forget to declare it in `config.yml`.
+
+
 
 ## Troubleshooting: the mermaid diagram is not being displayed
 
@@ -309,7 +383,7 @@ the html page.
 The configuration file (`mkdocs.yml`) should contain the following line:
 
     extra_javascript:
-        - https://unpkg.com/mermaid@8.5.0/dist/mermaid.min.js
+        - https://unpkg.com/mermaid/dist/mermaid.min.js
 
 
 

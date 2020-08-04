@@ -13,11 +13,12 @@ nav:
 
 plugins:
   - search
-  - macros
   - mermaid2:
       arguments:
         securityLevel: 'loose'
         theme: dark # we want also that to work
+        mermaid:
+            callback: ^myMermaidCallbackFunction
 
 markdown_extensions:
   - admonition
@@ -29,4 +30,5 @@ markdown_extensions:
           format: !!python/name:mermaid2.fence_mermaid
 
 extra_javascript:
-     - https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js
+     - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
+     - js/extra.js
