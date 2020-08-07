@@ -15,13 +15,16 @@ plugins:
   - search
   - mermaid2:
       arguments:
+        startOnLoad: true
+         # we use the loader from faceless user
         securityLevel: 'loose'
         theme: dark # we want also that to work
         mermaid:
-            callback: ^myMermaidCallbackFunction
+              callback: ^myMermaidCallbackFunction
 
 markdown_extensions:
   - admonition
+  - pymdownx.details
   - pymdownx.superfences:
       # make exceptions to highlighting of code:
       custom_fences:

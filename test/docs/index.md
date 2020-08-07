@@ -23,7 +23,8 @@ This code exploits the 'loose' security level.
 ```mermaid
 graph LR
     hello["<b>Hello</b>"] --> world["<big><i>World</i></big>"]
-    world --> pandoc['hello']
+    world --> mermaid[mermaid web site]
+    click mermaid "https://mermaid-js.github.io/mermaid" "Website"
 ```
 
 ## Superfence

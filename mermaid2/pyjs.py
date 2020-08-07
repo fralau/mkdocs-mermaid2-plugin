@@ -5,7 +5,7 @@ Writer for JavaScript objects
 https://stackoverflow.com/questions/3975859/what-are-the-differences-between-json-and-javascript-object
 
 In principle, JSON _could_ work.
-However, we occasionally need to use literals, e.g. for function names;
+However, we occasionally need to use identifiers, e.g. for function names;
 the problem is that json.dumps() only produces strings, never literals.
 
 """
@@ -27,7 +27,7 @@ def dumps(obj, pretty=True, default=None):
     Usage Note
     ----------
     When a string starts with a ^ character (caret),
-    the rest of the string will be considered as a literal.
+    the rest of the string will be considered as an identifier.
     
 
     Returns

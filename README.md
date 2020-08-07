@@ -34,7 +34,11 @@ markdown-toc -i README.md
   * [Adding a Javascript callback function](#adding-a-javascript-callback-function)
     + [Use Case](#use-case)
     + [Method](#method)
-  * [Tip: Adding Hyperlinks to a Diagram](#tip-adding-hyperlinks-to-a-diagram)
+- [Tips and Tricks](#tips-and-tricks)
+  * [Setting the security level to "loose"](#setting-the-security-level-to-loose)
+  * [Formating text in diagrams](#formating-text-in-diagrams)
+  * [Adding Hyperlinks to a Diagram (versions of Mermaid >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid--850)
+  * [Adding Hyperlinks to a Diagram (versions of Mermaid <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid--850)
 - [Compatibility](#compatibility)
   * [List](#list)
   * [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
@@ -46,6 +50,7 @@ markdown-toc -i README.md
   * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
   * [Is the diagram syntactically correct?](#is-the-diagram-syntactically-correct)
   * [Is the diagram correctly fenced?](#is-the-diagram-correctly-fenced)
+- [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
 
 <!-- tocstop -->
 
@@ -95,6 +100,7 @@ The user's browser will then read this code and render it on the fly.
 > No svg/png images are harmed during the rendering of that graph.
 
 
+
 ## Installation
 
 ### Automatic
@@ -131,7 +137,7 @@ extra_javascript:
     - https://unpkg.com/mermaid/dist/mermaid.min.js
 ```
 
-> **Note:** Don't forget to include the mermaid.min.js (local or remotely) in your `mkdocs.yml`. If you want to be on the safe side, you may want to specify a version that you know is workin, e.g. `https://unpkg.com/mermaid@8.5.2/dist/mermaid.min.js` 
+> **Note:** Don't forget to include the mermaid.min.js (local or remotely) in your `mkdocs.yml`. If you want to be on the safe side, you may want to specify a version that you know is working for you, e.g. `https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js` 
 
 > **Note:**  If you declare plugins you need to declare _all_ of them, 
 > including `search` (which would otherwise have been installed by default.)
@@ -250,17 +256,11 @@ extra_javascript:
    Mkdocs will then put it in the proper place in the hierarchy of the
    html pages.
 
-### Tip: Adding Hyperlinks to a Diagram
+## Tips and Tricks
 
-It is possible to add hyperlinks to a  diagram, e.g.:
+### Setting the security level to "loose"
 
-```
-box1[An <b>important</b> <a href="http://google.com">link</a>] 
-```
-
-> By default, however, this is not going to work.
-
-To enable this function, you need to relax mermaid's security level,
+To access these functions, you need to relax mermaid's security level,
 ([since version 8.2](https://mermaid-js.github.io/mermaid/#/?id=special-note-regarding-version-82)).
 
 > This requires, of course, your application taking responsibility 
@@ -274,6 +274,56 @@ plugin:
         arguments:
           securityLevel: 'loose'
 ```
+
+### Formating text in diagrams
+> To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
+
+You may use HTML in the diagram.
+
+> **Note:** This is guaranteed to work with Mermaid 8.6.4, but
+> does not work e.g. on 8.7.0.
+
+
+```mermaid
+graph LR
+    hello["<b>Hello</b>"] --> world["<big><i>World</i></big>"]
+    world --> mermaid[mermaid web site]
+```
+
+Use this in the config file:
+```yaml
+extra_javascript:
+     - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
+```
+
+
+
+### Adding Hyperlinks to a Diagram (versions of Mermaid >~ 8.5.0)
+
+> To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
+
+Use the click directive in the language (for more information,
+see [Interaction](https://mermaid-js.github.io/mermaid/#/flowchart?id=interaction) on the official mermaid website).
+
+```mermaid
+graph LR
+    hello --> world
+    world --> mermaid[mermaid web site]
+    click mermaid "https://mermaid-js.github.io/mermaid" "Website"
+```
+
+
+
+### Adding Hyperlinks to a Diagram (versions of Mermaid <~ 8.5.0)
+> To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
+
+It is possible to add hyperlinks to a  diagram, e.g.:
+
+```
+box1[An <b>important</b> <a href="http://google.com">link</a>] 
+```
+
+
 
 
 ## Compatibility
@@ -362,6 +412,8 @@ e.g.
     B --> D[Server02]
     ```
 
+
+
 ### Is mkdocs' version up to date (>= 1.1) ?
 
 Use `mkdocs -v`.
@@ -390,10 +442,17 @@ The configuration file (`mkdocs.yml`) should contain the following line:
 
 ### Is the diagram syntactically correct?
 
-A syntactically incorrect diagram will likely fail silently
-(this is a known issue).
+In recent versions of the javascript library (> 8.6.0), a pretty
+error message is displayed in case of incorrect syntax:
 
-It should start with a valid preamble like `graph TD`.
+![error message](error.png)
+
+> **In earlier versions, the library displays nothing, which 
+> can be confusing.**
+
+
+
+Every diagram should start with a valid preamble, e.g. `graph TD`.
 
 In case of doubt, you may want to test your diagram in the
 [Mermaid Live Editor](https://mermaid-js.github.io/mermaid-live-editor).
@@ -412,3 +471,51 @@ In the markdown document, a mermaid diagram should be preceded by:
     It should be followed by:
 
     ```
+    ```
+
+## Using the mermaid2.dumps() function
+
+As a bonus, mermaid2 exports the function `dumps()` which produces a string
+describing a [JavaScript object](https://javascript.info/object).
+It can be used to help generate JavaScript code from Python
+(this is typically needed, when generating an HTML page that contains
+JavaScript).
+
+A JavaScript object is not exactly the same as a JSON object.
+The reason why this why introduced is that sometimes one needs to produce
+a key/value pair as:
+
+```JavaScript
+foo = MyFunctioName
+```
+
+where the value is _not_ a string but an identifier (in this case:
+a function name).
+
+Here is an example:
+
+```python
+import mermaid2
+
+obj = { "hello": "world", 
+    "barbaz": "^bazbar",
+    "foo": {"bar": 2},
+    "bar": True}
+
+s = mermaid2.dumps(obj)
+
+```
+
+The purpose of the caret is to specify that the value should be
+an identifier and not a string. The result will be:
+
+```JavasScript
+{
+    hello: "world",
+    barbaz: bazbar,
+    foo: {
+        bar: 2
+    },
+    bar: true
+}
+```
