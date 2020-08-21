@@ -36,3 +36,5 @@ def fence_mermaid(source, language, css_class, options, md,
     html = '<div %s class="%s">%s\n</div>' % (id_value, classes, source)
     # print("--- Mermaid ---\n", html, "\n------")
     return html
+
+    
