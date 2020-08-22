@@ -54,26 +54,6 @@ markdown-toc -i README.md
 
 <!-- tocstop -->
 
-## Note for users of version < 0.1.5
-For users of versions before 0.1.5, 
-note that the names were harmonized/simplified. 
-The name of the installed
-application has changed (now _mkdocs-mermaid2-plugin_ instead of 
-_mkdocs-mermaid-plugin2_). Also, the reference within the configuration 
-file of mkdocs is now _mermaid2_ instead of _markdownmermaid2_.
-
-Before reinstalling, uninstall the previous version:
-
-    pip uninstall mkdocs-mermaid-plugin2
-
-Also change the reference in the `mkdocs.yml` file of your mkdocs project: 
-
-    plugins:
-      ...
-      - mermaid2:
-
-
-
 ## How it works
 This plugin transfers the Mermaid code (text) describing the diagram 
 into the final HTML page:
@@ -119,6 +99,7 @@ python setup.py install
 
 ## Configuration
 
+### Basic Steps
 To enable this plugin, you need to declare it in your config file
 (`mkdocs.yml`).
 
@@ -132,12 +113,43 @@ no as needed).
 plugins:
     - search
     - mermaid2
+```
 
+### Specification of the version of the Mermaid library
+> **For plugin version >= 0.4**
+
+By default, the plugin selects a version of the Mermaid javascript library
+that is known to work (some versions work better than others).
+
+You may specify a different version of the Mermaid library, like so:
+
+```yaml
+plugins:
+  - search
+  - mermaid2:
+      version: 8.6.0
+```
+
+### Explicit declaration of the Mermaid library
+> If you use a version of the plugin >= 0.4, the basic steps are sufficient.
+
+You _may_ specify the mermaid library explicitly, as long as it is
+call mermaid (independently of extension):
+
+```yaml
+extra_javascript:
+    - https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js
+```
+
+For the latest version:
+
+```yaml
 extra_javascript:
     - https://unpkg.com/mermaid/dist/mermaid.min.js
 ```
 
-> **Note:** Don't forget to include the mermaid.min.js (local or remotely) in your `mkdocs.yml`. If you want to be on the safe side, you may want to specify a version that you know is working for you, e.g. `https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js` 
+
+> **Note for plugin version < 0.4:** You **must*** include the mermaid.min.js (local or remotely) in your `mkdocs.yml`. If you want to be on the safe side, you may want to specify a version that you know is working for you, e.g. `https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js` 
 
 > **Note:**  If you declare plugins you need to declare _all_ of them, 
 > including `search` (which would otherwise have been installed by default.)

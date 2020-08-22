@@ -2,7 +2,7 @@ import os
 from setuptools import setup, find_packages
 
 
-VERSION = '0.3.2'
+VERSION = '0.4.0'
 
 def readme():
     """print long description"""
@@ -33,7 +33,9 @@ setup(
         'mkdocs>=1.0.4',
         'jsbeautifier',
         'pyyaml', # for testing
-        'mkdocs-material' # for testing
+        'mkdocs-material', # for testing
+        'requests',
+        'termcolor'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
