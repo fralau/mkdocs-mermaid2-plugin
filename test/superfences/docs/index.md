@@ -44,3 +44,6 @@ for page in pages:
     page.read()
 ```
 
+## External .mmd File
+
+`diagrams/my_diagram.mmd`
