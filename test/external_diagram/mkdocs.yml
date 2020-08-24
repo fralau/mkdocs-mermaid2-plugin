@@ -1,4 +1,4 @@
-site_name: Mermaid test (simple)
+site_name: Mermaid test (External Diagram)
 site_description: Test for mermaid
 docs_dir: docs # indispensable or readthedocs will fail
 theme: 
