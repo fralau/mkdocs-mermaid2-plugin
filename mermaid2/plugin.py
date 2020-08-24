@@ -2,7 +2,9 @@
 Main plugin module for mermaid2
 """
 
+import re
 import os
+
 # import pprint
 # pp = pprint.PrettyPrinter(indent=4)
 
@@ -19,7 +21,6 @@ from .util import info, libname, url_exists
 # ------------------------
 # Constants and utilities
 # ------------------------
-# the default (recommended) mermaid lib
 MERMAID_LIB_VERSION = '8.6.4'
 MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
 # Two conditions for activating custom fences:
@@ -29,7 +30,9 @@ CUSTOM_FENCE_FN = 'fence_mermaid_custom'
 # ------------------------
 # Plugin
 # ------------------------
+
 class MarkdownMermaidPlugin(BasePlugin):
+
     """
     Plugin for interpreting Mermaid code
     """
@@ -39,7 +42,6 @@ class MarkdownMermaidPlugin(BasePlugin):
         ('arguments', PluginType(dict, default={})),
         # ('custom_loader', PluginType(bool, default=False))
     )
-
 
     # ------------------------
     # Properties
@@ -157,6 +159,36 @@ class MarkdownMermaidPlugin(BasePlugin):
             info("Using default javascript library (%s):\n  "% 
                   self.config['version'],
                   self.mermaid_lib)
+
+    def on_page_markdown(self, md, page, config, **kwargs):
+    """
+    Substitude .mmd file paths with .mmd file contents in markdown files
+    """
+
+        def get_mmd_file(match):
+            # .mmd file path should be relative to the "docs_dir" config
+            docs_dir = config["docs_dir"]
+            f_name = match[0]
+            f_name = os.path.join(docs_dir, f_name.strip("`"))
+
+            # Read the file and replace the `*.mmd` with
+            # the contents in the file
+            try:
+                with open(f_name, "r") as mmd_file:
+                    mmd_txt = mmd_file.read()
+
+                # Wrap the file contents in the mermaid code tags and return
+                return f"```mermaid\n{mmd_txt}\n```\n"
+            except FileNotFoundError:
+                # Return the an error with the file path to help user's debug
+                return f"{f_name} does not exist"
+
+        # markdown regex will look for file names *.mmd
+        # inside single ` code tags
+        # Example: `my_diagram.mmd`
+        md_regex = r"`.*.mmd`"
+
+        return re.sub(md_regex, get_mmd_file, md)
             
     def on_post_page(self, output_content, config, page, **kwargs):
         "Generate the HTML code for all code items marked as 'mermaid'"
