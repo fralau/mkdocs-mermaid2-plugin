@@ -4,4 +4,6 @@
 from .pyjs import dumps
 
 # export the fence_mermaid for pymdownx.superfences
-from .fence import fence_mermaid
+from .fence import fence_mermaid, fence_mermaid_custom
+
+

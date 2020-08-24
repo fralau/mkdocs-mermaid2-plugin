@@ -1,7 +1,14 @@
-# Mermaid test
+# Mermaid test (SuperFences, custom loader)
+
+!!! Note
+    This is a test of the Mermaid plugin, with:
+
+    1. the [pymdownx.superfences extension](https://facelessuser.github.io/pymdown-extensions/extensions/superfences/)
+    2. Custom fences with the `mermaid2.fence_mermaid_custom()` formatter
+    3. the custom loader is specified as `extra_javascript -> js/loader.js`
 
 ## Mermaid (normal)
-This is a test of Mermaid:
+
 
 ```mermaid
 graph TD

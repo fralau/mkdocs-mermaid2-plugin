@@ -20,12 +20,14 @@ markdown-toc -i README.md
 
 <!-- toc -->
 
-- [Note for users of version < 0.1.5](#note-for-users-of-version--015)
 - [How it works](#how-it-works)
 - [Installation](#installation)
   * [Automatic](#automatic)
   * [Manual](#manual)
 - [Configuration](#configuration)
+  * [Basic Steps](#basic-steps)
+  * [Specification of the version of the Mermaid library](#specification-of-the-version-of-the-mermaid-library)
+  * [Explicit declaration of the Mermaid library](#explicit-declaration-of-the-mermaid-library)
 - [Usage](#usage)
   * [General Principle](#general-principle)
   * [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)

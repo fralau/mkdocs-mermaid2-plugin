@@ -1,0 +1,37 @@
+site_name: Mermaid test (SuperFences)
+site_description: Test for mermaid
+docs_dir: docs # indispensable or readthedocs will fail
+theme: 
+  name: material
+  language: en
+  font: "Open Sans"
+
+
+nav:
+  - Main: index.md
+  - Second: second.md
+
+plugins:
+  - search
+  - mermaid2:
+      version: 8.6.4 # this version needed because 8.7.0 has a bug
+      custom_loader: true
+      arguments:
+        securityLevel: 'loose'
+        theme: forest # we want also that to work
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences:
+      # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          #
+          format: !!python/name:mermaid2.fence_mermaid_custom
+
+extra_javascript:
+     # - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
+     # This is mandatory for the moment:
+     - js/loader.js

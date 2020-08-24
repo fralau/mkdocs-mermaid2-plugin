@@ -22,7 +22,9 @@ from .util import info, libname, url_exists
 # the default (recommended) mermaid lib
 MERMAID_LIB_VERSION = '8.6.4'
 MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
-
+# Two conditions for activating custom fences:
+SUPERFENCES_EXTENSION = 'pymdownx.superfences'
+CUSTOM_FENCE_FN = 'fence_mermaid_custom' 
 
 # ------------------------
 # Plugin
@@ -34,7 +36,8 @@ class MarkdownMermaidPlugin(BasePlugin):
     config_scheme = (
 
         ('version', PluginType(str, default=MERMAID_LIB_VERSION)),
-        ('arguments', PluginType(dict, default={}))
+        ('arguments', PluginType(dict, default={})),
+        # ('custom_loader', PluginType(bool, default=False))
     )
 
 
@@ -84,6 +87,53 @@ class MarkdownMermaidPlugin(BasePlugin):
                                     lib)
         return lib
 
+
+    @property
+    def activate_custom_loader(self):
+        """
+        Predicate: activate the custom loader for superfences?
+        The rule is to activate:
+            1. superfences extension is activated
+            2. it specifies 'fence_mermaid_custom' as
+               as format function (instead of fence_mermaid)
+        """
+        try:
+            return self._activate_custom_loader
+        except AttributeError:
+            # first call:
+            # superfences_installed = ('pymdownx.superfences' in 
+            #             self.full_config['markdown_extensions'])
+            # custom_loader = self.config['custom_loader']
+            # self._activate_custom_loader = (superfences_installed and 
+            #                                 custom_loader)
+            # return self._activate_custom_loader
+            self._activate_custom_loader = False
+            superfences_installed = (SUPERFENCES_EXTENSION in 
+                         self.full_config['markdown_extensions'])
+            if superfences_installed:
+                # get the config extension configs
+                mdx_configs = self.full_config['mdx_configs']
+                # get the superfences config, if exists:
+                superfence_config = mdx_configs.get(SUPERFENCES_EXTENSION)
+                if superfence_config:
+                    info("Found superfences config: %s" % superfence_config)
+                    custom_fences = superfence_config.get('custom_fences', [])
+                    for fence in custom_fences:
+                        format_fn = fence.get('format')
+                        if format_fn.__name__ == CUSTOM_FENCE_FN:
+                            self._activate_custom_loader = True
+                            info("Found '%s' function: " 
+                                 "activate custom loader for superfences" 
+                                 % CUSTOM_FENCE_FN)
+                            break
+                    
+            return self._activate_custom_loader
+
+
+
+
+
+
     # ------------------------
     # Event handlers
     # ------------------------
@@ -108,24 +158,43 @@ class MarkdownMermaidPlugin(BasePlugin):
                   self.config['version'],
                   self.mermaid_lib)
             
-    def on_post_page(self, output_content, config, **kwargs):
+    def on_post_page(self, output_content, config, page, **kwargs):
         "Generate the HTML code for all code items marked as 'mermaid'"
-        # print("--RAW--\n", output_content, "\n------")
+        # info("Page config:", page)
+        page_name = page.title
         soup = BeautifulSoup(output_content, 'html.parser')
-        mermaids = soup.find_all("div", class_="mermaid")
-        has_mermaid = bool(len(mermaids))
-        # print("PROCESSING MERMAID (%s)" % len(mermaids))
+        if self.activate_custom_loader:
+            mermaids = len(soup.select("pre.mermaid code"))
+        else:
+            mermaids1 = len(soup.select("pre code.mermaid"))
+            mermaids2 = len(soup.select("div.mermaid"))
+            found = "Page '%s':" % page_name
+            if mermaids1:
+                add = "found %s (using <pre><code='mermaid'> marker) " % mermaids1
+                info(found, add)
+            if mermaids2:
+                add =  "found %s (using <div>='mermaid'> marker)" % mermaids2
+                info(found, add)
+            mermaids = mermaids1 + mermaids2
+        has_mermaid = bool(mermaids)
 
         if has_mermaid:
             if not self.extra_mermaid_lib:
                 # if no extra library mentioned specify it
                 new_tag = soup.new_tag("script", src=self.mermaid_lib)
                 soup.body.append(new_tag)
+                # info(new_tag)
             new_tag = soup.new_tag("script")
             # initialization command
-            js_args =  pyjs.dumps(self.mermaid_args) 
-            # print("Javascript args:", js_args)
-            new_tag.string="mermaid.initialize(%s);" % js_args
+            if self.activate_custom_loader:
+                # if the superfences extension is present, use the specific loader
+                self.mermaid_args['startOnLoad'] = False
+                js_args =  pyjs.dumps(self.mermaid_args) 
+                #new_tag.string = "window.mermaidConfig = {\n    default: %s\n}" % js_args
+                new_tag.string = "window.mermaidConfig = {default: %s}" % js_args
+            else:
+                js_args =  pyjs.dumps(self.mermaid_args) 
+                new_tag.string="mermaid.initialize(%s);" % js_args
             soup.body.append(new_tag)
             
-        return str(soup)
+        return str(soup.prettify())

@@ -2,9 +2,11 @@
 Special fence for PyMdown Extensions Superfences
 See: https://facelessuser.github.io/pymdown-extensions/extensions/superfences/#formatters
 """
+from functools import partial
+
 
 def fence_mermaid(source, language, css_class, options, md, 
-            classes=None, id_value='', **kwargs):
+            classes=None, id_value='', custom=False, **kwargs):
     """
     For mermaid loose mode:
 
@@ -33,8 +35,15 @@ def fence_mermaid(source, language, css_class, options, md,
         id_value = ' id="{}"'.format(id_value)
     classes = css_class if classes is None else ' '.join(classes + [css_class])
 
-    html = '<div %s class="%s">%s\n</div>' % (id_value, classes, source)
+    if custom:
+        html = '<pre %s class="%s"><code>%s\n</code></pre>' % \
+                (id_value, classes, source)
+    else:
+        html = '<div %s class="%s">%s\n</div>' % \
+                (id_value, classes, source)
     # print("--- Mermaid ---\n", html, "\n------")
     return html
 
-    
+# special custom function (do not forget to specify name!)
+fence_mermaid_custom = partial(fence_mermaid, custom=True)
+fence_mermaid_custom.__name__ = 'fence_mermaid_custom'

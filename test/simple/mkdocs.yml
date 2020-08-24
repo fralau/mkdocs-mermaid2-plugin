@@ -1,4 +1,4 @@
-site_name: Mermaid test
+site_name: Mermaid test (simple)
 site_description: Test for mermaid
 docs_dir: docs # indispensable or readthedocs will fail
 theme: 
@@ -14,22 +14,16 @@ nav:
 plugins:
   - search
   - mermaid2:
-      version: 8.7.0
+      version: 8.6.4 # this version needed because 8.7.0 has a bug
       arguments:
         securityLevel: 'loose'
-        theme: forest # we want also that to work
+        theme: dark # we want also that to work
         mermaid:
               callback: ^myMermaidCallbackFunction
 
 markdown_extensions:
   - admonition
   - pymdownx.details
-  - pymdownx.superfences:
-      # make exceptions to highlighting of code:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:mermaid2.fence_mermaid
 
 extra_javascript:
      # - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
