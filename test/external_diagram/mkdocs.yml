@@ -1,0 +1,30 @@
+site_name: Mermaid test (simple)
+site_description: Test for mermaid
+docs_dir: docs # indispensable or readthedocs will fail
+theme: 
+  name: material
+  language: en
+  font: "Open Sans"
+
+
+nav:
+  - Main: index.md
+  - Second: second.md
+
+plugins:
+  - search
+  - mermaid2:
+      version: 8.6.4 # this version needed because 8.7.0 has a bug
+      arguments:
+        securityLevel: 'loose'
+        theme: dark # we want also that to work
+        mermaid:
+              callback: ^myMermaidCallbackFunction
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+
+extra_javascript:
+     # - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
+     - js/extra.js

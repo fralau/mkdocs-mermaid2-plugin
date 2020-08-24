@@ -1,14 +1,7 @@
-# Mermaid test (SuperFences, custom loader)
+# Mermaid test (simple)
 
-!!! Note
-    This is a test of the Mermaid plugin, with:
-
-    1. the [pymdownx.superfences extension](https://facelessuser.github.io/pymdown-extensions/extensions/superfences/)
-    2. Custom fences with the `mermaid2.fence_mermaid_custom()` formatter
-    3. the custom loader is specified as `extra_javascript -> js/loader.js`
-
-## Mermaid (normal)
-
+## Mermaid usual
+This is a test of Mermaid:
 
 ```mermaid
 graph TD
@@ -34,12 +27,27 @@ graph LR
     click mermaid "https://mermaid-js.github.io/mermaid" "Website"
 ```
 
-## Superfence
-This is usual superfenced code, with code highlighting.
+> The box **mermaid web site** is clickable!
 
-> The keyword `for` should be colored in blue.
+
+## Normal fences
+This is usual fenced code (with no highlighting)
 
 ```python
 for page in pages:
     page.read()
+```
+
+## Javascript callback
+Check in the web console that a message of that type is displayed:
+
+```
+Hello, this is myMermaidCallbackFunction mermaid-1598273751083 14:55:51
+```
+
+This is the result of this directive:
+
+```
+extra_javascript:
+     - js/extra.js
 ```
