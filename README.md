@@ -2,7 +2,7 @@
 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
-![PyPI](https://img.shields.io/pypi/v/mkdocs-mermaid2-plugin/)
+
 
 An [MkDocs](https://www.mkdocs.org/) plugin that renders textual graph
 descriptions into [Mermaid](https://mermaid-js.github.io/mermaid) graphs
