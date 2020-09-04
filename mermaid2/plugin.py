@@ -197,4 +197,4 @@ class MarkdownMermaidPlugin(BasePlugin):
                 new_tag.string="mermaid.initialize(%s);" % js_args
             soup.body.append(new_tag)
             
-        return str(soup.prettify())
+        return str(soup)
