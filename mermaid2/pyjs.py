@@ -9,12 +9,14 @@ However, we occasionally need to use identifiers, e.g. for function names;
 the problem is that json.dumps() only produces strings, never literals.
 
 """
-
+from typing import Any, Callable
 
 from jsbeautifier import beautify
 
 
-def dumps(obj, pretty=True, default=None):
+def dumps(obj:Any, 
+          pretty:bool=True, 
+          default:Callable[[Any], str]=None) -> str:
     """
     Serialize an object into a JavaScript object syntax. 
 

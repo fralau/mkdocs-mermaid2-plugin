@@ -13,18 +13,8 @@ nav:
 
 plugins:
   - search
-  - mermaid2:
-      version: 8.6.4 # this version needed because 8.7.0 has a bug
-      arguments:
-        securityLevel: 'loose'
-        theme: dark # we want also that to work
-        mermaid:
-              callback: ^myMermaidCallbackFunction
+  - mermaid2
 
-markdown_extensions:
-  - admonition
-  - pymdownx.details
+# extra_javascript:
+#   - https://unpkg.com/mermaid/dist/mermaid.min.js
 
-extra_javascript:
-     # - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
-     - js/extra.js

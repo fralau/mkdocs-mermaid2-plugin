@@ -31,6 +31,7 @@ markdown-toc -i README.md
   * [Manual](#manual)
 - [Configuration](#configuration)
   * [Basic Steps](#basic-steps)
+  * [Warning: mandatory use material theme](#warning-mandatory-use-material-theme)
   * [Specification of the version of the Mermaid library](#specification-of-the-version-of-the-mermaid-library)
   * [Explicit declaration of the Mermaid library](#explicit-declaration-of-the-mermaid-library)
 - [Usage](#usage)
@@ -53,6 +54,8 @@ markdown-toc -i README.md
     + [Use of markdown extensions](#use-of-markdown-extensions)
     + [Declaring the superfences extension](#declaring-the-superfences-extension)
 - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
+  * [Are you using another theme than material ?](#are-you-using-another-theme-than-material-)
+  * [Are you using superfences, but no diagram is displayed?](#are-you-using-superfences-but-no-diagram-is-displayed)
   * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
   * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
   * [Is the diagram syntactically correct?](#is-the-diagram-syntactically-correct)
@@ -121,6 +124,21 @@ plugins:
     - search
     - mermaid2
 ```
+
+
+### Warning: mandatory use material theme
+For the basic configuration to work out of the box,
+you **must** use the 
+[material](https://squidfunk.github.io/mkdocs-material/getting-started/) theme:
+
+```yaml
+theme: 
+  name: material
+```
+
+If you want to use another theme, you **must** use the **superfences**
+extension, with "custom fences". 
+For that, follow instructions under [Declaring the superfences extension](#declaring-the-superfences-extension).
 
 ### Specification of the version of the Mermaid library
 > **For plugin version >= 0.4**
@@ -431,7 +449,51 @@ e.g.
     B --> D[Server02]
     ```
 
+### Are you seeing an error message at the place of the diagram?
 
+In recent versions of the javascript library (> 8.6.0), a pretty
+error message is displayed in case of incorrect syntax:
+
+![error message](error.png)
+
+> **In earlier versions, the library displays nothing, which 
+> can be confusing.**
+
+If you see the error message, it is at least an indication that 
+the mermaid javascript library was called.
+
+### Are you seeing the mermaid source code, as-is?
+In that case, the javascript library was probably not called.
+See the next questions.
+
+
+### Are you using another theme than material ?
+
+The default (minimalist) configuration works only with the
+[mkdocs-material theme](https://squidfunk.github.io/mkdocs-material/getting-started/).
+If you want to use another theme (such as default or 
+[Windmill(https://github.com/gristlabs/mkdocs-windmill)]),
+you **must** use the superfences extension from the 
+[PyMdown Extensions](https://facelessuser.github.io/pymdown-extensions/installation/), 
+with custom fences:
+
+```yaml
+markdown_extensions:
+  - pymdownx.superfences:
+      # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid
+```
+
+Se more explanations under [Declaring the superfences extension](#declaring-the-superfences-extension).
+
+### Are you using superfences, but no diagram is displayed?
+
+If you are using the superfences extension, but you see the source
+code, you probably forgot to declare the custom_fences. 
+Se more explanations under [Declaring the superfences extension](#declaring-the-superfences-extension)
 
 ### Is mkdocs' version up to date (>= 1.1) ?
 
@@ -451,6 +513,9 @@ Or, if you cloned this repo:
 In order to work, the proper javascript library must called from
 the html page.
 
+> ***Note that that this is no longer mandatory since version 0.4 of the
+> plugin.***
+
 The configuration file (`mkdocs.yml`) should contain the following line:
 
     extra_javascript:
@@ -459,15 +524,6 @@ The configuration file (`mkdocs.yml`) should contain the following line:
 
 
 
-### Is the diagram syntactically correct?
-
-In recent versions of the javascript library (> 8.6.0), a pretty
-error message is displayed in case of incorrect syntax:
-
-![error message](error.png)
-
-> **In earlier versions, the library displays nothing, which 
-> can be confusing.**
 
 
 

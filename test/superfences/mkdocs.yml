@@ -14,7 +14,8 @@ nav:
 plugins:
   - search
   - mermaid2:
-      version: 8.6.4 # this version needed because 8.7.0 has a bug
+      # version: 8.7.0
+      # version: 8.6.4 # this version needed because 8.7.0 has a bug
       custom_loader: true
       arguments:
         securityLevel: 'loose'
@@ -28,9 +29,8 @@ markdown_extensions:
       custom_fences:
         - name: mermaid
           class: mermaid
-          #
           format: !!python/name:mermaid2.fence_mermaid_custom
-
+          # format: !!python/name:pymdownx.superfences.fence_div_format
 extra_javascript:
      # - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
      # This is mandatory for the moment:

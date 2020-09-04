@@ -3,17 +3,13 @@ Main plugin module for mermaid2
 """
 
 import os
-# import pprint
-# pp = pprint.PrettyPrinter(indent=4)
 
 from mkdocs.plugins import BasePlugin
 from mkdocs.config.config_options import Type as PluginType
 from bs4 import BeautifulSoup
 
-
 from . import pyjs
 from .util import info, libname, url_exists
-
 
 
 # ------------------------
@@ -43,29 +39,27 @@ class MarkdownMermaidPlugin(BasePlugin):
 
     # ------------------------
     # Properties
+    # Do not call them before on_config was run!
     # ------------------------
     @property
     def full_config(self):
         """
         The full plugin's configuration object,
         which also includes the contents of the yaml config file.
-        Note: do not call before on_config was run.
         """
         return self._full_config  
     
     @property
     def mermaid_args(self):
         """
-        The arguments for mermaid
-        Note: do not call before on_config was run.
+        The arguments for mermaid.
         """
         return self._mermaid_args
 
     @property
-    def extra_mermaid_lib(self):
+    def extra_mermaid_lib(self) -> str:
         """
-        Provides the mermaid library defined in mkdocs.yml
-        Note: do not call before on_config was run.
+        Provides the mermaid library defined in mkdocs.yml (if any)
         """
         extra_javascript = self.full_config.get('extra_javascript', [])
         for lib in extra_javascript:
@@ -76,7 +70,7 @@ class MarkdownMermaidPlugin(BasePlugin):
 
 
     @property
-    def mermaid_lib(self):
+    def mermaid_lib(self) -> str:
         """
         Provides the actual mermaid library used
         """
@@ -89,7 +83,7 @@ class MarkdownMermaidPlugin(BasePlugin):
 
 
     @property
-    def activate_custom_loader(self):
+    def activate_custom_loader(self) -> bool:
         """
         Predicate: activate the custom loader for superfences?
         The rule is to activate:
@@ -129,17 +123,13 @@ class MarkdownMermaidPlugin(BasePlugin):
                     
             return self._activate_custom_loader
 
-
-
-
-
-
     # ------------------------
     # Event handlers
     # ------------------------
     def on_config(self, config):
         """
         The initial configuration
+        store the configuration in properties
         """
         # the full config info for the plugin is there
         # we copy it into our own variable, to keep it accessible
@@ -159,14 +149,23 @@ class MarkdownMermaidPlugin(BasePlugin):
                   self.mermaid_lib)
             
     def on_post_page(self, output_content, config, page, **kwargs):
-        "Generate the HTML code for all code items marked as 'mermaid'"
-        # info("Page config:", page)
-        page_name = page.title
+        """
+        Actions for each page:
+        generate the HTML code for all code items marked as 'mermaid'
+        """
         soup = BeautifulSoup(output_content, 'html.parser')
+        page_name = page.title
+
+        # first, determine if the page has diagrams:
         if self.activate_custom_loader:
+            # the custom loader has its specific marking
+            # <pre class = 'mermaid'><code> ... </code></pre>
             mermaids = len(soup.select("pre.mermaid code"))
         else:
+            # standard mermaid can accept two types of marking:
+            # <pre><code class = 'mermaid'> ... </code></pre>
             mermaids1 = len(soup.select("pre code.mermaid"))
+            # <div class = 'mermaid'> ... </div>
             mermaids2 = len(soup.select("div.mermaid"))
             found = "Page '%s':" % page_name
             if mermaids1:
@@ -178,6 +177,7 @@ class MarkdownMermaidPlugin(BasePlugin):
             mermaids = mermaids1 + mermaids2
         has_mermaid = bool(mermaids)
 
+        # if yes, add the javascript snippets:
         if has_mermaid:
             if not self.extra_mermaid_lib:
                 # if no extra library mentioned specify it
@@ -195,6 +195,7 @@ class MarkdownMermaidPlugin(BasePlugin):
             else:
                 js_args =  pyjs.dumps(self.mermaid_args) 
                 new_tag.string="mermaid.initialize(%s);" % js_args
+            # make it look nicer:
+            new_tag = new_tag.prettify()
             soup.body.append(new_tag)
-            
-        return str(soup.prettify())
+        return str(soup)
