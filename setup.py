@@ -35,7 +35,6 @@ setup(
         'pyyaml', # for testing
         'mkdocs-material', # for testing
         'requests',
-        'termcolor',
         'pymdown-extensions >= 8.0'
     ],
     classifiers=[

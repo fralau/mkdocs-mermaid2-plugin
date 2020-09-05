@@ -3,14 +3,18 @@ Main plugin module for mermaid2
 """
 
 import os
+import logging
 
 from mkdocs.plugins import BasePlugin
 from mkdocs.config.config_options import Type as PluginType
+from mkdocs.utils import warning_filter
 from bs4 import BeautifulSoup
 
 from . import pyjs
-from .util import info, libname, url_exists
+from .util import libname, url_exists
 
+log = logging.getLogger("mkdocs.plugins." + __name__)
+log.addFilter(warning_filter)
 
 # ------------------------
 # Constants and utilities
@@ -110,15 +114,15 @@ class MarkdownMermaidPlugin(BasePlugin):
                 # get the superfences config, if exists:
                 superfence_config = mdx_configs.get(SUPERFENCES_EXTENSION)
                 if superfence_config:
-                    info("Found superfences config: %s" % superfence_config)
+                    log.info("mermaid2.plugin: Found superfences config: %s" % superfence_config)
                     custom_fences = superfence_config.get('custom_fences', [])
                     for fence in custom_fences:
                         format_fn = fence.get('format')
                         if format_fn.__name__ == CUSTOM_FENCE_FN:
                             self._activate_custom_loader = True
-                            info("Found '%s' function: " 
-                                 "activate custom loader for superfences" 
-                                 % CUSTOM_FENCE_FN)
+                            log.info("mermaid2.plugin: Found '%s' function: " 
+                                     "activate custom loader for superfences" 
+                                     % CUSTOM_FENCE_FN)
                             break
                     
             return self._activate_custom_loader
@@ -138,15 +142,15 @@ class MarkdownMermaidPlugin(BasePlugin):
         # (this can get confusing...)
         self._mermaid_args = self.config['arguments']
         assert isinstance(self.mermaid_args, dict)
-        info("Initialization arguments:", self.mermaid_args)
+        log.info("mermaid2.plugin: Initialization arguments:", self.mermaid_args)
         # info on the javascript library:
         if self.extra_mermaid_lib:
-            info("Explicit mermaid javascript library:\n  ", 
-                 self.extra_mermaid_lib)
+            log.info("mermaid2.plugin: Explicit mermaid javascript library: %s", 
+                     self.extra_mermaid_lib)
         else:
-            info("Using default javascript library (%s):\n  "% 
-                  self.config['version'],
-                  self.mermaid_lib)
+            log.info("mermaid2.plugin: Using default javascript library (%s): %s", 
+                     self.config['version'],
+                     self.mermaid_lib)
             
     def on_post_page(self, output_content, config, page, **kwargs):
         """
@@ -170,10 +174,10 @@ class MarkdownMermaidPlugin(BasePlugin):
             found = "Page '%s':" % page_name
             if mermaids1:
                 add = "found %s (using <pre><code='mermaid'> marker) " % mermaids1
-                info(found, add)
+                log.info("mermaid2.plugin: %s %s", found, add)
             if mermaids2:
                 add =  "found %s (using <div>='mermaid'> marker)" % mermaids2
-                info(found, add)
+                log.info("mermaid2.plugin: %s %s", found, add)
             mermaids = mermaids1 + mermaids2
         has_mermaid = bool(mermaids)
 
@@ -183,7 +187,7 @@ class MarkdownMermaidPlugin(BasePlugin):
                 # if no extra library mentioned specify it
                 new_tag = soup.new_tag("script", src=self.mermaid_lib)
                 soup.body.append(new_tag)
-                # info(new_tag)
+                # log.info("mermaid2.plugin: " + new_tag)
             new_tag = soup.new_tag("script")
             # initialization command
             if self.activate_custom_loader:

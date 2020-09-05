@@ -3,12 +3,6 @@ Utilities for mermaid2 module
 """
 import os
 import requests
-from termcolor import colored
-
-MERMAID_LABEL = colored("[MERMAID]", 'green') # plugin's signature label
-def info(*args, **kwargs) -> str:
-    "Write information on the console, preceded by the signature label"
-    print(MERMAID_LABEL, *args, **kwargs)
 
 
 def libname(lib:str) -> str:
