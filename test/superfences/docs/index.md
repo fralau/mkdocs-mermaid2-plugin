@@ -20,6 +20,8 @@ graph TD
 
 ## Mermaid (with HTML)
 
+** This doesn't work! Known bug. **
+
 This code exploits the 'loose' security level.
 
 > If you don't see a graph here, it's broken.

@@ -30,9 +30,8 @@ markdown-toc -i README.md
   * [Automatic](#automatic)
   * [Manual](#manual)
 - [Configuration](#configuration)
-  * [Basic Steps](#basic-steps)
-  * [Warning: mandatory use material theme](#warning-mandatory-use-material-theme)
-  * [Specification of the version of the Mermaid library](#specification-of-the-version-of-the-mermaid-library)
+  * [Basic configuration](#basic-configuration)
+  * [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
   * [Explicit declaration of the Mermaid library](#explicit-declaration-of-the-mermaid-library)
 - [Usage](#usage)
   * [General Principle](#general-principle)
@@ -45,8 +44,8 @@ markdown-toc -i README.md
 - [Tips and Tricks](#tips-and-tricks)
   * [Setting the security level to "loose"](#setting-the-security-level-to-loose)
   * [Formating text in diagrams](#formating-text-in-diagrams)
-  * [Adding Hyperlinks to a Diagram (versions of Mermaid >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid--850)
-  * [Adding Hyperlinks to a Diagram (versions of Mermaid <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid--850)
+  * [Adding Hyperlinks to a Diagram (versions of Mermaid javascript >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
+  * [Adding Hyperlinks to a Diagram (versions of Mermaid javascript <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
 - [Compatibility](#compatibility)
   * [List](#list)
   * [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
@@ -54,19 +53,32 @@ markdown-toc -i README.md
     + [Use of markdown extensions](#use-of-markdown-extensions)
     + [Declaring the superfences extension](#declaring-the-superfences-extension)
 - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
-  * [Are you using another theme than material ?](#are-you-using-another-theme-than-material-)
-  * [Are you using superfences, but no diagram is displayed?](#are-you-using-superfences-but-no-diagram-is-displayed)
+  * [Seeing an error message at the place of the diagram?](#seeing-an-error-message-at-the-place-of-the-diagram)
+  * [The mermaid source code appears as-is (not read)?](#the-mermaid-source-code-appears-as-is-not-read)
+  * [Using another theme than material ?](#using-another-theme-than-material-)
+  * [Using superfences, but no diagram is displayed?](#using-superfences-but-no-diagram-is-displayed)
   * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
   * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
-  * [Is the diagram syntactically correct?](#is-the-diagram-syntactically-correct)
-  * [Is the diagram correctly fenced?](#is-the-diagram-correctly-fenced)
+  * [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
+  * [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
 - [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
 
 <!-- tocstop -->
 
 ## How it works
-This plugin transfers the Mermaid code (text) describing the diagram 
-into the final HTML page:
+
+**If you do not wish to learn the details under the hood,
+skip to the [Installation](#installation) section**.
+
+Normally mkdocs inserts the Mermaid code (text) describing the diagram 
+into segments `<pre><code class='mermaid>`:
+
+    <pre><div class="mermaid">
+    ...
+    <\pre><\div>
+
+To make the HTML/css page more robust, the mermaid plugin converts 
+those segments into `<div>` elements in the final HTML page:
 
     <div class="mermaid">
     ...
@@ -79,7 +91,7 @@ It also inserts a call to the
     mermaid.initialize(...)
     </script>
 
-To interpret that code it needs a call to the Mermaid library:
+To interpret that code it inserts a call to the Mermaid library:
 ```javascript
 <script src="https://unpkg.com/mermaid/dist/mermaid.min.js">
 </script>
@@ -109,7 +121,7 @@ python setup.py install
 
 ## Configuration
 
-### Basic Steps
+### Basic configuration
 To enable this plugin, you need to declare it in your config file
 (`mkdocs.yml`).
 
@@ -124,23 +136,12 @@ plugins:
     - search
     - mermaid2
 ```
+> **Note:**  If you declare plugins, you need to declare _all_ of them, 
+> including `search` (which would otherwise have been installed by default.)
 
+> **Important:** If you use another theme than material you **must** use a version of the plugin >= 0.5.0.
 
-### Warning: mandatory use material theme
-For the basic configuration to work out of the box,
-you **must** use the 
-[material](https://squidfunk.github.io/mkdocs-material/getting-started/) theme:
-
-```yaml
-theme: 
-  name: material
-```
-
-If you want to use another theme, you **must** use the **superfences**
-extension, with "custom fences". 
-For that, follow instructions under [Declaring the superfences extension](#declaring-the-superfences-extension).
-
-### Specification of the version of the Mermaid library
+### Specifying the version of the Mermaid library
 > **For plugin version >= 0.4**
 
 By default, the plugin selects a version of the Mermaid javascript library
@@ -152,8 +153,10 @@ You may specify a different version of the Mermaid library, like so:
 plugins:
   - search
   - mermaid2:
-      version: 8.6.0
+      version: 8.6.4
 ```
+
+
 
 ### Explicit declaration of the Mermaid library
 > If you use a version of the plugin >= 0.4, the basic steps are sufficient.
@@ -176,8 +179,7 @@ extra_javascript:
 
 > **Note for plugin version < 0.4:** You **must*** include the mermaid.min.js (local or remotely) in your `mkdocs.yml`. If you want to be on the safe side, you may want to specify a version that you know is working for you, e.g. `https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js` 
 
-> **Note:**  If you declare plugins you need to declare _all_ of them, 
-> including `search` (which would otherwise have been installed by default.)
+
 
 
 ## Usage
@@ -335,7 +337,7 @@ extra_javascript:
 
 
 
-### Adding Hyperlinks to a Diagram (versions of Mermaid >~ 8.5.0)
+### Adding Hyperlinks to a Diagram (versions of Mermaid javascript >~ 8.5.0)
 
 > To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
 
@@ -351,7 +353,7 @@ graph LR
 
 
 
-### Adding Hyperlinks to a Diagram (versions of Mermaid <~ 8.5.0)
+### Adding Hyperlinks to a Diagram (versions of Mermaid javascript <~ 8.5.0)
 > To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
 
 It is possible to add hyperlinks to a  diagram, e.g.:
@@ -371,6 +373,9 @@ the mermaid plugin:
 
 Item | Type | Status | Note 
 --|--|--|--
+**mkdocs** | theme | YES | (default) plugin version >= 0.5 | 
+**material** | theme | YES |  |
+**windmill** | theme | YES | plugin version >= 0.5 | 
 **admonition** | extension | YES | 
 **footnotes** | extension | YES | 
 **minify** | plugin | NO | Breaks the mermaid diagrams.
@@ -449,7 +454,7 @@ e.g.
     B --> D[Server02]
     ```
 
-### Are you seeing an error message at the place of the diagram?
+### Seeing an error message at the place of the diagram?
 
 In recent versions of the javascript library (> 8.6.0), a pretty
 error message is displayed in case of incorrect syntax:
@@ -462,34 +467,16 @@ error message is displayed in case of incorrect syntax:
 If you see the error message, it is at least an indication that 
 the mermaid javascript library was called.
 
-### Are you seeing the mermaid source code, as-is?
+### The mermaid source code appears as-is (not read)?
 In that case, the javascript library was probably not called.
 See the next questions.
 
 
-### Are you using another theme than material ?
+### Using another theme than material ?
 
-The default (minimalist) configuration works only with the
-[mkdocs-material theme](https://squidfunk.github.io/mkdocs-material/getting-started/).
-If you want to use another theme (such as default or 
-[Windmill](https://github.com/gristlabs/mkdocs-windmill)),
-you **must** use the superfences extension from the 
-[PyMdown Extensions](https://facelessuser.github.io/pymdown-extensions/installation/), 
-with custom fences:
+If the diagram is not rendered, upgrade to plugin version >= 0.5.0
 
-```yaml
-markdown_extensions:
-  - pymdownx.superfences:
-      # make exceptions to highlighting of code:
-      custom_fences:
-        - name: mermaid
-          class: mermaid
-          format: !!python/name:mermaid2.fence_mermaid
-```
-
-Se more explanations under [Declaring the superfences extension](#declaring-the-superfences-extension).
-
-### Are you using superfences, but no diagram is displayed?
+### Using superfences, but no diagram is displayed?
 
 If you are using the superfences extension, but you see the source
 code, you probably forgot to declare the custom_fences. 
@@ -510,21 +497,17 @@ Or, if you cloned this repo:
 
 ### Is the javascript library properly called?
 
+> ***Note that that this is no longer mandatory since version 0.4 of the
+> plugin.*** You may want to try to remove this call, in case there was
+> an error.
+
 In order to work, the proper javascript library must called from
 the html page.
-
-> ***Note that that this is no longer mandatory since version 0.4 of the
-> plugin.***
 
 The configuration file (`mkdocs.yml`) should contain the following line:
 
     extra_javascript:
         - https://unpkg.com/mermaid/dist/mermaid.min.js
-
-
-
-
-
 
 
 Every diagram should start with a valid preamble, e.g. `graph TD`.
@@ -536,17 +519,63 @@ In case of doubt, you may want to test your diagram in the
 > Note, however, that the Mermaid Live Editor **does not
 > support loose mode** (with HTML code in the mermaid code).
 
+### Rich text diagrams, or links are not displayed properly?
 
-### Is the diagram correctly fenced?
+1. As a first step, [set the security level to 'loose'](#setting-the-security-level-to-loose).
+2. Make sure you use a compatible version of the javascript library
+   (8.6.4, 8.8.0, ~~8.7.0~~). In principle, the version used
+   by the plugin is compatible (see instructions to 
+   [change the version](#specifying-the-version-of-the-mermaid-library)).
 
-In the markdown document, a mermaid diagram should be preceded by:
-    
+
+### With pymdownx.details, diagrams in collapsed elements are not displayed?
+
+**This fix is experimental (it has been tested once and it worked).**
+
+If you declared `pymdownx.details` in `config.yml` 
+(under `markdown_extensions`), you may notice that a diagram will not
+display correctly in that case:
+
+```markdown
+???- note "Collapsed"
     ```mermaid
-
-    It should be followed by:
-
+    graph TD
+    A[Client] --> B[Load Balancer]
     ```
-    ```
+    This is additional text.
+```
+
+Depending on the browser, you may have a dot, or nothing, etc.
+
+
+In that case, use the following declaration in your `markdown_extensions`:
+```yaml
+  - pymdownx.superfences:
+      # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+```
+
+The use of this function will trigger a custom behavior, with two effects:
+
+1. It will create custom HTML tags, `<pre class='mermaid'><code>`.
+2. It will deactivate the auto-load.
+
+You **must** then use a special custom javascript loader for the diagram,
+developed by [facelessuser](https://github.com/facelessuser): 
+
+1. Copy the code from
+the [website of PyMdown Extension](https://facelessuser.github.io/pymdown-extensions/extras/mermaid/#putting-it-all-together).
+2. Paste it in a file in your project: `docs/js/loader.js`
+3. Declare this script in the `config.yml` file:
+
+```yaml
+extra_javascript:
+     - js/loader.js
+```
+
 
 ## Using the mermaid2.dumps() function
 

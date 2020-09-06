@@ -14,12 +14,10 @@ nav:
 plugins:
   - search
   - mermaid2:
-      version: 8.8.0
-      # version: 8.6.4 # this version needed because 8.7.0 has a bug
       custom_loader: true
       arguments:
         securityLevel: 'loose'
-        theme: dark # we want also that to work
+        theme: forest # we want also that to work
 
 markdown_extensions:
   - admonition

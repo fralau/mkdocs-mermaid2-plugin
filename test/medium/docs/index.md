@@ -11,6 +11,10 @@ graph TD
 
 > If you don't see a graph here, it's broken.
 
+> The diagram must be **green** (forest).
+> If it isn't then arguments in config.yaml are not taken
+> into consideration!
+
 ## Mermaid (with HTML)
 
 This code exploits the 'loose' security level.

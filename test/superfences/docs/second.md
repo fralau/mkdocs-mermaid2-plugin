@@ -18,13 +18,11 @@ A[Client]
 
 ## Second note (collapsed)
 
-**This doesn't work (known bug).**
-On Chrome/Safari it appears as a dot. On Firefox, it appears as
-a mermaid error.
+Click on the arrow, to reveal the diagram,
 
 ???- note "Collapsed"
     ```mermaid
     graph TD
     A[Client] --> B[Load Balancer]
     ```
-    Hello
+    This is additional text.

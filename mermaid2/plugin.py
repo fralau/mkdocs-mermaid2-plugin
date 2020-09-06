@@ -16,7 +16,7 @@ from .util import info, libname, url_exists
 # Constants and utilities
 # ------------------------
 # the default (recommended) mermaid lib
-MERMAID_LIB_VERSION = '8.6.4'
+MERMAID_LIB_VERSION = '8.8.0'
 MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
 # Two conditions for activating custom fences:
 SUPERFENCES_EXTENSION = 'pymdownx.superfences'
@@ -155,7 +155,6 @@ class MarkdownMermaidPlugin(BasePlugin):
         """
         soup = BeautifulSoup(output_content, 'html.parser')
         page_name = page.title
-
         # first, determine if the page has diagrams:
         if self.activate_custom_loader:
             # the custom loader has its specific marking
@@ -164,21 +163,26 @@ class MarkdownMermaidPlugin(BasePlugin):
         else:
             # standard mermaid can accept two types of marking:
             # <pre><code class = 'mermaid'> ... </code></pre>
-            mermaids1 = len(soup.select("pre code.mermaid"))
-            # <div class = 'mermaid'> ... </div>
-            mermaids2 = len(soup.select("div.mermaid"))
-            found = "Page '%s':" % page_name
-            if mermaids1:
-                add = "found %s (using <pre><code='mermaid'> marker) " % mermaids1
-                info(found, add)
-            if mermaids2:
-                add =  "found %s (using <div>='mermaid'> marker)" % mermaids2
-                info(found, add)
-            mermaids = mermaids1 + mermaids2
-        has_mermaid = bool(mermaids)
-
+            # but since we want only <div> for best compatibility,
+            # it needs to be replaced
+            pre_code_tags = soup.select("pre code.mermaid")
+            no_found = len(pre_code_tags)
+            if no_found:
+                info("Page '%s': found %s diagrams "
+                     "(with <pre><code='mermaid'>), converting to <div>..." % 
+                        (page_name, len(pre_code_tags)))
+                for tag in pre_code_tags:
+                    content = tag.text
+                    new_tag = soup.new_tag("div", attrs={"class": "mermaid"})
+                    new_tag.append(content)
+                    # replace the parent:
+                    tag.parent.replaceWith(new_tag)
+            # Count the diagrams <div class = 'mermaid'> ... </div>
+            mermaids = len(soup.select("div.mermaid"))
         # if yes, add the javascript snippets:
-        if has_mermaid:
+        if mermaids:
+            info("Page '%s': found %s diagrams, adding scripts" % 
+                    (page_name, mermaids))
             if not self.extra_mermaid_lib:
                 # if no extra library mentioned specify it
                 new_tag = soup.new_tag("script", src=self.mermaid_lib)
