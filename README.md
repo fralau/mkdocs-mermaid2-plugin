@@ -472,7 +472,7 @@ See the next questions.
 The default (minimalist) configuration works only with the
 [mkdocs-material theme](https://squidfunk.github.io/mkdocs-material/getting-started/).
 If you want to use another theme (such as default or 
-[Windmill(https://github.com/gristlabs/mkdocs-windmill)]),
+[Windmill](https://github.com/gristlabs/mkdocs-windmill)),
 you **must** use the superfences extension from the 
 [PyMdown Extensions](https://facelessuser.github.io/pymdown-extensions/installation/), 
 with custom fences:

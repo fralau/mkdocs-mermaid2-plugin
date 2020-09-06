@@ -1,4 +1,4 @@
-# Mermaid test (simple)
+# Mermaid test (medium, with arguments)
 
 ## Mermaid usual
 This is a test of Mermaid:

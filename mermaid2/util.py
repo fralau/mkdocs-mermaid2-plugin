@@ -3,14 +3,27 @@ Utilities for mermaid2 module
 """
 import os
 import requests
-from termcolor import colored
+import logging 
 
-MERMAID_LABEL = colored("[MERMAID]", 'green') # plugin's signature label
-def info(*args, **kwargs) -> str:
+from mkdocs.utils import warning_filter
+
+
+# -------------------
+# Logging
+# -------------------
+log = logging.getLogger("mkdocs.plugins." + __name__)
+log.addFilter(warning_filter)
+
+MERMAID_LABEL = "MERMAID2  -" # plugin's signature label
+def info(*args) -> str:
     "Write information on the console, preceded by the signature label"
-    print(MERMAID_LABEL, *args, **kwargs)
-
-
+    args = [MERMAID_LABEL] + [str(arg) for arg in args]
+    msg = ' '.join(args)
+    log.info(msg)
+ 
+# -------------------
+# Paths and URLs
+# -------------------
 def libname(lib:str) -> str:
     "Get the library name from a path"
     basename = os.path.basename(lib)

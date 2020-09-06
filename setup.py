@@ -2,7 +2,7 @@ import os
 from setuptools import setup, find_packages
 
 
-VERSION = '0.4.2'
+VERSION = '0.4.3'
 
 def readme():
     """print long description"""
@@ -35,7 +35,6 @@ setup(
         'pyyaml', # for testing
         'mkdocs-material', # for testing
         'requests',
-        'termcolor',
         'pymdown-extensions >= 8.0'
     ],
     classifiers=[

@@ -144,7 +144,7 @@ class MarkdownMermaidPlugin(BasePlugin):
             info("Explicit mermaid javascript library:\n  ", 
                  self.extra_mermaid_lib)
         else:
-            info("Using default javascript library (%s):\n  "% 
+            info("Using javascript library (%s):\n  "% 
                   self.config['version'],
                   self.mermaid_lib)
             
@@ -195,7 +195,5 @@ class MarkdownMermaidPlugin(BasePlugin):
             else:
                 js_args =  pyjs.dumps(self.mermaid_args) 
                 new_tag.string="mermaid.initialize(%s);" % js_args
-            # make it look nicer:
-            new_tag = new_tag.prettify()
             soup.body.append(new_tag)
         return str(soup)
