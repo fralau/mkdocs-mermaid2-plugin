@@ -380,7 +380,7 @@ plugins:
 ```
 
 This works well with the `scheme: preference` option in
-[mkdocs-material](https://squidfunk.github.io/mkdocs-material/).
+[mkdocs-material](https://squidfunk.github.io/mkdocs-material/) and referenced in [their documentation](https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-scheme).
 
 ## Compatibility
 
