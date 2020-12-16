@@ -159,14 +159,18 @@ class MarkdownMermaidPlugin(BasePlugin):
         if self.activate_custom_loader:
             # the custom loader has its specific marking
             # <pre class = 'mermaid'><code> ... </code></pre>
+            info("Custom loader activated")
             mermaids = len(soup.select("pre.mermaid code"))
         else:
             # standard mermaid can accept two types of marking:
             # <pre><code class = 'mermaid'> ... </code></pre>
             # but since we want only <div> for best compatibility,
             # it needs to be replaced
-            pre_code_tags = soup.select("pre code.mermaid")
+            # NOTE: new versions of WHAT? use `language-mermaid`...
+            pre_code_tags = (soup.select("pre code.mermaid") or 
+                            soup.select("pre code.language-mermaid"))
             no_found = len(pre_code_tags)
+            print("FOUND:", no_found)
             if no_found:
                 info("Page '%s': found %s diagrams "
                      "(with <pre><code='mermaid'>), converting to <div>..." % 
