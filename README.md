@@ -3,6 +3,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 ![PyPI](https://img.shields.io/pypi/v/mkdocs-mermaid2-plugin)
+![Downloads(Pypi)](https://img.shields.io/pypi/dm/mkdocs-mermaid2-plugin)
 
 
 An [MkDocs](https://www.mkdocs.org/) plugin that renders textual graph
@@ -363,7 +364,23 @@ box1[An <b>important</b> <a href="http://google.com">link</a>]
 ```
 
 
+### Auto-configure dark mode based on Host OS
 
+Using a combination of the literal (`^`) functionality of this plugin and the
+[prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
+CSS media feature, one can have the plugin automatically enable dark mode.
+
+```yaml
+plugins:
+  - search
+  - mermaid2:
+      arguments:
+          theme: |
+            ^(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'
+```
+
+This works well with the `scheme: preference` option in
+[mkdocs-material](https://squidfunk.github.io/mkdocs-material/) and referenced in [their documentation](https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-scheme).
 
 ## Compatibility
 
