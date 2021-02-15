@@ -170,7 +170,6 @@ class MarkdownMermaidPlugin(BasePlugin):
             pre_code_tags = (soup.select("pre code.mermaid") or 
                             soup.select("pre code.language-mermaid"))
             no_found = len(pre_code_tags)
-            print("FOUND:", no_found)
             if no_found:
                 info("Page '%s': found %s diagrams "
                      "(with <pre><code='mermaid'>), converting to <div>..." % 
