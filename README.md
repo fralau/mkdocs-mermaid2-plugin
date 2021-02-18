@@ -76,14 +76,14 @@ into segments `<pre><code class='mermaid>`:
 
     <pre><div class="mermaid">
     ...
-    <\pre><\div>
+    </div></pre>
 
 To make the HTML/css page more robust, the mermaid plugin converts 
 those segments into `<div>` elements in the final HTML page:
 
     <div class="mermaid">
     ...
-    <\div>
+    </div>
 
 It also inserts a call to the 
 [javascript library](https://github.com/mermaid-js/mermaid) :
