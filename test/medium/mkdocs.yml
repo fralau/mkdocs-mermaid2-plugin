@@ -1,10 +1,10 @@
 site_name: Mermaid test (medium, arguments)
 site_description: Test for mermaid
 docs_dir: docs # indispensable or readthedocs will fail
-# theme: 
-#   name: material
-#   language: en
-#   font: "Open Sans"
+theme: 
+  name: material
+  language: en
+  font: "Open Sans"
 
 
 nav:
@@ -22,8 +22,8 @@ plugins:
               callback: ^myMermaidCallbackFunction
 
 markdown_extensions:
-  # - admonition
-  # - pymdownx.details
+  - admonition
+  - pymdownx.details
 
 extra_javascript:
      # - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js

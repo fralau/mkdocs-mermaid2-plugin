@@ -166,14 +166,15 @@ class MarkdownMermaidPlugin(BasePlugin):
             # <pre><code class = 'mermaid'> ... </code></pre>
             # but since we want only <div> for best compatibility,
             # it needs to be replaced
-            # NOTE: new versions of WHAT? use `language-mermaid`...
+            # NOTE: Python-Markdown changed its representation of code blocks
+            # https://python-markdown.github.io/change_log/release-3.3/
             pre_code_tags = (soup.select("pre code.mermaid") or 
                             soup.select("pre code.language-mermaid"))
             no_found = len(pre_code_tags)
-            print("FOUND:", no_found)
+            # print("FOUND:", no_found)
             if no_found:
                 info("Page '%s': found %s diagrams "
-                     "(with <pre><code='mermaid'>), converting to <div>..." % 
+                     "(with <pre><code='[language-]mermaid'>), converting to <div>..." % 
                         (page_name, len(pre_code_tags)))
                 for tag in pre_code_tags:
                     content = tag.text
