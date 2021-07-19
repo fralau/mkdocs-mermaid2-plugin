@@ -153,6 +153,9 @@ class MarkdownMermaidPlugin(BasePlugin):
         Actions for each page:
         generate the HTML code for all code items marked as 'mermaid'
         """
+        if "mermaid" not in output_content:
+            # Skip unecessary HTML parsing
+            return output_content
         soup = BeautifulSoup(output_content, 'html.parser')
         page_name = page.title
         # first, determine if the page has diagrams:
