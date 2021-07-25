@@ -74,13 +74,14 @@ class MarkdownMermaidPlugin(BasePlugin):
         """
         Provides the actual mermaid library used
         """
-        mermaid_version = self.config['version']
-        lib = self.extra_mermaid_lib or MERMAID_LIB % mermaid_version 
-        if not url_exists(lib):
-            raise FileNotFoundError("Cannot find Mermaid library: %s" %
-                                    lib)
-        return lib
-
+        if not hasattr(self, '_mermaid_lib'):
+            mermaid_version = self.config['version']
+            lib = self.extra_mermaid_lib or MERMAID_LIB % mermaid_version 
+            if not url_exists(lib):
+                raise FileNotFoundError("Cannot find Mermaid library: %s" %
+                                        lib)
+            self._mermaid_lib = lib
+        return self._mermaid_lib
 
     @property
     def activate_custom_loader(self) -> bool:
