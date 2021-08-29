@@ -74,13 +74,14 @@ class MarkdownMermaidPlugin(BasePlugin):
         """
         Provides the actual mermaid library used
         """
-        mermaid_version = self.config['version']
-        lib = self.extra_mermaid_lib or MERMAID_LIB % mermaid_version 
-        if not url_exists(lib):
-            raise FileNotFoundError("Cannot find Mermaid library: %s" %
-                                    lib)
-        return lib
-
+        if not hasattr(self, '_mermaid_lib'):
+            mermaid_version = self.config['version']
+            lib = self.extra_mermaid_lib or MERMAID_LIB % mermaid_version 
+            if not url_exists(lib):
+                raise FileNotFoundError("Cannot find Mermaid library: %s" %
+                                        lib)
+            self._mermaid_lib = lib
+        return self._mermaid_lib
 
     @property
     def activate_custom_loader(self) -> bool:
@@ -153,6 +154,9 @@ class MarkdownMermaidPlugin(BasePlugin):
         Actions for each page:
         generate the HTML code for all code items marked as 'mermaid'
         """
+        if "mermaid" not in output_content:
+            # Skip unecessary HTML parsing
+            return output_content
         soup = BeautifulSoup(output_content, 'html.parser')
         page_name = page.title
         # first, determine if the page has diagrams:
@@ -171,7 +175,6 @@ class MarkdownMermaidPlugin(BasePlugin):
             pre_code_tags = (soup.select("pre code.mermaid") or 
                             soup.select("pre code.language-mermaid"))
             no_found = len(pre_code_tags)
-            # print("FOUND:", no_found)
             if no_found:
                 info("Page '%s': found %s diagrams "
                      "(with <pre><code='[language-]mermaid'>), converting to <div>..." % 

@@ -2,8 +2,8 @@
 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
-![PyPI](https://img.shields.io/pypi/v/mkdocs-mermaid2-plugin)
-![Downloads(Pypi)](https://img.shields.io/pypi/dm/mkdocs-mermaid2-plugin)
+[![PyPI](https://img.shields.io/pypi/v/mkdocs-mermaid2-plugin)](https://pypi.org/project/mkdocs-mermaid2-plugin/)
+![Downloads(PyPI)](https://img.shields.io/pypi/dm/mkdocs-mermaid2-plugin)
 
 
 An [MkDocs](https://www.mkdocs.org/) plugin that renders textual graph
@@ -80,14 +80,14 @@ into segments `<pre><code class='mermaid>`:
 
     <pre><div class="mermaid">
     ...
-    <\pre><\div>
+    </div></pre>
 
 To make the HTML/css page more robust, the mermaid plugin converts 
 those segments into `<div>` elements in the final HTML page:
 
     <div class="mermaid">
     ...
-    <\div>
+    </div>
 
 It also inserts a call to the 
 [javascript library](https://github.com/mermaid-js/mermaid) :

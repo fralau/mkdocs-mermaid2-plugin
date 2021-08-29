@@ -2,7 +2,11 @@ import os
 from setuptools import setup, find_packages
 
 
+<<<<<<< HEAD
 VERSION = '0.5.2'
+=======
+VERSION = '0.6.0'
+>>>>>>> 149a4b100454a05a4f14cccfd2acca605b0486e5
 
 def readme():
     """print long description"""
