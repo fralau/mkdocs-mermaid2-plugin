@@ -26,43 +26,47 @@ markdown-toc -i README.md
 
 <!-- toc -->
 
-- [How it works](#how-it-works)
-- [Installation](#installation)
-  * [Automatic](#automatic)
-  * [Manual](#manual)
-- [Configuration](#configuration)
-  * [Basic configuration](#basic-configuration)
-  * [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
-  * [Explicit declaration of the Mermaid library](#explicit-declaration-of-the-mermaid-library)
-- [Usage](#usage)
-  * [General Principle](#general-principle)
-  * [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
-  * [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
-  * [Testing](#testing)
-  * [Adding a Javascript callback function](#adding-a-javascript-callback-function)
-    + [Use Case](#use-case)
-    + [Method](#method)
-- [Tips and Tricks](#tips-and-tricks)
-  * [Setting the security level to "loose"](#setting-the-security-level-to-loose)
-  * [Formating text in diagrams](#formating-text-in-diagrams)
-  * [Adding Hyperlinks to a Diagram (versions of Mermaid javascript >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
-  * [Adding Hyperlinks to a Diagram (versions of Mermaid javascript <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
-- [Compatibility](#compatibility)
-  * [List](#list)
-  * [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
-    + [Usage](#usage-1)
-    + [Use of markdown extensions](#use-of-markdown-extensions)
-    + [Declaring the superfences extension](#declaring-the-superfences-extension)
-- [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
-  * [Seeing an error message at the place of the diagram?](#seeing-an-error-message-at-the-place-of-the-diagram)
-  * [The mermaid source code appears as-is (not read)?](#the-mermaid-source-code-appears-as-is-not-read)
-  * [Using another theme than material ?](#using-another-theme-than-material-)
-  * [Using superfences, but no diagram is displayed?](#using-superfences-but-no-diagram-is-displayed)
-  * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
-  * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
-  * [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
-  * [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
-- [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
+- [mkdocs-mermaid2-plugin](#mkdocs-mermaid2-plugin)
+  - [How it works](#how-it-works)
+  - [Installation](#installation)
+    - [Automatic](#automatic)
+    - [Manual](#manual)
+  - [Configuration](#configuration)
+    - [Basic configuration](#basic-configuration)
+    - [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
+    - [Explicit declaration of the Mermaid library](#explicit-declaration-of-the-mermaid-library)
+  - [Usage](#usage)
+    - [General Principle](#general-principle)
+    - [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
+    - [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
+    - [Testing](#testing)
+    - [Adding a Javascript callback function](#adding-a-javascript-callback-function)
+      - [Use Case](#use-case)
+      - [Method](#method)
+  - [Tips and Tricks](#tips-and-tricks)
+    - [Setting the security level to "loose"](#setting-the-security-level-to-loose)
+    - [Formating text in diagrams](#formating-text-in-diagrams)
+    - [Adding Hyperlinks to a Diagram (versions of Mermaid javascript >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
+    - [Adding Hyperlinks to a Diagram (versions of Mermaid javascript <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850-1)
+    - [Auto-configure dark mode based on Host OS](#auto-configure-dark-mode-based-on-host-os)
+    - [Material Theme: Switching the Mermaid diagram on the fly between light and dark mode](#material-theme-switching-the-mermaid-diagram-on-the-fly-between-light-and-dark-mode)
+  - [Compatibility](#compatibility)
+    - [List](#list)
+    - [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
+      - [Usage](#usage-1)
+      - [Use of markdown extensions](#use-of-markdown-extensions)
+      - [Declaring the superfences extension](#declaring-the-superfences-extension)
+  - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
+    - [Seeing an error message at the place of the diagram?](#seeing-an-error-message-at-the-place-of-the-diagram)
+    - [The mermaid source code appears as-is (not read)?](#the-mermaid-source-code-appears-as-is-not-read)
+    - [Using another theme than material ?](#using-another-theme-than-material-)
+    - [Using superfences, but no diagram is displayed?](#using-superfences-but-no-diagram-is-displayed)
+    - [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
+    - [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
+  - [Troubleshooting: other issues](#troubleshooting-other-issues)
+    - [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
+    - [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
+  - [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
 
 <!-- tocstop -->
 
@@ -366,7 +370,7 @@ box1[An <b>important</b> <a href="http://google.com">link</a>]
 
 ### Auto-configure dark mode based on Host OS
 
-Using a combination of the literal (`^`) functionality of this plugin and the
+Using a combination of the unquote (`^`) functionality of this plugin and the
 [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
 CSS media feature, one can have the plugin automatically enable dark mode.
 
@@ -381,6 +385,92 @@ plugins:
 
 This works well with the `scheme: preference` option in
 [mkdocs-material](https://squidfunk.github.io/mkdocs-material/) and referenced in [their documentation](https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-scheme).
+
+
+
+### Material Theme: Switching the Mermaid diagram on the fly between light and dark mode
+The Material theme for MkDocs allows [toggling between colors](https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette-toggle).
+Unfortunately the Mermaid diagram will not switch out of the box from light to
+dark or vice versa. 
+
+
+This solution is similar to [switch the theme according to the OS color](#auto-configure-dark-mode-based-on-host-os), 
+though that earlier, simpler solution cannot toggle dynamically.
+
+A workable solution has been proposed by [elgalu](https://github.com/elgalu)
+(for more information see [Issue 39](https://github.com/fralau/mkdocs-mermaid2-plugin/issues/39)).
+
+
+
+**`mkdocs.yml`**
+
+(The palette is an example, where primary color, accent, icons, toggle message, etc. can be adapted to your needs.)
+
+```yaml
+theme:
+  name: material
+  # https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: light-blue
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: deep orange
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+
+  # https://facelessuser.github.io/pymdown-extensions/extensions/superfences/
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid
+
+
+
+
+plugins:
+  - mermaid2:
+      arguments:
+        # test if its __palette_1 (dark) or __palette_2 (light)
+        theme: |
+          ^(JSON.parse(window.localStorage.getItem('/.__palette')).index == 1) ? 'dark' : 'light'
+
+extra_javascript:
+    - extra/refresh_on_toggle_dark_light.js
+```
+
+> The caret operator (`^`) means "unquote". It is used here to insert Javascript code into the initialization code of `mermaid.initialize()`.
+
+
+**`docs/extra/refresh_on_toggle_dark_light.js`**
+
+To avoid refreshing the page after switching between dark/light modes so that Mermaid diagram can be updated, two listeners
+must be installed, which are instructed to reload the page, whenever 
+they detect a change.
+
+That is the function of the additional script
+(`refresh_on_toggle_dark_light.js`):
+
+```javascript
+var paletteSwitcher1 = document.getElementById("__palette_1");
+var paletteSwitcher2 = document.getElementById("__palette_2");
+
+paletteSwitcher1.addEventListener("change", function () {
+  location.reload();
+});
+
+paletteSwitcher2.addEventListener("change", function () {
+  location.reload();
+});
+```
 
 ## Compatibility
 
@@ -535,6 +625,8 @@ In case of doubt, you may want to test your diagram in the
 
 > Note, however, that the Mermaid Live Editor **does not
 > support loose mode** (with HTML code in the mermaid code).
+
+## Troubleshooting: other issues
 
 ### Rich text diagrams, or links are not displayed properly?
 
