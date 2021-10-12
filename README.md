@@ -441,7 +441,7 @@ plugins:
       arguments:
         # test if its __palette_1 (dark) or __palette_2 (light)
         theme: |
-          ^(JSON.parse(window.localStorage.getItem('/.__palette')).index == 1) ? 'dark' : 'light'
+          ^(JSON.parse(window.localStorage.getItem(__prefix('__palette'))).index == 1) ? 'dark' : 'light'
 
 extra_javascript:
     - extra/refresh_on_toggle_dark_light.js
