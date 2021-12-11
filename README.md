@@ -433,15 +433,15 @@ theme:
           class: mermaid
           format: !!python/name:mermaid2.fence_mermaid
 
-
-
-
 plugins:
   - mermaid2:
       arguments:
         # test if its __palette_1 (dark) or __palette_2 (light)
+        # for mkdocs-material >=8.0.0
         theme: |
-          ^(JSON.parse(window.localStorage.getItem(__prefix('__palette'))).index == 1) ? 'dark' : 'light'
+          ^(JSON.parse(__md_get("__palette").index == 1)) ? 'dark' : 'light'
+#       for mkdocs-material <8.0.0
+#         ^(JSON.parse(window.localStorage.getItem(__prefix('__palette'))).index == 1) ? 'dark' : 'light'
 
 extra_javascript:
     - extra/refresh_on_toggle_dark_light.js
