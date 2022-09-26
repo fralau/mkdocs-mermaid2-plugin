@@ -132,7 +132,7 @@ To enable this plugin, you need to declare it in your config file
 
 In order to work, the plugin also requires the
 [mermaid](https://www.npmjs.com/package/mermaid) javascript
-library (in the exemple below, it fetched from the last version
+library (in the example below, it fetched from the last version
 from the [unpkg](https://unpkg.com/) repository; change the version
 no as needed).
 
