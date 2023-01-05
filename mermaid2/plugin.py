@@ -16,7 +16,7 @@ from .util import info, libname, url_exists
 # Constants and utilities
 # ------------------------
 # the default (recommended) mermaid lib
-MERMAID_LIB_VERSION = '8.8.0'
+MERMAID_LIB_VERSION = '9.3.0'
 MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
 # Two conditions for activating custom fences:
 SUPERFENCES_EXTENSION = 'pymdownx.superfences'
