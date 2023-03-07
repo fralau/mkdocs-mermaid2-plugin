@@ -158,7 +158,7 @@ You may specify a different version of the Mermaid library, like so:
 plugins:
   - search
   - mermaid2:
-      version: 8.6.4
+      version: 10.0.2
 ```
 
 

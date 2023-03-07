@@ -4,6 +4,7 @@ Main plugin module for mermaid2
 
 import os
 
+from packaging import version
 from mkdocs.plugins import BasePlugin
 from mkdocs.config.config_options import Type as PluginType
 from bs4 import BeautifulSoup
@@ -16,11 +17,20 @@ from .util import info, libname, url_exists
 # Constants and utilities
 # ------------------------
 # the default (recommended) mermaid lib
-MERMAID_LIB_VERSION = '9.3.0'
-MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
+MERMAID_LIB_VERSION = '10.0.2'
+MERMAID_LIB_PRE_10 = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
+MERMAID_LIB_POST_10 = "https://unpkg.com/mermaid@%s/dist/mermaid.esm.min.mjs"
 # Two conditions for activating custom fences:
 SUPERFENCES_EXTENSION = 'pymdownx.superfences'
-CUSTOM_FENCE_FN = 'fence_mermaid_custom' 
+CUSTOM_FENCE_FN = 'fence_mermaid_custom'
+
+class MermaidLib:
+    def __init__(self, location: str, style: str):
+        self.location = location
+        self.style = style
+
+    def __repr__(self):
+        return "%s (%s)" % (self.location, self.style)
 
 # ------------------------
 # Plugin
@@ -70,18 +80,34 @@ class MarkdownMermaidPlugin(BasePlugin):
 
 
     @property
-    def mermaid_lib(self) -> str:
+    def mermaid_lib(self) -> MermaidLib:
         """
         Provides the actual mermaid library used
         """
-        if not hasattr(self, '_mermaid_lib'):
-            mermaid_version = self.config['version']
-            lib = self.extra_mermaid_lib or MERMAID_LIB % mermaid_version 
-            if not url_exists(lib):
-                raise FileNotFoundError("Cannot find Mermaid library: %s" %
-                                        lib)
-            self._mermaid_lib = lib
-        return self._mermaid_lib
+        if hasattr(self, '_mermaid_lib'):
+            return self._mermaid_lib
+
+        mermaid_version = self.config['version']
+        lib = self.resolve_mermaid_lib_location(mermaid_version)
+        if not url_exists(lib.location):
+            raise FileNotFoundError("Cannot find Mermaid library: %s" % lib)
+
+        self._mermaid_lib = lib
+
+        return lib
+
+
+    def resolve_mermaid_lib_location(self, desired_version: str) -> MermaidLib:
+
+        if self.extra_mermaid_lib:
+            return MermaidLib(self.extra_mermaid_lib, "js")
+
+        if version.parse(desired_version) >= version.parse("10.0.0"):
+            return MermaidLib(MERMAID_LIB_POST_10 % desired_version, "esm")
+
+        return MermaidLib(MERMAID_LIB_PRE_10 % desired_version, "js")
+
+
 
     @property
     def activate_custom_loader(self) -> bool:
@@ -145,10 +171,10 @@ class MarkdownMermaidPlugin(BasePlugin):
             info("Explicit mermaid javascript library:\n  ", 
                  self.extra_mermaid_lib)
         else:
-            info("Using javascript library (%s):\n  "% 
+            info("Using javascript library (%s):\n  " %
                   self.config['version'],
                   self.mermaid_lib)
-            
+
     def on_post_page(self, output_content, config, page, **kwargs):
         """
         Actions for each page:
@@ -159,6 +185,7 @@ class MarkdownMermaidPlugin(BasePlugin):
             return output_content
         soup = BeautifulSoup(output_content, 'html.parser')
         page_name = page.title
+
         # first, determine if the page has diagrams:
         if self.activate_custom_loader:
             # the custom loader has its specific marking
@@ -187,25 +214,38 @@ class MarkdownMermaidPlugin(BasePlugin):
                     tag.parent.replaceWith(new_tag)
             # Count the diagrams <div class = 'mermaid'> ... </div>
             mermaids = len(soup.select("div.mermaid"))
+
         # if yes, add the javascript snippets:
         if mermaids:
-            info("Page '%s': found %s diagrams, adding scripts" % 
-                    (page_name, mermaids))
-            if not self.extra_mermaid_lib:
-                # if no extra library mentioned specify it
-                new_tag = soup.new_tag("script", src=self.mermaid_lib)
-                soup.body.append(new_tag)
-                # info(new_tag)
-            new_tag = soup.new_tag("script")
-            # initialization command
+            info("Page '%s': found %s diagrams, adding scripts" % (page_name, mermaids))
+
+            # Work out how we're going to initialise mermaid
+            loader = ""
+
             if self.activate_custom_loader:
-                # if the superfences extension is present, use the specific loader
-                self.mermaid_args['startOnLoad'] = False
-                js_args =  pyjs.dumps(self.mermaid_args) 
-                #new_tag.string = "window.mermaidConfig = {\n    default: %s\n}" % js_args
-                new_tag.string = "window.mermaidConfig = {default: %s}" % js_args
+                self.mermaid_args["startOnLoad"] = False
+                js_args = pyjs.dumps(self.mermaid_args)
+                loader = "window.mermaidConfig = {default: %s}" % js_args
             else:
-                js_args =  pyjs.dumps(self.mermaid_args) 
-                new_tag.string="mermaid.initialize(%s);" % js_args
-            soup.body.append(new_tag)
+                js_args = pyjs.dumps(self.mermaid_args)
+                loader = "mermaid?.initialize(%s)" % js_args
+
+            if not self.extra_mermaid_lib and self.mermaid_lib.style == "esm":
+                import_tag = soup.new_tag("script", type="module")
+                import_tag.string = f"""
+                import mermaid from \"{self.mermaid_lib.location}\";
+                {loader};
+                """
+                soup.body.append(import_tag)
+            elif not self.extra_mermaid_lib and self.mermaid_lib.style == "js":
+                src_tag = soup.new_tag("script", src=self.mermaid_lib.location)
+                load_tag = soup.new_tag("script")
+                load_tag.string = loader
+                soup.body.append(src_tag)
+                soup.body.append(load_tag)
+            else:
+                load_tag = soup.new_tag("script")
+                load_tag.string = loader
+                soup.body.append(load_tag)
+
         return str(soup)
