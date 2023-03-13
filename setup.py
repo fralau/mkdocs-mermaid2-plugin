@@ -1,13 +1,18 @@
-import os
 from setuptools import setup, find_packages
 
 
 VERSION = '0.6.0'
 
+# required if you want to run tests
+# pip install 'mkdocs-mermaid2-plugin[test]'
+TEST_REQUIRE = ['pyyaml', 'mkdocs-material']
+
+
 def readme():
     """print long description"""
     with open('README.md') as f:
         return f.read()
+
 
 LONG_DESCRIPTION = (
     "A mkdocs plugin that interprets mermaid graphs in the markdown file."
@@ -32,11 +37,12 @@ setup(
         'beautifulsoup4>=4.6.3',
         'mkdocs>=1.0.4',
         'jsbeautifier',
-        'pyyaml', # for testing
-        'mkdocs-material', # for testing
         'requests',
         'pymdown-extensions >= 8.0'
     ],
+    extras_require={
+        'test': TEST_REQUIRE,
+    },
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
