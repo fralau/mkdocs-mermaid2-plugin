@@ -4,6 +4,7 @@ Main plugin module for mermaid2
 
 import os
 
+
 from mkdocs.plugins import BasePlugin
 from mkdocs.config.config_options import Type as PluginType
 from bs4 import BeautifulSoup
@@ -16,11 +17,22 @@ from .util import info, libname, url_exists
 # Constants and utilities
 # ------------------------
 # the default (recommended) mermaid lib
-MERMAID_LIB_VERSION = '8.8.0'
-MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
+MERMAID_LIB_VERSION = '10.0.2'
+# MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
+MERMAID_LIB_PRE_10 = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
+MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.esm.min.mjs"
+
+
+MERMAID_CODE_PRE_10 = '<script src="%s">\n'
+MERMAID_CODE = '<script type="module">import mermaid from "%s"</script>\n'
+
+
+
 # Two conditions for activating custom fences:
 SUPERFENCES_EXTENSION = 'pymdownx.superfences'
 CUSTOM_FENCE_FN = 'fence_mermaid_custom' 
+
+
 
 # ------------------------
 # Plugin
@@ -55,6 +67,29 @@ class MarkdownMermaidPlugin(BasePlugin):
         The arguments for mermaid.
         """
         return self._mermaid_args
+    
+    @property
+    def mermaid_version(self) -> str:
+        """
+        The version of mermaid
+        This information comes from the YAML file parameter,
+        or, if empty, from MERMAID_LIB_VERSION.
+        """
+        version = self.config['version']
+        assert version, "No correct version of mermaid is provided!"
+        return version
+    
+    @property
+    def mermaid_major_version(self) -> int:
+        """
+        Major version of mermaid (e.g. 8. 9, 10) as int
+        """
+        major = self.mermaid_version.split('.')[0]
+        try:
+            return int(major)
+        except: 
+            ValueError("Mermaid version provided has incorrect format")
+
 
     @property
     def extra_mermaid_lib(self) -> str:
@@ -72,16 +107,31 @@ class MarkdownMermaidPlugin(BasePlugin):
     @property
     def mermaid_lib(self) -> str:
         """
-        Provides the actual mermaid library used
+        Provides the url of mermaid library according to version
+        (distinction between version < 10 and after)
         """
         if not hasattr(self, '_mermaid_lib'):
-            mermaid_version = self.config['version']
-            lib = self.extra_mermaid_lib or MERMAID_LIB % mermaid_version 
-            if not url_exists(lib):
+            if self.mermaid_major_version < 10:
+                mermaid_lib = MERMAID_LIB_PRE_10 % self.mermaid_version
+            else:
+                # newer versions
+                mermaid_lib = MERMAID_LIB % self.mermaid_version
+            # make checks
+            if not url_exists(mermaid_lib):
                 raise FileNotFoundError("Cannot find Mermaid library: %s" %
-                                        lib)
-            self._mermaid_lib = lib
+                                        mermaid_lib)
+            self._mermaid_lib = mermaid_lib
         return self._mermaid_lib
+    
+    @property
+    def mermaid_script(self) -> str:
+        """
+        Provides the mermaid script to be inserted into the code
+        """
+        if self.mermaid_major_version < 10:
+            return MERMAID_CODE_PRE_10 % self.mermaid_lib
+        else:
+            return MERMAID_CODE % self.mermaid_lib
 
     @property
     def activate_custom_loader(self) -> bool:
@@ -192,12 +242,15 @@ class MarkdownMermaidPlugin(BasePlugin):
             info("Page '%s': found %s diagrams, adding scripts" % 
                     (page_name, mermaids))
             if not self.extra_mermaid_lib:
-                # if no extra library mentioned specify it
-                new_tag = soup.new_tag("script", src=self.mermaid_lib)
+                # if no extra library mentioned,
+                # add the <SCRIPT> tag needed for mermaid
+                info("Adding call to script for version"
+                     f"{self.mermaid_version}.")
+                new_tag = BeautifulSoup(self.mermaid_script, 'html.parser')
                 soup.body.append(new_tag)
                 # info(new_tag)
+                # initialization command
             new_tag = soup.new_tag("script")
-            # initialization command
             if self.activate_custom_loader:
                 # if the superfences extension is present, use the specific loader
                 self.mermaid_args['startOnLoad'] = False

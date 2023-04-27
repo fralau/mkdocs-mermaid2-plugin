@@ -1,0 +1,18 @@
+site_name: Mermaid test (simple)
+site_description: Test for mermaid
+docs_dir: docs # indispensable or readthedocs will fail
+theme: readthedocs # you may want to try windmill?
+
+
+nav:
+  - Main: index.md
+  - Second: second.md
+
+plugins:
+  - search
+  - mermaid2:
+      version: 8.8.2
+
+# extra_javascript:
+#   - https://unpkg.com/mermaid/dist/mermaid.min.js
+

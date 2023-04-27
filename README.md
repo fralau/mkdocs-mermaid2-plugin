@@ -18,6 +18,8 @@ descriptions into [Mermaid](https://mermaid-js.github.io/mermaid) graphs
 > which is no longer maintained. It offers expanded documentation as
 > well as new functions.
 
+> As of version 1.0.0, this plugin works with versions of the Mermaid library > 10,
+> **and** with lower versions.
 
 
 <!-- To update the toc, run the following command:
@@ -26,47 +28,46 @@ markdown-toc -i README.md
 
 <!-- toc -->
 
-- [mkdocs-mermaid2-plugin](#mkdocs-mermaid2-plugin)
-  - [How it works](#how-it-works)
-  - [Installation](#installation)
-    - [Automatic](#automatic)
-    - [Manual](#manual)
-  - [Configuration](#configuration)
-    - [Basic configuration](#basic-configuration)
-    - [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
-    - [Explicit declaration of the Mermaid library](#explicit-declaration-of-the-mermaid-library)
-  - [Usage](#usage)
-    - [General Principle](#general-principle)
-    - [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
-    - [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
-    - [Testing](#testing)
-    - [Adding a Javascript callback function](#adding-a-javascript-callback-function)
-      - [Use Case](#use-case)
-      - [Method](#method)
-  - [Tips and Tricks](#tips-and-tricks)
-    - [Setting the security level to "loose"](#setting-the-security-level-to-loose)
-    - [Formating text in diagrams](#formating-text-in-diagrams)
-    - [Adding Hyperlinks to a Diagram (versions of Mermaid javascript >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
-    - [Adding Hyperlinks to a Diagram (versions of Mermaid javascript <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850-1)
-    - [Auto-configure dark mode based on Host OS](#auto-configure-dark-mode-based-on-host-os)
-    - [Material Theme: Switching the Mermaid diagram on the fly between light and dark mode](#material-theme-switching-the-mermaid-diagram-on-the-fly-between-light-and-dark-mode)
-  - [Compatibility](#compatibility)
-    - [List](#list)
-    - [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
-      - [Usage](#usage-1)
-      - [Use of markdown extensions](#use-of-markdown-extensions)
-      - [Declaring the superfences extension](#declaring-the-superfences-extension)
-  - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
-    - [Seeing an error message at the place of the diagram?](#seeing-an-error-message-at-the-place-of-the-diagram)
-    - [The mermaid source code appears as-is (not read)?](#the-mermaid-source-code-appears-as-is-not-read)
-    - [Using another theme than material ?](#using-another-theme-than-material-)
-    - [Using superfences, but no diagram is displayed?](#using-superfences-but-no-diagram-is-displayed)
-    - [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
-    - [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
-  - [Troubleshooting: other issues](#troubleshooting-other-issues)
-    - [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
-    - [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
-  - [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
+- [How it works](#how-it-works)
+- [Installation](#installation)
+  * [Automatic](#automatic)
+  * [Manual](#manual)
+- [Configuration](#configuration)
+  * [Basic configuration](#basic-configuration)
+  * [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
+  * [Explicit declaration of the Mermaid library](#explicit-declaration-of-the-mermaid-library)
+- [Usage](#usage)
+  * [General Principle](#general-principle)
+  * [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
+  * [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
+  * [Testing](#testing)
+  * [Adding a Javascript callback function](#adding-a-javascript-callback-function)
+    + [Use Case](#use-case)
+    + [Method](#method)
+- [Tips and Tricks](#tips-and-tricks)
+  * [Setting the security level to "loose"](#setting-the-security-level-to-loose)
+  * [Formating text in diagrams](#formating-text-in-diagrams)
+  * [Adding Hyperlinks to a Diagram (versions of Mermaid javascript >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
+  * [Adding Hyperlinks to a Diagram (versions of Mermaid javascript <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
+  * [Auto-configure dark mode based on Host OS](#auto-configure-dark-mode-based-on-host-os)
+  * [Material Theme: Switching the Mermaid diagram on the fly between light and dark mode](#material-theme-switching-the-mermaid-diagram-on-the-fly-between-light-and-dark-mode)
+- [Compatibility](#compatibility)
+  * [List](#list)
+  * [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
+    + [Usage](#usage-1)
+    + [Use of markdown extensions](#use-of-markdown-extensions)
+    + [Declaring the superfences extension](#declaring-the-superfences-extension)
+- [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
+  * [Seeing an error message at the place of the diagram?](#seeing-an-error-message-at-the-place-of-the-diagram)
+  * [The mermaid source code appears as-is (not read)?](#the-mermaid-source-code-appears-as-is-not-read)
+  * [Using another theme than material ?](#using-another-theme-than-material-)
+  * [Using superfences, but no diagram is displayed?](#using-superfences-but-no-diagram-is-displayed)
+  * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
+  * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
+- [Troubleshooting: other issues](#troubleshooting-other-issues)
+  * [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
+  * [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
+- [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
 
 <!-- tocstop -->
 
@@ -96,11 +97,24 @@ It also inserts a call to the
     mermaid.initialize(...)
     </script>
 
-To interpret that code it inserts a call to the Mermaid library:
-```javascript
-<script src="https://unpkg.com/mermaid/dist/mermaid.min.js">
+To interpret that code it inserts a call to the Mermaid library.
+
+> **From version 1.0 of mkdocs-mermaid2:**
+
+E.g. for version 10.0.2:
+```html
+<script type="module">
+import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"
 </script>
 ```
+
+Or for an earlier version of the library:
+```html
+<script src="https://unpkg.com/mermaid@8.8.2/dist/mermaid.min.js">
+</script>
+```
+
+
 
 The user's browser will then read this code and render it on the fly.
 
@@ -158,13 +172,17 @@ You may specify a different version of the Mermaid library, like so:
 plugins:
   - search
   - mermaid2:
-      version: 8.6.4
+      version: 10.0.2
 ```
 
+> **From version 1.0.0 of Mermaid**
+If you select a version of the Mermaid library lower than 10.0.0.,
+the plugin will adapt the call to the script accordingly
+(`<SCRIPT>...</SCRIPT>`).
 
 
 ### Explicit declaration of the Mermaid library
-> If you use a version of the plugin >= 0.4, the basic steps are sufficient.
+> Changes since version 1.1.0
 
 You _may_ specify the mermaid library explicitly, as long as it is
 call mermaid (independently of extension):
@@ -174,15 +192,31 @@ extra_javascript:
     - https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js
 ```
 
-For the latest version:
+> This will work **only** for versions of the Mermaid javascript 
+> library < 10.0.0.
+
+
+Of course, you may also declare a local file:
 
 ```yaml
 extra_javascript:
-    - https://unpkg.com/mermaid/dist/mermaid.min.js
+    - js/mermaidloader.js
 ```
 
+Where `js` is a subdirectory of the document directory (`docs`).
 
-> **Note for plugin version < 0.4:** You **must*** include the mermaid.min.js (local or remotely) in your `mkdocs.yml`. If you want to be on the safe side, you may want to specify a version that you know is working for you, e.g. `https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js` 
+If you are using a local javascript file, it is up to you to make it work,
+with a version of the Mermaid library > 10 e.g.:
+
+```yaml
+import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"
+mermaid.initialize()
+```
+
+No explicit call to `mermaid.initialize()` is required, since it is called
+from inside the plugin.
+
+
 
 
 
@@ -609,13 +643,12 @@ Or, if you cloned this repo:
 > an error.
 
 In order to work, the proper javascript library must called from
-the html page.
+the html page (this is done automatically).
+If necessary check the link used in the HTML page generated, e.g.:
 
-The configuration file (`mkdocs.yml`) should contain the following line:
-
-    extra_javascript:
-        - https://unpkg.com/mermaid/dist/mermaid.min.js
-
+```HTML
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"</script>
+```
 
 Every diagram should start with a valid preamble, e.g. `graph TD`.
 
