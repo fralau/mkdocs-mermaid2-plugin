@@ -28,6 +28,7 @@ markdown-toc -i README.md
 
 <!-- toc -->
 
+<<<<<<< HEAD
 - [How it works](#how-it-works)
 - [Installation](#installation)
   * [Automatic](#automatic)
@@ -68,6 +69,49 @@ markdown-toc -i README.md
   * [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
   * [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
 - [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
+=======
+- [mkdocs-mermaid2-plugin](#mkdocs-mermaid2-plugin)
+  - [How it works](#how-it-works)
+  - [Installation](#installation)
+    - [Automatic](#automatic)
+    - [Manual](#manual)
+  - [Configuration](#configuration)
+    - [Basic configuration](#basic-configuration)
+    - [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
+    - [Explicit declaration of the Mermaid library](#explicit-declaration-of-the-mermaid-library)
+  - [Usage](#usage)
+    - [General Principle](#general-principle)
+    - [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
+    - [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
+    - [Testing](#testing)
+    - [Adding a Javascript callback function](#adding-a-javascript-callback-function)
+      - [Use Case](#use-case)
+      - [Method](#method)
+  - [Tips and Tricks](#tips-and-tricks)
+    - [Setting the security level to "loose"](#setting-the-security-level-to-loose)
+    - [Formatting text in diagrams](#formatting-text-in-diagrams)
+    - [Adding Hyperlinks to a Diagram (versions of Mermaid javascript >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
+    - [Adding Hyperlinks to a Diagram (versions of Mermaid javascript <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850-1)
+    - [Auto-configure dark mode based on Host OS](#auto-configure-dark-mode-based-on-host-os)
+    - [Material Theme: Switching the Mermaid diagram on the fly between light and dark mode](#material-theme-switching-the-mermaid-diagram-on-the-fly-between-light-and-dark-mode)
+  - [Compatibility](#compatibility)
+    - [List](#list)
+    - [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
+      - [Usage](#usage-1)
+      - [Use of markdown extensions](#use-of-markdown-extensions)
+      - [Declaring the superfences extension](#declaring-the-superfences-extension)
+  - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
+    - [Seeing an error message at the place of the diagram?](#seeing-an-error-message-at-the-place-of-the-diagram)
+    - [The mermaid source code appears as-is (not read)?](#the-mermaid-source-code-appears-as-is-not-read)
+    - [Using another theme than material ?](#using-another-theme-than-material-)
+    - [Using superfences, but no diagram is displayed?](#using-superfences-but-no-diagram-is-displayed)
+    - [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
+    - [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
+  - [Troubleshooting: other issues](#troubleshooting-other-issues)
+    - [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
+    - [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
+  - [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
+>>>>>>> bf0e58efa816a985e44ea07650976fdade286c63
 
 <!-- tocstop -->
 
@@ -146,7 +190,7 @@ To enable this plugin, you need to declare it in your config file
 
 In order to work, the plugin also requires the
 [mermaid](https://www.npmjs.com/package/mermaid) javascript
-library (in the exemple below, it fetched from the last version
+library (in the example below, it fetched from the last version
 from the [unpkg](https://unpkg.com/) repository; change the version
 no as needed).
 
@@ -237,17 +281,15 @@ and surround it with the code fence for Mermaid:
     ```
 
 ### How to write Mermaid diagrams
-* For instructions on how to make a diagram, see 
-  [the official website](https://mermaid-js.github.io/mermaid/#/).
-* If you are not familiar, see the [n00bs' introduction to mermaid](https://mermaid-js.github.io/mermaid/#/n00b-overview).
-* In case of doubt, you will want to test your diagrams in the
-  [Mermaid Live Editor](https://mermaid-js.github.io/mermaid-live-editor).
 
+* For instructions on how to make a diagram, see [the official website](https://mermaid.js.org).
+* If you are not familiar, see the [Mermaid Overview for Beginners](https://mermaid.js.org/community/n00b-overview.html).
+* In case of doubt, you will want to test your diagrams in the [Mermaid Live Editor](https://mermaid.live).
 
 ### Adding arguments to the Mermaid engine
 
 By default, the plugin automatically inserts 
-the a Javascript command `mermaid.initialize();`
+a Javascript command `mermaid.initialize();`
 in the HTML pages, which starts the interpretation.
 Sometimes, however, you may want to add some
 initialization commands (see [full list](https://github.com/knsv/mermaid/blob/master/docs/mermaidAPI.md#mermaidapi-configuration-defaults)).
@@ -353,7 +395,7 @@ plugin:
           securityLevel: 'loose'
 ```
 
-### Formating text in diagrams
+### Formatting text in diagrams
 > To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
 
 You may use HTML in the diagram.
@@ -398,7 +440,7 @@ graph LR
 It is possible to add hyperlinks to a  diagram, e.g.:
 
 ```
-box1[An <b>important</b> <a href="http://google.com">link</a>] 
+box1[An <b>important</b> <a href="https://google.com">link</a>] 
 ```
 
 
@@ -461,21 +503,21 @@ theme:
         name: Switch to light mode
 
   # https://facelessuser.github.io/pymdown-extensions/extensions/superfences/
-  - pymdownx.superfences:
+  pymdownx.superfences:
       custom_fences:
         - name: mermaid
           class: mermaid
           format: !!python/name:mermaid2.fence_mermaid
 
-
-
-
 plugins:
   - mermaid2:
       arguments:
         # test if its __palette_1 (dark) or __palette_2 (light)
+        # for mkdocs-material >=8.0.0
         theme: |
-          ^(JSON.parse(window.localStorage.getItem('/.__palette')).index == 1) ? 'dark' : 'light'
+          ^(JSON.parse(__md_get("__palette").index == 1)) ? 'dark' : 'light'
+#       for mkdocs-material <8.0.0
+#         ^(JSON.parse(window.localStorage.getItem(__prefix('__palette'))).index == 1) ? 'dark' : 'light'
 
 extra_javascript:
     - extra/refresh_on_toggle_dark_light.js
@@ -509,21 +551,20 @@ paletteSwitcher2.addEventListener("change", function () {
 ## Compatibility
 
 ### List
-Here is a short list of comptabilities and incompatibilities for
+Here is a short list of compatibilities and incompatibilities for
 the mermaid plugin:
 
-Item | Type | Status | Note 
---|--|--|--
-**mkdocs** | theme | YES | (default) plugin version >= 0.5 | 
-**material** | theme | YES |  |
-**windmill** | theme | YES | plugin version >= 0.5 | 
-**admonition** | extension | YES | 
-**footnotes** | extension | YES | 
-**minify** | plugin | NO | Breaks the mermaid diagrams.
-**pymdownx.highlight** | extension | NO | Use [pymdownx.superfences](#declaring-the-superfences-extension)
-**pymdownx.superfences** | extension | OK | [see paragraph](#declaring-the-superfences-extension)
-**search** | plugin | OK | Do not forget to declare it in `config.yml`.
-
+| Item                     | Type      | Status | Note                                                             |
+|--------------------------|-----------|--------|------------------------------------------------------------------|
+| **mkdocs**               | theme     | YES    | (default) plugin version >= 0.5                                  | 
+| **material**             | theme     | YES    |                                                                  |
+| **windmill**             | theme     | YES    | plugin version >= 0.5                                            | 
+| **admonition**           | extension | YES    |                                                                  |
+| **footnotes**            | extension | YES    |                                                                  |
+| **minify**               | plugin    | NO     | Breaks the mermaid diagrams.                                     |
+| **pymdownx.highlight**   | extension | NO     | Use [pymdownx.superfences](#declaring-the-superfences-extension) |
+| **pymdownx.superfences** | extension | OK     | [see paragraph](#declaring-the-superfences-extension)            |
+| **search**               | plugin    | OK     | Do not forget to declare it in `config.yml`.                     |
 
 ### Using Mermaid and code highlighting at the same time
 
@@ -638,13 +679,23 @@ Or, if you cloned this repo:
 
 ### Is the javascript library properly called?
 
-> ***Note that that this is no longer mandatory since version 0.4 of the
+> ***Note that this is no longer mandatory since version 0.4 of the
 > plugin.*** You may want to try to remove this call, in case there was
 > an error.
 
+<<<<<<< HEAD
 In order to work, the proper javascript library must called from
 the html page (this is done automatically).
 If necessary check the link used in the HTML page generated, e.g.:
+=======
+In order to work, the proper javascript library must be called from
+the html page.
+
+The configuration file (`mkdocs.yml`) should contain the following line:
+
+    extra_javascript:
+        - https://unpkg.com/mermaid/dist/mermaid.min.js
+>>>>>>> bf0e58efa816a985e44ea07650976fdade286c63
 
 ```HTML
 <script type="module">import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"</script>

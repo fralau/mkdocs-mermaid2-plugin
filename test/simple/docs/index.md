@@ -11,6 +11,22 @@ graph TD
 
 > If you don't see a graph here, it's broken.
 
+## Git Graph
+This is a test of Git Graph: 
+
+```mermaid
+gitGraph
+    commit
+    commit
+    branch develop
+    checkout develop
+    commit
+    commit
+    checkout main
+    merge develop
+    commit
+    commit
+```
 
 
 ## Normal fences
