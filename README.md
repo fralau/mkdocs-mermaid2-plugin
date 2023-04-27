@@ -28,11 +28,11 @@ markdown-toc -i README.md
 
 <!-- toc -->
 
-<<<<<<< HEAD
 - [How it works](#how-it-works)
 - [Installation](#installation)
   * [Automatic](#automatic)
   * [Manual](#manual)
+  * [Test](#test)
 - [Configuration](#configuration)
   * [Basic configuration](#basic-configuration)
   * [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
@@ -47,7 +47,7 @@ markdown-toc -i README.md
     + [Method](#method)
 - [Tips and Tricks](#tips-and-tricks)
   * [Setting the security level to "loose"](#setting-the-security-level-to-loose)
-  * [Formating text in diagrams](#formating-text-in-diagrams)
+  * [Formatting text in diagrams](#formatting-text-in-diagrams)
   * [Adding Hyperlinks to a Diagram (versions of Mermaid javascript >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
   * [Adding Hyperlinks to a Diagram (versions of Mermaid javascript <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
   * [Auto-configure dark mode based on Host OS](#auto-configure-dark-mode-based-on-host-os)
@@ -69,49 +69,6 @@ markdown-toc -i README.md
   * [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
   * [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
 - [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
-=======
-- [mkdocs-mermaid2-plugin](#mkdocs-mermaid2-plugin)
-  - [How it works](#how-it-works)
-  - [Installation](#installation)
-    - [Automatic](#automatic)
-    - [Manual](#manual)
-  - [Configuration](#configuration)
-    - [Basic configuration](#basic-configuration)
-    - [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
-    - [Explicit declaration of the Mermaid library](#explicit-declaration-of-the-mermaid-library)
-  - [Usage](#usage)
-    - [General Principle](#general-principle)
-    - [How to write Mermaid diagrams](#how-to-write-mermaid-diagrams)
-    - [Adding arguments to the Mermaid engine](#adding-arguments-to-the-mermaid-engine)
-    - [Testing](#testing)
-    - [Adding a Javascript callback function](#adding-a-javascript-callback-function)
-      - [Use Case](#use-case)
-      - [Method](#method)
-  - [Tips and Tricks](#tips-and-tricks)
-    - [Setting the security level to "loose"](#setting-the-security-level-to-loose)
-    - [Formatting text in diagrams](#formatting-text-in-diagrams)
-    - [Adding Hyperlinks to a Diagram (versions of Mermaid javascript >~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850)
-    - [Adding Hyperlinks to a Diagram (versions of Mermaid javascript <~ 8.5.0)](#adding-hyperlinks-to-a-diagram-versions-of-mermaid-javascript--850-1)
-    - [Auto-configure dark mode based on Host OS](#auto-configure-dark-mode-based-on-host-os)
-    - [Material Theme: Switching the Mermaid diagram on the fly between light and dark mode](#material-theme-switching-the-mermaid-diagram-on-the-fly-between-light-and-dark-mode)
-  - [Compatibility](#compatibility)
-    - [List](#list)
-    - [Using Mermaid and code highlighting at the same time](#using-mermaid-and-code-highlighting-at-the-same-time)
-      - [Usage](#usage-1)
-      - [Use of markdown extensions](#use-of-markdown-extensions)
-      - [Declaring the superfences extension](#declaring-the-superfences-extension)
-  - [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
-    - [Seeing an error message at the place of the diagram?](#seeing-an-error-message-at-the-place-of-the-diagram)
-    - [The mermaid source code appears as-is (not read)?](#the-mermaid-source-code-appears-as-is-not-read)
-    - [Using another theme than material ?](#using-another-theme-than-material-)
-    - [Using superfences, but no diagram is displayed?](#using-superfences-but-no-diagram-is-displayed)
-    - [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
-    - [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
-  - [Troubleshooting: other issues](#troubleshooting-other-issues)
-    - [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
-    - [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
-  - [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
->>>>>>> bf0e58efa816a985e44ea07650976fdade286c63
 
 <!-- tocstop -->
 
@@ -181,6 +138,15 @@ Clone this repository in a local directory and install the package:
 ```bash
 python setup.py install
 ```
+
+### Test
+For running the examples the `test` directory, 
+you will also need the mkdocs-material theme.
+
+```bash
+pip install mkdocs-mermaid2-plugin[test]
+```
+
 
 ## Configuration
 

@@ -5,7 +5,7 @@ VERSION = '1.0.0-alpha'
 
 # required if you want to run tests
 # pip install 'mkdocs-mermaid2-plugin[test]'
-TEST_REQUIRE = ['pyyaml', 'mkdocs-material']
+TEST_REQUIRE = ['mkdocs-material']
 
 
 def readme():
