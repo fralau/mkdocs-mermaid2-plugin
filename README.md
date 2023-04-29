@@ -12,12 +12,6 @@ descriptions into [Mermaid](https://mermaid-js.github.io/mermaid) graphs
 
 
 
-
-> This is a fork from
-> [Pugong Liu's excellent project](https://github.com/pugong/mkdocs-mermaid-plugin), 
-> which is no longer maintained. It offers expanded documentation as
-> well as new functions.
-
 > As of version 1.0.0, this plugin works with versions of the Mermaid library > 10,
 > **and** with lower versions.
 
@@ -28,11 +22,12 @@ markdown-toc -i README.md
 
 <!-- toc -->
 
-- [How it works](#how-it-works)
+- [Introduction](#introduction)
 - [Installation](#installation)
   * [Automatic](#automatic)
   * [Manual](#manual)
   * [Test](#test)
+- [How it works](#how-it-works)
 - [Configuration](#configuration)
   * [Basic configuration](#basic-configuration)
   * [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
@@ -58,69 +53,54 @@ markdown-toc -i README.md
     + [Usage](#usage-1)
     + [Use of markdown extensions](#use-of-markdown-extensions)
     + [Declaring the superfences extension](#declaring-the-superfences-extension)
-- [Troubleshooting: the mermaid diagram is not being displayed](#troubleshooting-the-mermaid-diagram-is-not-being-displayed)
-  * [Seeing an error message at the place of the diagram?](#seeing-an-error-message-at-the-place-of-the-diagram)
-  * [The mermaid source code appears as-is (not read)?](#the-mermaid-source-code-appears-as-is-not-read)
-  * [Using another theme than material ?](#using-another-theme-than-material-)
-  * [Using superfences, but no diagram is displayed?](#using-superfences-but-no-diagram-is-displayed)
-  * [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
-  * [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
-- [Troubleshooting: other issues](#troubleshooting-other-issues)
-  * [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
-  * [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
+- [Troubleshooting](#troubleshooting)
+  * [The mermaid diagram is not displayed (or displayed incorrectly)](#the-mermaid-diagram-is-not-displayed-or-displayed-incorrectly)
+    + [Seeing an error message at the place of the diagram?](#seeing-an-error-message-at-the-place-of-the-diagram)
+    + [The mermaid source code appears as-is (not read)?](#the-mermaid-source-code-appears-as-is-not-read)
+    + [Using another theme than material ?](#using-another-theme-than-material-)
+    + [Using superfences, but no diagram is displayed?](#using-superfences-but-no-diagram-is-displayed)
+    + [Is mkdocs' version up to date (>= 1.1) ?](#is-mkdocs-version-up-to-date--11-)
+    + [Is the javascript library properly called?](#is-the-javascript-library-properly-called)
+    + [A certain type of diagram (e.g. mindmap, etc.) is not displayed, or the syntax is incorrectly interpreted?](#a-certain-type-of-diagram-eg-mindmap-etc-is-not-displayed-or-the-syntax-is-incorrectly-interpreted)
+  * [Other issues](#other-issues)
+    + [Rich text diagrams, or links are not displayed properly?](#rich-text-diagrams-or-links-are-not-displayed-properly)
+    + [With pymdownx.details, diagrams in collapsed elements are not displayed?](#with-pymdownxdetails-diagrams-in-collapsed-elements-are-not-displayed)
 - [Using the mermaid2.dumps() function](#using-the-mermaid2dumps-function)
+- [How to contribute](#how-to-contribute)
+- [Credits](#credits)
 
 <!-- tocstop -->
 
-## How it works
+## Introduction
 
-**If you do not wish to learn the details under the hood,
-skip to the [Installation](#installation) section**.
+Mermaid2 allows you to insert mermaid markup in the markdown 
+of your mkdocs pages.
 
-Normally mkdocs inserts the Mermaid code (text) describing the diagram 
-into segments `<pre><code class='mermaid>`:
+For example, a markdown page containing the following diagram:
 
-    <pre><div class="mermaid">
-    ...
-    </div></pre>
+    ```mermaid
+    graph TD
+        hello --> world
+        world --> world2
+    ```
 
-To make the HTML/css page more robust, the mermaid plugin converts 
-those segments into `<div>` elements in the final HTML page:
+will then be displayed in the final HTML page as:
 
-    <div class="mermaid">
-    ...
-    </div>
-
-It also inserts a call to the 
-[javascript library](https://github.com/mermaid-js/mermaid) :
-
-    <script>
-    mermaid.initialize(...)
-    </script>
-
-To interpret that code it inserts a call to the Mermaid library.
-
-> **From version 1.0 of mkdocs-mermaid2:**
-
-E.g. for version 10.0.2:
-```html
-<script type="module">
-import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"
-</script>
+```mermaid
+graph TD;
+    A-->B;
+    A-->C;
+    B-->D;
+    C-->D;
 ```
 
-Or for an earlier version of the library:
-```html
-<script src="https://unpkg.com/mermaid@8.8.2/dist/mermaid.min.js">
-</script>
-```
+The diagram will be rendered on the fly by the web browser,
+with the use of the mermaid javascript library. 
+mkdocs-mermaid2 takes care of inserting the javascript library into
+the html page.
 
-
-
-The user's browser will then read this code and render it on the fly.
-
-> No svg/png images are harmed during the rendering of that graph.
-
+You can use all diagrams supported by the Mermaid javascript that you
+are using.
 
 
 ## Installation
@@ -141,17 +121,73 @@ python setup.py install
 
 ### Test
 For running the examples the `test` directory, 
-you will also need the mkdocs-material theme.
+you will also need the mkdocs-material theme. You may 
+[install it directly](https://squidfunk.github.io/mkdocs-material/getting-started/),
+or use the following command to install the whole package:
 
 ```bash
 pip install mkdocs-mermaid2-plugin[test]
 ```
 
 
+## How it works
+
+
+Normally mkdocs inserts the Mermaid code (text) describing the diagram 
+into segments `<pre><code class='mermaid>`:
+
+    <pre><div class="mermaid">
+    ...
+    </div></pre>
+
+To make the HTML/css page more robust, the mermaid plugin converts 
+those segments into `<div>` elements in the final HTML page:
+
+    <div class="mermaid">
+    ...
+    </div>
+
+It also inserts a call to the 
+[javascript library](https://github.com/mermaid-js/mermaid) :
+
+
+
+> **From version 1.0 of mkdocs-mermaid2:**
+
+E.g. for version 10.0.2:
+```html
+<script type="module">
+import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"
+</script>
+```
+
+Or for an earlier version of the library:
+```html
+<script src="https://unpkg.com/mermaid@8.8.2/dist/mermaid.min.js">
+</script>
+```
+
+To interpret that code, the plugin also inserts 
+a separate call to the Mermaid library.
+
+    <script>
+    mermaid.initialize(...)
+    </script>
+
+
+
+The user's browser will then read this code and render it on the fly.
+
+> No svg/png images are produced during the rendering of that graph.
+
+
+
+
+
 ## Configuration
 
 ### Basic configuration
-To enable this plugin, you need to declare it in your config file
+To enable this plugin, you need to declare it in your [mkdocs config file](https://www.mkdocs.org/user-guide/configuration/)
 (`mkdocs.yml`).
 
 In order to work, the plugin also requires the
@@ -185,7 +221,7 @@ plugins:
       version: 10.0.2
 ```
 
-> **From version 1.0.0 of Mermaid**
+> **From version 1.0.0 of mkdocs-mermaid2**
 If you select a version of the Mermaid library lower than 10.0.0.,
 the plugin will adapt the call to the script accordingly
 (`<SCRIPT>...</SCRIPT>`).
@@ -587,9 +623,9 @@ It means:
 
 
 
+## Troubleshooting
 
-
-## Troubleshooting: the mermaid diagram is not being displayed
+### The mermaid diagram is not displayed (or displayed incorrectly)
 
 > To start with, use a simple diagram that you know is syntactically correct.
 
@@ -602,7 +638,7 @@ e.g.
     B --> D[Server02]
     ```
 
-### Seeing an error message at the place of the diagram?
+#### Seeing an error message at the place of the diagram?
 
 In recent versions of the javascript library (> 8.6.0), a pretty
 error message is displayed in case of incorrect syntax:
@@ -615,22 +651,22 @@ error message is displayed in case of incorrect syntax:
 If you see the error message, it is at least an indication that 
 the mermaid javascript library was called.
 
-### The mermaid source code appears as-is (not read)?
+#### The mermaid source code appears as-is (not read)?
 In that case, the javascript library was probably not called.
 See the next questions.
 
 
-### Using another theme than material ?
+#### Using another theme than material ?
 
 If the diagram is not rendered, upgrade to plugin version >= 0.5.0
 
-### Using superfences, but no diagram is displayed?
+#### Using superfences, but no diagram is displayed?
 
 If you are using the superfences extension, but you see the source
 code, you probably forgot to declare the custom_fences. 
 Se more explanations under [Declaring the superfences extension](#declaring-the-superfences-extension)
 
-### Is mkdocs' version up to date (>= 1.1) ?
+#### Is mkdocs' version up to date (>= 1.1) ?
 
 Use `mkdocs -v`.
 
@@ -643,25 +679,11 @@ Or, if you cloned this repo:
     python setup.py install
 
 
-### Is the javascript library properly called?
+#### Is the javascript library properly called?
 
-> ***Note that this is no longer mandatory since version 0.4 of the
-> plugin.*** You may want to try to remove this call, in case there was
-> an error.
-
-<<<<<<< HEAD
 In order to work, the proper javascript library must called from
 the html page (this is done automatically).
 If necessary check the link used in the HTML page generated, e.g.:
-=======
-In order to work, the proper javascript library must be called from
-the html page.
-
-The configuration file (`mkdocs.yml`) should contain the following line:
-
-    extra_javascript:
-        - https://unpkg.com/mermaid/dist/mermaid.min.js
->>>>>>> bf0e58efa816a985e44ea07650976fdade286c63
 
 ```HTML
 <script type="module">import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"</script>
@@ -676,9 +698,15 @@ In case of doubt, you may want to test your diagram in the
 > Note, however, that the Mermaid Live Editor **does not
 > support loose mode** (with HTML code in the mermaid code).
 
-## Troubleshooting: other issues
+#### A certain type of diagram (e.g. mindmap, etc.) is not displayed, or the syntax is incorrectly interpreted?
 
-### Rich text diagrams, or links are not displayed properly?
+Check the version of the javascript mermaid library you are using (it's indicated
+in the error message; as a last resort, check in the html page). 
+You can [change the library version if needed](#specifying-the-version-of-the-mermaid-library).
+
+### Other issues
+
+#### Rich text diagrams, or links are not displayed properly?
 
 1. As a first step, [set the security level to 'loose'](#setting-the-security-level-to-loose).
 2. Make sure you use a compatible version of the javascript library
@@ -687,7 +715,7 @@ In case of doubt, you may want to test your diagram in the
    [change the version](#specifying-the-version-of-the-mermaid-library)).
 
 
-### With pymdownx.details, diagrams in collapsed elements are not displayed?
+#### With pymdownx.details, diagrams in collapsed elements are not displayed?
 
 **This fix is experimental (it has been tested once and it worked).**
 
@@ -782,3 +810,25 @@ an identifier and not a string. The result will be:
     bar: true
 }
 ```
+
+## How to contribute
+
+Contributions are welcome.
+
+Use the Issues to signal a bug or propose a feature you believe is necessary.
+
+If this is a usage question, prefer the discussions.
+
+Always open an Issue and consider the answers, before submitting a PR.
+
+## Credits
+
+mkdocs-mermaid2 is a fork from
+[Pugong Liu's excellent project](https://github.com/pugong/mkdocs-mermaid-plugin), 
+which is no longer maintained. This new plugin offers expanded documentation as
+well as new functions.
+
+It is also compatible with versions of the mermaid library > 10.0.
+
+Thanks to all the members of the community who participated to the 
+improvement of this project with ideas and PRs.
