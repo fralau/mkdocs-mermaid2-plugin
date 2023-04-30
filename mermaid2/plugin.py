@@ -64,7 +64,7 @@ class MarkdownMermaidPlugin(BasePlugin):
     @property
     def mermaid_args(self):
         """
-        The arguments for mermaid.
+        The arguments for mermaid, found in the config file.
         """
         return self._mermaid_args
     
@@ -249,13 +249,13 @@ class MarkdownMermaidPlugin(BasePlugin):
                 new_tag = BeautifulSoup(self.mermaid_script, 'html.parser')
                 soup.body.append(new_tag)
                 # info(new_tag)
-                # initialization command
+            # insertion of the <script> tag, with the initialization arguments
+            # (self.mermaid_args), as found in the config file.
             new_tag = soup.new_tag("script")
             if self.activate_custom_loader:
                 # if the superfences extension is present, use the specific loader
                 self.mermaid_args['startOnLoad'] = False
                 js_args =  pyjs.dumps(self.mermaid_args) 
-                #new_tag.string = "window.mermaidConfig = {\n    default: %s\n}" % js_args
                 new_tag.string = "window.mermaidConfig = {default: %s}" % js_args
             else:
                 js_args =  pyjs.dumps(self.mermaid_args) 
