@@ -79,19 +79,19 @@ of your mkdocs pages.
 For example, a markdown page containing the following diagram:
 
     ```mermaid
-    graph TD
+    graph LR
         hello --> world
-        world --> world2
+        world --> again
+        again --> hello
     ```
 
 will then be displayed in the final HTML page as:
 
 ```mermaid
-graph TD;
-    A-->B;
-    A-->C;
-    B-->D;
-    C-->D;
+graph LR
+    hello --> world
+    world --> again
+    again --> hello
 ```
 
 The diagram will be rendered on the fly by the web browser,
@@ -99,8 +99,9 @@ with the use of the mermaid javascript library.
 mkdocs-mermaid2 takes care of inserting the javascript library into
 the html page.
 
-You can use all diagrams supported by the Mermaid javascript that you
-are using.
+> You can use all the diagrams types supported by the version of the Mermaid 
+> javascript library that you are using (flowchart, class, state, timeline, 
+> etc.).
 
 
 ## Installation
@@ -132,8 +133,8 @@ pip install mkdocs-mermaid2-plugin[test]
 
 ## How it works
 
-
-Normally mkdocs inserts the Mermaid code (text) describing the diagram 
+When converting the markdown into HTML, mkdocs normally inserts the
+Mermaid code (text) describing the diagram 
 into segments `<pre><code class='mermaid>`:
 
     <pre><div class="mermaid">
@@ -154,26 +155,28 @@ It also inserts a call to the
 
 > **From version 1.0 of mkdocs-mermaid2:**
 
-E.g. for version 10.0.2:
+[For versions from 10.0.0 of the Mermaid javascript library, the plugin uses the ESM format](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0), since
+it is the only one available. This requires a specific call from the HTML
+page e.g.:
 ```html
 <script type="module">
 import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"
 </script>
 ```
 
-Or for an earlier version of the library:
+For an earlier version of the library, the plugin uses the traditional call
+from HTML:
 ```html
 <script src="https://unpkg.com/mermaid@8.8.2/dist/mermaid.min.js">
 </script>
 ```
 
-To interpret that code, the plugin also inserts 
-a separate call to the Mermaid library.
+To start displaying of the diagrams, the plugin then automatically inserts 
+a separate call to initialize the Mermaid library:
 
     <script>
-    mermaid.initialize(...)
+    mermaid.initialize()
     </script>
-
 
 
 The user's browser will then read this code and render it on the fly.
@@ -221,14 +224,11 @@ plugins:
       version: 10.0.2
 ```
 
-> **From version 1.0.0 of mkdocs-mermaid2**
-If you select a version of the Mermaid library lower than 10.0.0.,
-the plugin will adapt the call to the script accordingly
-(`<SCRIPT>...</SCRIPT>`).
+The plugin will insert the correct call to the javascript library
+inside the final HTML page.
 
 
 ### Explicit declaration of the Mermaid library
-> Changes since version 1.1.0
 
 You _may_ specify the mermaid library explicitly, as long as it is
 call mermaid (independently of extension):
@@ -238,11 +238,19 @@ extra_javascript:
     - https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js
 ```
 
+This will be translated in the final HTML page as:
+
+```html
+<script src="https://unpkg.com/mermaid@8.7.0/dist/mermaid.min.js">
+```
+
 > This will work **only** for versions of the Mermaid javascript 
-> library < 10.0.0.
+> library that can be called in that way, i.e. that do not use the ES Module
+> standard (ESM). [Above version 10.0.0 only ESM format libraries are
+> available](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0).
 
 
-Of course, you may also declare a local file:
+As a workaround you could declare a local script file:
 
 ```yaml
 extra_javascript:
@@ -251,16 +259,15 @@ extra_javascript:
 
 Where `js` is a subdirectory of the document directory (`docs`).
 
-If you are using a local javascript file, it is up to you to make it work,
+If you are using a local javascript file, it is up to you to write the import,
 with a version of the Mermaid library > 10 e.g.:
 
 ```yaml
 import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"
-mermaid.initialize()
 ```
 
-No explicit call to `mermaid.initialize()` is required, since it is called
-from inside the plugin.
+No explicit call to `mermaid.initialize()` is required, since it is
+automatically inserted by the plugin.
 
 
 
