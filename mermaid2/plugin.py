@@ -185,9 +185,11 @@ class MarkdownMermaidPlugin(BasePlugin):
         # the full config info for the plugin is there
         # we copy it into our own variable, to keep it accessible
         self._full_config = config
-        # here we use the standard self.config property:
-        # (this can get confusing...)
+        # Storing the arguments to be passed to the Javascript library;
+        # they are found under `mermaid2:arguments` in the config file:
         self._mermaid_args = self.config['arguments']
+        # Here we used the standard self.config property
+        # (this can get confusing...)
         assert isinstance(self.mermaid_args, dict)
         info("Initialization arguments:", self.mermaid_args)
         # info on the javascript library:
