@@ -14,7 +14,7 @@ nav:
 plugins:
   - search
   - mermaid2:
-      version: 8.6.4 # just because we can
+      version: '10.2.4' # just because we can
       arguments:
         securityLevel: 'loose'
         theme: forest # we want also that to work
@@ -24,7 +24,9 @@ plugins:
 markdown_extensions:
   - admonition
   - pymdownx.details
-
-extra_javascript:
-     # - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
-     - js/extra.js
+  - pymdownx.superfences:
+      # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
