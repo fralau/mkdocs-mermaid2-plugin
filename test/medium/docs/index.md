@@ -35,7 +35,7 @@ graph LR
 
 
 ## Normal fences
-This is usual fenced code (with no highlighting)
+This is usual fenced code (with color highlighting)
 
 ```python
 for page in pages:
@@ -43,13 +43,13 @@ for page in pages:
 ```
 
 ## Javascript callback
-Check in the web console that a message of that type is displayed:
+Check **in the web console** that a message of that type is displayed:
 
 ```
 Hello, this is myMermaidCallbackFunction mermaid-1598273751083 14:55:51
 ```
 
-This is the result of this directive:
+This is the result of this directive in the config file:
 
 ```
 extra_javascript:

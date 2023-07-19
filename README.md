@@ -578,6 +578,8 @@ the mermaid plugin:
 
 ### Using Mermaid and code highlighting at the same time
 
+>**IMPORTANT** Do NOT use Superfences unless you want code highlighting.
+
 #### Usage
 
 It is quite natural that we want to display **mermaid diagrams**,
@@ -620,6 +622,24 @@ It means:
 3. To format those pieces, use the function `fence_mermaid`, 
    from the mermaid2 package.
 
+There are **two** functions:
+
+* `fence_mermaid` for the general case.
+* `fence_mermaid_custom` for the Material theme (note the use of
+the **custom** suffix)
+
+Hence, for the Material theme (only):
+```yaml
+markdown_extensions:
+  - pymdownx.superfences:
+      # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+```
+
+
 
 > **IMPORTANT:** Note that the superfences will be slightly more demanding with
 > HTML tags inside a mermaid diagram: 
@@ -627,8 +647,6 @@ It means:
 > (e.g. `<small>` must have its corresponding `</small>` tag).
 > Otherwise, the extension system will attempt to close those tags 
 > and it will break the diagram.
-
-
 
 
 ## Troubleshooting
@@ -663,10 +681,6 @@ the mermaid javascript library was called.
 In that case, the javascript library was probably not called.
 See the next questions.
 
-
-#### Using another theme than material ?
-
-If the diagram is not rendered, upgrade to plugin version >= 0.5.0
 
 #### Using superfences, but no diagram is displayed?
 

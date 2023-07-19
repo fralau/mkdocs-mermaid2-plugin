@@ -31,5 +31,4 @@ markdown_extensions:
           # format: !!python/name:pymdownx.superfences.fence_div_format
 extra_javascript:
      # - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
-     # This is mandatory for the moment:
      - js/loader.js

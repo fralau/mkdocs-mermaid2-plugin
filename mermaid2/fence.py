@@ -1,6 +1,12 @@
 """
 Special fence for PyMdown Extensions Superfences
 See: https://facelessuser.github.io/pymdown-extensions/extensions/superfences/#formatters
+
+NOTE: SUPERFENCES AND CUSTOM_FENCES ARE NOT NEEDED UNLESS
+      CODE HIGHLIGHTING IS REQUIRED.
+
+- fence_mermaid() for most Mkdocs themes
+- fence_mermaid_custom() for Material theme
 """
 from functools import partial
 
@@ -11,7 +17,8 @@ def fence_mermaid(source, language, css_class, options, md,
     For mermaid loose mode:
 
     This function is needed for correctly displaying the mermaid
-    HTML in diagrams when pymdownx.superfences is activated.
+    HTML in diagrams when pymdownx.superfences is activated,
+    so that code highlighting is activated.
 
     Contrary to the standard fence_div_format used in
     https://github.com/facelessuser/pymdown-extensions/blob/9489bd8d94eebf4a109b7dada613bc2db378e31f/pymdownx/superfences.py#L149,
@@ -44,6 +51,7 @@ def fence_mermaid(source, language, css_class, options, md,
     # print("--- Mermaid ---\n", html, "\n------")
     return html
 
-# special custom function (do not forget to specify name!)
+# special custom function for Material theme
+# (do not forget to specify name!)
 fence_mermaid_custom = partial(fence_mermaid, custom=True)
 fence_mermaid_custom.__name__ = 'fence_mermaid_custom'

@@ -14,7 +14,7 @@ nav:
 plugins:
   - search
   - mermaid2:
-      version: '10.2.4' # just because we can
+      version: '10.1.0' # just because we can
       arguments:
         securityLevel: 'loose'
         theme: forest # we want also that to work
@@ -30,3 +30,7 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:mermaid2.fence_mermaid_custom
+
+extra_javascript:
+     # Callback function
+     - js/extra.js
