@@ -334,6 +334,10 @@ In your browser, open the webpage on the localhost
 
 _New in 0.3.0_
 
+**CAUTION**: As of the [version 10.0.0 of the javascript Library(https://github.com/mermaid-js/mermaid/blob/develop/CHANGELOG.md#changelog)], callbacks are no longer accepted.
+If you wish to use callbacks, specify a lower version of the
+library in the config file.
+
 #### Use Case
 To make modifications that are not possible with css, it can be useful
 to insert a callback function (Javascript) into the target HTML page.

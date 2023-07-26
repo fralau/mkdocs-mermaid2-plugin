@@ -17,7 +17,7 @@ from .util import info, libname, url_exists
 # Constants and utilities
 # ------------------------
 # the default (recommended) mermaid lib
-MERMAID_LIB_VERSION = '10.0.2'
+MERMAID_LIB_VERSION = '10.1.0'
 # MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
 MERMAID_LIB_PRE_10 = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
 MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.esm.min.mjs"
