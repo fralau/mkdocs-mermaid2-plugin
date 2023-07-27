@@ -96,7 +96,8 @@ class MarkdownMermaidPlugin(BasePlugin):
         """
         Provides the mermaid library defined in mkdocs.yml (if any)
         """
-        extra_javascript = self.full_config.get('extra_javascript', [])
+        # as of mkdocs 1.5, extra_javascript is a list of objects; convert to string
+        extra_javascript = map(str, self.full_config.get('extra_javascript', []))
         for lib in extra_javascript:
             # get the actual library name
             if  libname(lib) == 'mermaid':
