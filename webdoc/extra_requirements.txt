@@ -1,1 +1,2 @@
 mkdocs-mermaid2-plugin
+mkdocs-material>=6.2
