@@ -139,6 +139,29 @@ plugins:
 The plugin will insert the correct call to the javascript library
 inside the final HTML page.
 
+### Use of the Material theme
+
+!!! Note
+    The [Material theme](https://squidfunk.github.io/mkdocs-material/), 
+    developed by [squidfunk](https://github.com/squidfunk)
+    is not mandatory, but recommended.
+
+    **Mermaid diagrams will automatically adapt their colors to the theme
+    and palette.**
+
+Here are the recommended settings in the configuration file:
+
+```yaml
+markdown_extensions:
+  - pymdownx.superfences:
+        # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+
+```
+
 
 ## For more information
 See the [documentation on ReadTheDocs](https://mkdocs-mermaid2.readthedocs.io).

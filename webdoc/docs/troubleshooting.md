@@ -106,7 +106,7 @@ You can [change the library version if needed](../#specifying-the-version-of-the
 
 1. Check the [test cases](https://github.com/fralau/mkdocs-mermaid2-plugin/tree/1ab72b5c6a5acf35cc702b7d85019b08678a52e2/test) on the github repository
     and try to run them on your machine;
-    start with the `simple` test case.
+    start with the `simple` website.
 2. Open a question on the [discussion page for the project](https://github.com/fralau/mkdocs-mermaid2-plugin/discussions).
 
 
