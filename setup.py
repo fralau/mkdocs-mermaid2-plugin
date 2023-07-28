@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = '1.0.3'
+VERSION = '1.0.4'
 
 # required if you want to run tests
 # pip install 'mkdocs-mermaid2-plugin[test]'
@@ -31,7 +31,7 @@ setup(
     author='pugong, Fralau',
     author_email='pugong.liu@gmail.com, fralau2035@yahoo.com',
     license='MIT',
-    python_requires='>=3.5',
+    python_requires='>=3.6',
     install_requires=[
         'setuptools>=18.5',
         'beautifulsoup4>=4.6.3',

@@ -1,0 +1,44 @@
+site_name: mkdocs-mermaid2
+site_description: Mkdocs plugin for mermaid diagrams
+docs_dir: docs # indispensable or readthedocs will fail
+theme: 
+  # name: readthedocs
+  name: material
+  language: en
+  palette:
+    # scheme: slate
+    primary: red
+    accent: pink
+repo_url: https://github.com/fralau/mkdocs-mermaid2-plugin
+edit_uri: edit/master/webdoc/docs/
+copyright: © Laurent Franceschetti, 2023. This work is licensed under CC BY-SA 4.0.
+nav:
+    - Basics: index.md
+    - Detailed description: description.md
+    - Superfences: superfences.md
+    - Tips and tricks: tips.md
+    - troubleshooting.md
+    - How to contribute: contribute.md
+
+markdown_extensions:
+  - admonition
+  - footnotes
+  - pymdownx.superfences:
+        # make exceptions to highlighting of code:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
+  - pymdownx.tabbed:
+      alternate_style: true 
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+
+plugins:
+  - search
+  - mermaid2:
+      version: '10.1.0'
+
+

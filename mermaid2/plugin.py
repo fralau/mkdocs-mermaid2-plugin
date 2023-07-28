@@ -96,7 +96,11 @@ class MarkdownMermaidPlugin(BasePlugin):
         """
         Provides the mermaid library defined in mkdocs.yml (if any)
         """
-        # as of mkdocs 1.5, extra_javascript is a list of objects; convert to string
+        # As of mkdocs 1.5, extra_javascript is a list of objects; 
+        # no longer a string. Call to str was used.
+        # Patched in 1.5.1, with __fspath___ method, 
+        # see https://github.com/mkdocs/mkdocs/issues/3310
+        # But we keep it, to guarantee it's a string. 
         extra_javascript = map(str, self.full_config.get('extra_javascript', []))
         for lib in extra_javascript:
             # get the actual library name
@@ -262,6 +266,10 @@ class MarkdownMermaidPlugin(BasePlugin):
                 new_tag.string = "window.mermaidConfig = {default: %s}" % js_args
             else:
                 js_args =  pyjs.dumps(self.mermaid_args) 
-                new_tag.string="mermaid.initialize(%s);" % js_args
+                if self.mermaid_major_version >= 10:
+                    new_tag.string="mermaidAPI.initialize(%s);" % js_args
+                else:
+                    new_tag.string="mermaid.initialize(%s);" % js_args
+
             soup.body.append(new_tag)
         return str(soup)

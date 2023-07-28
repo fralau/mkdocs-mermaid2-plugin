@@ -263,7 +263,7 @@ Where `js` is a subdirectory of the document directory (`docs`).
 If you are using a local javascript file, it is up to you to write the import,
 with a version of the Mermaid library > 10 e.g.:
 
-```yaml
+```javascript
 import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"
 ```
 
@@ -302,7 +302,7 @@ By default, the plugin automatically inserts
 a Javascript command `mermaid.initialize();`
 in the HTML pages, which starts the interpretation.
 Sometimes, however, you may want to add some
-initialization commands (see [full list](https://github.com/knsv/mermaid/blob/master/docs/mermaidAPI.md#mermaidapi-configuration-defaults)).
+initialization commands (see [full list](https://github.com/mermaid-js/mermaid/blob/master/docs/config/setup/modules/mermaidAPI.md#mermaidapi-configuration-defaults)).
 
 For example, you could change the theme of the diagram, 
 using 'dark' instead of the default one. 
@@ -314,10 +314,6 @@ plugins:
     - mermaid2:
         arguments:
           theme: 'dark'
-
-
-extra_javascript:
-    - https://unpkg.com/mermaid/dist/mermaid.min.js
 ```
 
 ### Testing
