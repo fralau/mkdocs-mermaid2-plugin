@@ -10,8 +10,8 @@
 static sites generator, which allows you 
 to render Mermaid diagrams inserted in the markdown pages.
 
-- :simple-github: [The official repository of Mermaid2 is on github.](https://github.com/fralau/mkdocs-mermaid2-plugin)
-- :simple-pypi: [Mermaid2 is available from Pypi.](https://pypi.org/project/mkdocs-mermaid2-plugin/)
+- [The official repository of Mermaid2 is on github.](https://github.com/fralau/mkdocs-mermaid2-plugin)
+- [Mermaid2 is available from Pypi.](https://pypi.org/project/mkdocs-mermaid2-plugin/)
 
 ### What is Mermaid?
 
