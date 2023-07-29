@@ -60,12 +60,12 @@ of Mermaid.js required:
     [For versions from 10.0.0 of the Mermaid javascript library, the plugin uses the ESM format](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0), since
     it is the only one available. This requires a specific call from the HTML
     page e.g.:
-    
+
     ``` html
-    <script type="module">
-    import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"
+    <script src="https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs" type="module">
     </script>
     ```
+
 
     The plugin automatically inserts this call.
 
