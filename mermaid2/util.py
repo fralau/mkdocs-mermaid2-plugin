@@ -3,16 +3,22 @@ Utilities for mermaid2 module
 """
 import os
 import requests
-import logging 
+import logging
+from packaging.version import Version
+import mkdocs
 
-from mkdocs.utils import warning_filter
 
 
 # -------------------
 # Logging
 # -------------------
 log = logging.getLogger("mkdocs.plugins." + __name__)
-log.addFilter(warning_filter)
+
+MKDOCS_LOG_VERSION = '1.2'
+if Version(mkdocs.__version__) < Version(MKDOCS_LOG_VERSION):
+    # filter doesn't do anything since that version
+    from mkdocs.utils import warning_filter
+    log.addFilter(warning_filter)
 
 MERMAID_LABEL = "MERMAID2  -" # plugin's signature label
 def info(*args) -> str:

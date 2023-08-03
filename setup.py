@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = '1.0.5'
+VERSION = '1.0.6'
 
 # required if you want to run tests
 # pip install 'mkdocs-mermaid2-plugin[test]'
@@ -15,8 +15,8 @@ def readme():
 
 
 LONG_DESCRIPTION = (
-    "A mkdocs plugin that interprets mermaid graphs in the markdown file."
-    "To install, please follow instructions in the readme file."
+    "An Mkdocs plugin that renders Mermaid graphs in the markdown file. "
+    "To install, please follow instructions in the Readme file.\n"
     "This is a fork of the Pugong Liu's excellent project, "
     "which is no longer maintained."
 )
