@@ -53,7 +53,7 @@ of Mermaid.js required:
     The behavior of the plugin depends of the version of Mermaid.js, because
     version 10.0.0 represents a significant change ([see changelog](https://github.com/mermaid-js/mermaid/blob/develop/CHANGELOG.md#1000)). 
 
-=== "Mermaid.js > 10.0.0"
+=== "Mermaid.js >= 10.0.0"
 
     > *From version 1.0 of mkdocs-mermaid2*
 
@@ -62,7 +62,9 @@ of Mermaid.js required:
     page e.g.:
 
     ``` html
-    <script src="https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs" type="module">
+    <script type="module">
+    import mermaid from "https://unpkg.com/mermaid@10.0.2/dist/mermaid.esm.min.mjs"
+    mermaid.initialize()
     </script>
     ```
 
@@ -77,6 +79,7 @@ of Mermaid.js required:
 
     ``` html
     <script src="https://unpkg.com/mermaid@8.8.2/dist/mermaid.min.js">
+    mermaid.initialize()
     </script>
     ```
 
@@ -89,9 +92,6 @@ of Mermaid.js required:
 To start displaying of the diagrams, the plugin then automatically inserts 
 a separate call to initialize the Mermaid library:
 
-    <script>
-    mermaid.initialize()
-    </script>
 
 
 The user's browser will then read this code and render it on the fly.
@@ -109,9 +109,39 @@ Simply add those arguments in the config file, e.g.
 
 ```yaml
 plugins:
-    - search
-    - mermaid2:
-        arguments:
-          theme: 'dark'
+  - search
+  - mermaid2:
+      version: '10.1.0'
+      arguments:
+        theme: 'dark'
+        themeVariables:
+          primaryColor: '#BB2528'
+          primaryTextColor: '#fff'
+          primaryBorderColor: '#7C0000'
+          lineColor: '#F8B229'
+          secondaryColor: '#006100'
+          tertiaryColor: '#fff'
 ```
 
+This will translate in the following way:
+
+
+=== "Mermaid.js >= 10.0.0"
+    _As of version 1.0.7_
+
+    ```javascript
+    <script type="module">import mermaid from "https://unpkg.com/mermaid@10.1.0/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+        theme: "dark",
+        themeVariables: {
+            primaryColor: "#BB2528",
+            primaryTextColor: "#fff",
+            primaryBorderColor: "#7C0000",
+            lineColor: "#F8B229",
+            secondaryColor: "#006100",
+            tertiaryColor: "#fff"
+        }
+    });</script>
+    ```
+
+=== "Earlier versions"
