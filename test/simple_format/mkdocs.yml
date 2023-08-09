@@ -1,0 +1,25 @@
+site_name: Mermaid test (simple, with formatting)
+site_description: Test for mermaid
+docs_dir: docs # indispensable or readthedocs will fail
+theme: readthedocs # you may want to try windmill?
+
+
+nav:
+  - Main: index.md
+  - Second: second.md
+
+plugins:
+  - search
+  - mermaid2:
+      version: '10.1.0'
+      arguments:
+        theme: 'dark'
+        themeVariables:
+          primaryColor: '#BB2528'
+          primaryTextColor: '#fff'
+          primaryBorderColor: '#7C0000'
+          lineColor: '#F8B229'
+          secondaryColor: '#006100'
+          tertiaryColor: '#fff'
+
+

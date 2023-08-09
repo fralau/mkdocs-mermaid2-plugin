@@ -102,6 +102,35 @@ Check the version of the javascript mermaid library you are using (it's indicate
 in the error message; as a last resort, check in the html page). 
 You can [change the library version if needed](../#specifying-the-version-of-the-mermaid-library).
 
+
+### The arguments in the config file (color, etc.) do not work
+
+For example, the following specification ([see description](../#other-themes)) does not work:
+
+```yaml
+plugins:
+  - search
+  - mermaid2:
+      version: '10.1.0'
+      arguments:
+        theme: 'dark'
+        themeVariables:
+          primaryColor: '#BB2528'
+          primaryTextColor: '#fff'
+          primaryBorderColor: '#7C0000'
+          lineColor: '#F8B229'
+          secondaryColor: '#006100'
+          tertiaryColor: '#fff'
+```
+
+Due to the change of javascript library format as of mermaid.js ***as ofs 
+version 10.0**, this did not work any more (but it worked for lower versions).
+
+This was fixed in version 1.0.7 of the mkdocs-mermaid2 library
+([see github issue for a full description](https://github.com/mermaid-js/mermaid/issues/4672)).
+
+**Upgrade mkdocs-mermaid2 to the most recent version.**
+
 ### What if nothing worked?
 
 1. Check the [test cases](https://github.com/fralau/mkdocs-mermaid2-plugin/tree/1ab72b5c6a5acf35cc702b7d85019b08678a52e2/test) on the github repository

@@ -12,6 +12,7 @@ descriptions into [Mermaid](https://mermaid-js.github.io/mermaid) graphs
 (flow charts, sequence diagrams, pie charts, etc.).
 
 * **See the [mkdocs-mermaid2 documentation on Read The Docs](https://mkdocs-mermaid2.readthedocs.io).**
+* See the [package on Pypi](https://pypi.org/project/mkdocs-mermaid2-plugin/).
 * View the [general Mkdocs documentation](https://www.mkdocs.org/)
 
 

@@ -248,28 +248,35 @@ class MarkdownMermaidPlugin(BasePlugin):
         if mermaids:
             info("Page '%s': found %s diagrams, adding scripts" % 
                     (page_name, mermaids))
+            # insertion of the <script> tag, with the initialization arguments
+            new_tag = soup.new_tag("script")
+            js_code = [] # the code lines
             if not self.extra_mermaid_lib:
                 # if no extra library mentioned,
                 # add the <SCRIPT> tag needed for mermaid
                 info("Adding call to script for version"
                      f"{self.mermaid_version}.")
-                new_tag = BeautifulSoup(self.mermaid_script, 'html.parser')
-                soup.body.append(new_tag)
-                # info(new_tag)
-            # insertion of the <script> tag, with the initialization arguments
+                if self.mermaid_major_version < 10:
+                    # <script src="...">
+                    new_tag['src'] = self.mermaid_lib
+                else:
+                    # <script type="module">
+                    # import mermaid from ...
+                    new_tag['type'] = "module"
+                    js_code.append('import mermaid from "%s";' 
+                                   % self.mermaid_lib)
             # (self.mermaid_args), as found in the config file.
-            new_tag = soup.new_tag("script")
             if self.activate_custom_loader:
                 # if the superfences extension is present, use the specific loader
                 self.mermaid_args['startOnLoad'] = False
                 js_args =  pyjs.dumps(self.mermaid_args) 
-                new_tag.string = "window.mermaidConfig = {default: %s}" % js_args
+                js_code.append("window.mermaidConfig = {default: %s};" %
+                               js_args)
             else:
+                # normal case
                 js_args =  pyjs.dumps(self.mermaid_args) 
-                if self.mermaid_major_version >= 10:
-                    new_tag.string="mermaidAPI.initialize(%s);" % js_args
-                else:
-                    new_tag.string="mermaid.initialize(%s);" % js_args
-
+                js_code.append("mermaid.initialize(%s);" % js_args)
+            # merge the code lines into a string:
+            new_tag.string = "\n".join(js_code)
             soup.body.append(new_tag)
         return str(soup)

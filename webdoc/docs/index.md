@@ -192,11 +192,11 @@ plugins:
         arguments:
           theme: 'dark'
           themeVariables:
-            primaryColor: '#BB2528',
-            primaryTextColor: '#fff',
-            primaryBorderColor: '#7C0000',
-            lineColor: '#F8B229',
-            secondaryColor: '#006100',
+            primaryColor: '#BB2528'
+            primaryTextColor: '#fff'
+            primaryBorderColor: '#7C0000'
+            lineColor: '#F8B229'
+            secondaryColor: '#006100'
             tertiaryColor: '#fff'
 ```
 The result would be as follows, for the diagrams above:
@@ -205,8 +205,9 @@ The result would be as follows, for the diagrams above:
 
 ![](img/custom_colors2.png)
 
-!!! Warning
-    This works currently only with versions of Mermaid.js < 10.
+!!! Tip
+    As of mkdocs-mermaid2 version 1.0.7, this works also with versions of Mermaid.js >= 10. 
+    
 
 
 ### Specifying the version of the Mermaid library
