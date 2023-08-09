@@ -105,21 +105,61 @@ For example, you could change the theme of the diagram,
 using 'dark' instead of the default one. 
 Simply add those arguments in the config file, e.g.
 
+
 ```yaml
 plugins:
-  - search
-  - mermaid2:
-      version: '10.1.0'
-      arguments:
+- search
+- mermaid2:
+    version: '10.1.0'
+    arguments:
         theme: 'dark'
         themeVariables:
-          primaryColor: '#BB2528'
-          primaryTextColor: '#fff'
-          primaryBorderColor: '#7C0000'
-          lineColor: '#F8B229'
-          secondaryColor: '#006100'
-          tertiaryColor: '#fff'
+        primaryColor: '#BB2528'
+        primaryTextColor: '#fff'
+        primaryBorderColor: '#7C0000'
+        lineColor: '#F8B229'
+        secondaryColor: '#006100'
+        tertiaryColor: '#fff'
 ```
 
+The plugin then automatically adds the initialization sequence:
 
+=== "mermaid.js >= 10.0"
+
+    Both `import` and `mermaid.initialize()` must be in the same `<script>`
+    tag.
+
+    ```html
+    <script type="module">import mermaid from "https://unpkg.com/mermaid@10.1.0/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+        theme: "dark",
+        themeVariables: {
+            primaryColor: "#BB2528",
+            primaryTextColor: "#fff",
+            primaryBorderColor: "#7C0000",
+            lineColor: "#F8B229",
+            secondaryColor: "#006100",
+            tertiaryColor: "#fff"
+        }
+    });
+    </script>
+    ```
 === "Earlier versions"
+
+    For versions of mermaid.js < 10, **two** calls to the `<script>` tag are required.
+
+    ```html
+    <script src="https://unpkg.com/mermaid@9.1.0/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({
+        theme: "dark",
+        themeVariables: {
+            primaryColor: "#BB2528",
+            primaryTextColor: "#fff",
+            primaryBorderColor: "#7C0000",
+            lineColor: "#F8B229",
+            secondaryColor: "#006100",
+            tertiaryColor: "#fff"
+        }
+    });
+    </script>
+    ```
