@@ -123,10 +123,10 @@ plugins:
           tertiaryColor: '#fff'
 ```
 
-Due to the change of javascript library format as of mermaid.js ***as ofs 
+Due to the change of javascript library format as of mermaid.js **as of 
 version 10.0**, this did not work any more (but it worked for lower versions).
 
-This was fixed in version 1.0.7 of the mkdocs-mermaid2 library
+This was fixed in version 1.0.8 of the mkdocs-mermaid2 library
 ([see github issue for a full description](https://github.com/mermaid-js/mermaid/issues/4672)).
 
 **Upgrade mkdocs-mermaid2 to the most recent version.**

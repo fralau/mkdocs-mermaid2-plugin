@@ -206,7 +206,7 @@ The result would be as follows, for the diagrams above:
 ![](img/custom_colors2.png)
 
 !!! Tip
-    As of mkdocs-mermaid2 version 1.0.7, this works also with versions of Mermaid.js >= 10. 
+    As of mkdocs-mermaid2 version 1.0.8, this works also with versions of Mermaid.js >= 10. 
     
 
 

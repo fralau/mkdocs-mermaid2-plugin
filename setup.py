@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = '1.0.7'
+VERSION = '1.0.8'
 
 # required if you want to run tests
 # pip install 'mkdocs-mermaid2-plugin[test]'

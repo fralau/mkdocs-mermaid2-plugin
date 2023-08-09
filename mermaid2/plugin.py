@@ -23,9 +23,6 @@ MERMAID_LIB_PRE_10 = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
 MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.esm.min.mjs"
 
 
-MERMAID_CODE_PRE_10 = '<script src="%s">\n'
-MERMAID_CODE = '<script type="module">import mermaid from "%s"</script>\n'
-
 
 
 # Two conditions for activating custom fences:
@@ -128,15 +125,6 @@ class MarkdownMermaidPlugin(BasePlugin):
             self._mermaid_lib = mermaid_lib
         return self._mermaid_lib
     
-    @property
-    def mermaid_script(self) -> str:
-        """
-        Provides the mermaid script to be inserted into the code
-        """
-        if self.mermaid_major_version < 10:
-            return MERMAID_CODE_PRE_10 % self.mermaid_lib
-        else:
-            return MERMAID_CODE % self.mermaid_lib
 
     @property
     def activate_custom_loader(self) -> bool:
@@ -259,6 +247,9 @@ class MarkdownMermaidPlugin(BasePlugin):
                 if self.mermaid_major_version < 10:
                     # <script src="...">
                     new_tag['src'] = self.mermaid_lib
+                    # it's necessary to close and reopen the tag:
+                    soup.body.append(new_tag)
+                    new_tag = soup.new_tag("script")
                 else:
                     # <script type="module">
                     # import mermaid from ...
