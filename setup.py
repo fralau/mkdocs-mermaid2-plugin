@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 
-VERSION = '1.0.8'
+VERSION = '1.0.9'
 
 # required if you want to run tests
 # pip install 'mkdocs-mermaid2-plugin[test]'
@@ -16,9 +16,7 @@ def readme():
 
 LONG_DESCRIPTION = (
     "An Mkdocs plugin that renders Mermaid graphs in the markdown file. "
-    "To install, please follow instructions in the Readme file.\n"
-    "This is a fork of the Pugong Liu's excellent project, "
-    "which is no longer maintained."
+    "To install, please follow instructions in the README file."
 )
 
 setup(
@@ -28,8 +26,8 @@ setup(
     long_description=LONG_DESCRIPTION,
     keywords='mkdocs python markdown mermaid',
     url='https://github.com/fralau/mkdocs-mermaid2-plugin',
-    author='pugong, Fralau',
-    author_email='pugong.liu@gmail.com, fralau2035@yahoo.com',
+    author='Fralau',
+    author_email='fralau@bluewin.ch',
     license='MIT',
     python_requires='>=3.6',
     install_requires=[

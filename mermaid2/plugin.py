@@ -17,10 +17,9 @@ from .util import info, libname, url_exists
 # Constants and utilities
 # ------------------------
 # the default (recommended) mermaid lib
-MERMAID_LIB_VERSION = '10.1.0'
-# MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
-MERMAID_LIB_PRE_10 = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
-MERMAID_LIB = "https://unpkg.com/mermaid@%s/dist/mermaid.esm.min.mjs"
+JAVASCRIPT_VERSION = '10.1.0'
+JAVASCRIPT_PRE_10 = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
+JAVASCRIPT = "https://unpkg.com/mermaid@%s/dist/mermaid.esm.min.mjs"
 
 
 
@@ -40,7 +39,8 @@ class MarkdownMermaidPlugin(BasePlugin):
     """
     config_scheme = (
 
-        ('version', PluginType(str, default=MERMAID_LIB_VERSION)),
+        ('version', PluginType(str, default=JAVASCRIPT_VERSION)),
+        ('javascript', PluginType(str, default=None)),
         ('arguments', PluginType(dict, default={})),
         # ('custom_loader', PluginType(bool, default=False))
     )
@@ -70,9 +70,9 @@ class MarkdownMermaidPlugin(BasePlugin):
         """
         The version of mermaid
         This information comes from the YAML file parameter,
-        or, if empty, from MERMAID_LIB_VERSION.
+        or, if empty, from JAVASCRIPT_VERSION.
         """
-        version = self.config['version']
+        version = self.config['version'] or JAVASCRIPT_VERSION
         assert version, "No correct version of mermaid is provided!"
         return version
     
@@ -89,41 +89,60 @@ class MarkdownMermaidPlugin(BasePlugin):
 
 
     @property
-    def extra_mermaid_lib(self) -> str:
+    def extra_javascript(self) -> str:
         """
-        Provides the mermaid library defined in mkdocs.yml (if any)
+        Provides the mermaid.js library defined in mkdocs.yml 
+        under extra_javascript.
+        
+        To be recognized, the library must have 'mermaid' in the filename.
+
+        WARNING:
+            Using extra_javascript for that purpose was the original way,
+            but is now DEPRECATED; it bypasses the new and better mechanisms
+            for selecting the javascript library.
+            It will insert the mermaid library in all pages, regardless
+            of whether a mermaid diagram is present or not.
         """
-        # As of mkdocs 1.5, extra_javascript is a list of objects; 
-        # no longer a string. Call to str was used.
-        # Patched in 1.5.1, with __fspath___ method, 
-        # see https://github.com/mkdocs/mkdocs/issues/3310
-        # But we keep it, to guarantee it's a string. 
-        extra_javascript = map(str, self.full_config.get('extra_javascript', []))
-        for lib in extra_javascript:
-            # get the actual library name
-            if  libname(lib) == 'mermaid':
-                return lib
-        return ''
+        if not hasattr(self, '_extra_javascript'):
+            # As of mkdocs 1.5, extra_javascript is a list of objects; 
+            # no longer a string. Call to str was used.
+            # Patched in 1.5.1, with __fspath___ method, 
+            # see https://github.com/mkdocs/mkdocs/issues/3310
+            # But we keep it, to guarantee it's a string. 
+            extra_javascript = map(str, self.full_config.get('extra_javascript', []))
+            for lib in extra_javascript:
+                # check that 'mermaid' is in the filename, minus the extension.
+                basename = os.path.basename(lib)
+                basename, ext = os.path.splitext(basename)
+                if  'mermaid' in basename.lower():
+                    self._extra_javascript = lib
+                    return lib
+            self._extra_javascript = None
+        return self._extra_javascript
 
 
     @property
-    def mermaid_lib(self) -> str:
+    def javascript(self) -> str:
         """
-        Provides the url of mermaid library according to version
-        (distinction between version < 10 and after)
+        Provides the url/pathanme of mermaid library according to version
+        (distinction on the default, between version < 10 and after)
         """
-        if not hasattr(self, '_mermaid_lib'):
-            if self.mermaid_major_version < 10:
-                mermaid_lib = MERMAID_LIB_PRE_10 % self.mermaid_version
-            else:
-                # newer versions
-                mermaid_lib = MERMAID_LIB % self.mermaid_version
-            # make checks
-            if not url_exists(mermaid_lib):
+        if not hasattr(self, '_javascript'):
+            # check if a mermaid javascript parameter exists:
+            javascript = self.config['javascript']
+            if not javascript:
+                if self.mermaid_major_version < 10:
+                    javascript = JAVASCRIPT_PRE_10 % self.mermaid_version
+                else:
+                    # newer versions
+                    javascript = JAVASCRIPT % self.mermaid_version
+                # make checks
+            if not url_exists(javascript, 
+                              local_base_dir=self.full_config['docs_dir']):
                 raise FileNotFoundError("Cannot find Mermaid library: %s" %
-                                        mermaid_lib)
-            self._mermaid_lib = mermaid_lib
-        return self._mermaid_lib
+                                        javascript)
+            self._javascript = javascript
+        return self._javascript
     
 
     @property
@@ -186,13 +205,18 @@ class MarkdownMermaidPlugin(BasePlugin):
         assert isinstance(self.mermaid_args, dict)
         info("Initialization arguments:", self.mermaid_args)
         # info on the javascript library:
-        if self.extra_mermaid_lib:
-            info("Explicit mermaid javascript library:\n  ", 
-                 self.extra_mermaid_lib)
+        if self.extra_javascript:
+            info("Explicit mermaid javascript library from extra_javascript:\n  ", 
+                 self.extra_javascript)
+            info("WARNING: Using extra_javascript is now DEPRECATED; "
+                 "use mermaid:javascript instead!")
+        elif self.config['javascript']:
+            info("Using specified javascript library: %s" %
+                 self.config['javascript'])
         else:
             info("Using javascript library (%s):\n  "% 
                   self.config['version'],
-                  self.mermaid_lib)
+                  self.javascript)
             
     def on_post_page(self, output_content, config, page, **kwargs):
         """
@@ -239,23 +263,23 @@ class MarkdownMermaidPlugin(BasePlugin):
             # insertion of the <script> tag, with the initialization arguments
             new_tag = soup.new_tag("script")
             js_code = [] # the code lines
-            if not self.extra_mermaid_lib:
+            if not self.extra_javascript:
                 # if no extra library mentioned,
                 # add the <SCRIPT> tag needed for mermaid
-                info("Adding call to script for version"
-                     f"{self.mermaid_version}.")
-                if self.mermaid_major_version < 10:
-                    # <script src="...">
-                    new_tag['src'] = self.mermaid_lib
-                    # it's necessary to close and reopen the tag:
-                    soup.body.append(new_tag)
-                    new_tag = soup.new_tag("script")
-                else:
+                if self.javascript.endswith('.mjs'):
                     # <script type="module">
                     # import mermaid from ...
                     new_tag['type'] = "module"
                     js_code.append('import mermaid from "%s";' 
-                                   % self.mermaid_lib)
+                                   % self.javascript)
+                else:
+                    # <script src="...">
+                    # generally for self.mermaid_major_version < 10:
+                    new_tag['src'] = self.javascript
+                    # it's necessary to close and reopen the tag:
+                    soup.body.append(new_tag)
+                    new_tag = soup.new_tag("script")
+
             # (self.mermaid_args), as found in the config file.
             if self.activate_custom_loader:
                 # if the superfences extension is present, use the specific loader

@@ -1,0 +1,17 @@
+site_name: Mermaid test (simple, with local specified library)
+site_description: Test for mermaid
+docs_dir: docs # indispensable or readthedocs will fail
+theme: readthedocs # you may want to try windmill?
+
+
+nav:
+  - Main: index.md
+  - Second: second.md
+
+plugins:
+  - search
+  - mermaid2:
+      javascript: js/mermaid.min.js    
+
+
+

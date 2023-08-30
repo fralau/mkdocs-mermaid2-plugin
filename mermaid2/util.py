@@ -32,7 +32,7 @@ def info(*args) -> str:
 # Paths and URLs
 # -------------------
 def libname(lib:str) -> str:
-    "Get the library name from a path"
+    "Get the library name from a path -- not used"
     basename = os.path.basename(lib)
     # remove extension three times, e.g. mermaid.min.js => mermaid
     t = basename
@@ -40,10 +40,13 @@ def libname(lib:str) -> str:
         t = os.path.splitext(t)[0]
     return t
 
-def url_exists(url:str) -> bool:
+
+
+def url_exists(url:str, local_base_dir:str='') -> bool:
     "Checks that a url exists"
     if url.startswith('http'):
         request = requests.get(url)
         return request.status_code == 200
     else:
-        os.path.exists(url)
+        pathname = os.path.join(local_base_dir, url)
+        return os.path.exists(pathname)
