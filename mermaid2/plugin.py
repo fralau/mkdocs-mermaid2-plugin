@@ -16,9 +16,10 @@ from .util import info, libname, url_exists
 # ------------------------
 # Constants and utilities
 # ------------------------
-# the default (recommended) mermaid lib
-JAVASCRIPT_VERSION = '10.1.0'
+# the default (recommended) mermaid lib:
+JAVASCRIPT_VERSION = '10.4.0'
 JAVASCRIPT_PRE_10 = "https://unpkg.com/mermaid@%s/dist/mermaid.min.js"
+# New format (ESM):
 JAVASCRIPT = "https://unpkg.com/mermaid@%s/dist/mermaid.esm.min.mjs"
 
 

@@ -140,7 +140,14 @@ This was fixed in version 1.0.8 of the mkdocs-mermaid2 library
 
 
 
-## Explicit calls of the Mermaid library
+## Explicit calls of the Mermaid library with `extra_javascript`
+
+!!! Tip "Easy Fix"
+
+    **Upgrade Mkdocs and Mkdocs-Macros to the latest 
+    version and stop using `extra_javascript`. Use the [`javascript` parameter instead](../library)**.
+
+    Otherwise, read on.
 
 !!! Warning "Important"
     If you [specify the version number in the config file](/#specifying-the-version-of-the-mermaid-library), then
@@ -150,12 +157,18 @@ This was fixed in version 1.0.8 of the mkdocs-mermaid2 library
     (through `extra_javascript` in the config file) are **optional**
     and are considered a **hack** if the default procedure doesn't work.
 
+    **As of version 1.1 of Mkdocs-Mermaid2 the use of `extra_javascript` is DEPRECATED.** Use the [`javascript` parameter instead](../library).
+
+
+
 
 ### Issues with versions
 **Mermaid.js**: Above version 10.0.0, [the official format for the Mermaid library is ESM](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0).
 
 **MkDocs**: Under version 1.5.0, the `extra_javascript` directive in the config
 file (`mkdocs.yml`) does not process ESM libraries correctly.
+
+
 
 
 ### Version of Mermaid.js < 10
@@ -172,10 +185,15 @@ code.
 You _may_ specify the mermaid library explicitly in the config file,
 as long as it is call mermaid (independently of extension):
 
+
+
+
 ```yaml
 extra_javascript:
     - https://unpkg.com/mermaid@8.8.2/dist/mermaid.min.js
 ```
+
+
 
 This will be translated in the final HTML page as:
 

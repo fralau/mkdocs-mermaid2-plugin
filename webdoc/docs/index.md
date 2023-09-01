@@ -1,14 +1,17 @@
-# Mermaid2: A diagrams plugin for Mkdocs
+# Mkdocs-Mermaid2<br>A diagrams plugin for Mkdocs { align=center }
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+---
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![PyPI](https://img.shields.io/pypi/v/mkdocs-mermaid2-plugin)](https://pypi.org/project/mkdocs-mermaid2-plugin/)
 ![Github](https://img.shields.io/github/v/tag/fralau/mkdocs-mermaid2-plugin?label=github%20tag)
 ![Downloads(PyPI)](https://img.shields.io/pypi/dm/mkdocs-mermaid2-plugin)
 
+
 ## Introduction
-**Mermaid2** is a plugin for the [MkDocs](https://www.mkdocs.org/) 
+**Mkdocs-Mermaid2** is a plugin for the [MkDocs](https://www.mkdocs.org/) 
 static sites generator, which allows you 
-to render Mermaid diagrams inserted in the markdown pages.
+to render Mermaid diagrams inserted (as text) into the markdown pages.
 
 - [The official repository of Mermaid2 is on github.](https://github.com/fralau/mkdocs-mermaid2-plugin)
 - [Mermaid2 is available from Pypi.](https://pypi.org/project/mkdocs-mermaid2-plugin/)
@@ -153,6 +156,47 @@ plugins:
     If you declare plugins in the config file, you need to declare _all_ of them, 
     including `search` (which would otherwise have been installed by default.)
 
+
+
+
+### Specifying the version of the Mermaid library
+
+By default, the plugin selects a version of the Mermaid javascript library
+that is known to work (some versions work better than others).
+
+You may specify a different version of the Mermaid library, like so:
+
+```yaml
+plugins:
+  - search
+  - mermaid2:
+      version: 10.0.2
+```
+
+The plugin will insert the correct call to the javascript library
+inside the final HTML page.
+
+
+### Specifying your own Mermaid library
+
+By default, mkdocs-mermaid2 automatically inserts the proper calls to
+Mermaid.js (according to the correct version),
+so that the diagrams are correctly interpreted.
+
+You may, however, specify your own explicit call:
+
+```yaml
+plugins:
+  - search
+  - mermaid2:
+      javascript: https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs
+```
+
+For more details, [see the relative page](../library).
+
+
+
+
 ### Use of the Material theme
 
 !!! Note
@@ -208,52 +252,6 @@ The result would be as follows, for the diagrams above:
 !!! Tip
     As of mkdocs-mermaid2 version 1.0.8, this works also with versions of Mermaid.js >= 10. 
     
-
-
-### Specifying the version of the Mermaid library
-
-By default, the plugin selects a version of the Mermaid javascript library
-that is known to work (some versions work better than others).
-
-You may specify a different version of the Mermaid library, like so:
-
-```yaml
-plugins:
-  - search
-  - mermaid2:
-      version: 10.0.2
-```
-
-The plugin will insert the correct call to the javascript library
-inside the final HTML page.
-
-
-### Specifying your own Mermaid library
-
-By default, mkdocs-mermaid2 automatically inserts the proper calls to
-Mermaid.js (according to the correct version),
-so that the diagrams are correctly interpreted.
-
-You may, however, specify your own call, with the use of the `extra_javascript`
-directive in the configuration file. **This is considered as a hack, 
-if the default procedure doesn't work.**
-
-If you do that, then the plugin will refrain from inserting its own call 
-to the Mermaid.js.
-
-```yaml
-extra_javascript:
-    - https://unpkg.com/mermaid@8.8.2/dist/mermaid.min.js
-```
-
-
-
-!!! Warning
-    To make this work with versions of the library > 10
-    with the `mjs` extension, you need a version of mkdocs > 1.5.0.
-
-    With versions of mkdocs < 1.5.0, 
-    see the [troubleshooting section](troubleshooting/#explicit-calls-of-the-mermaid-library).
 
 
 ### Testing

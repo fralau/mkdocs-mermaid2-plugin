@@ -1,4 +1,6 @@
-# mkdocs-mermaid2-plugin
+<div align="center">
+
+# Mkdocs-Mermaid2
 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
@@ -7,9 +9,11 @@
 ![Downloads(PyPI)](https://img.shields.io/pypi/dm/mkdocs-mermaid2-plugin)
 
 
-An [MkDocs](https://www.mkdocs.org/) plugin that renders textual graph
-descriptions into [Mermaid](https://mermaid-js.github.io/mermaid) graphs
-(flow charts, sequence diagrams, pie charts, etc.).
+An [MkDocs](https://www.mkdocs.org/) plugin that renders [Mermaid](https://mermaid-js.github.io/mermaid) text descriptions into diagrams (flow charts, sequence diagrams, pie charts, etc.).
+
+</div>
+
+---
 
 * **See the [mkdocs-mermaid2 documentation on Read The Docs](https://mkdocs-mermaid2.readthedocs.io).**
 * See the [package on Pypi](https://pypi.org/project/mkdocs-mermaid2-plugin/).
@@ -26,15 +30,17 @@ markdown-toc -i README.md
 
 <!-- toc -->
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-  * [Automatic](#automatic)
-  * [Manual](#manual)
-  * [Test](#test)
-- [Configuration](#configuration)
-  * [Basic configuration](#basic-configuration)
-  * [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
-- [For more information](#for-more-information)
+- [Mkdocs-Mermaid2](#mkdocs-mermaid2)
+  - [Introduction](#introduction)
+  - [Installation](#installation)
+    - [Automatic](#automatic)
+    - [Manual](#manual)
+    - [Test](#test)
+  - [Configuration](#configuration)
+    - [Basic configuration](#basic-configuration)
+    - [Specifying the version of the Mermaid library](#specifying-the-version-of-the-mermaid-library)
+    - [Additional settings for the Material theme](#additional-settings-for-the-material-theme)
+  - [For more information](#for-more-information)
 
 <!-- tocstop -->
 

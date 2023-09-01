@@ -1,40 +1,54 @@
+# Detailed description of the page production process
+
 ## Steps for the preparation of an HTML page
 
-There are three steps in the preparation of the page:
+There are three steps in the preparation of the HTML page:
 
-1. Setting up the HTML code that wraps the diagram.
-2. Inserting the javascript library (Mermaid.js) into the HTML page
-3. Inserting the call to the library
+```mermaid
+flowchart TD
+    subgraph Page [Page production]
+    HTML(1. Setting up the HTML tags around the diagram.) --> JS("2. Inserting the call to Mermaid.js")
+    JS --> Init(3. Initialization/customization)
+    end
+
+```
+
+When the webserver serves the statig html page,
+the Mermaid.js library is executed in the user's browser, to render the diagram.
 
 ## Conversion to HTML
 
-When converting the markdown into HTML, mkdocs normally inserts the
+When converting the markdown into HTML, MkDocs normally inserts the
 Mermaid code (text) describing the diagram 
-into segments:
+into segments, which will then be processed by the Mermaid.js library
+(in the user's browser):
 
-    <pre class="mermaid">
-    <code>
-    ...
-    </code>
-    </pre>
+```html
+<pre class="mermaid">
+<code>
+...
+</code>
+</pre>
+```
 
-
-To make the HTML/css page more robust for most mkdocs themes,
-the mermaid plugin systematically converts
+To make the HTML/css page more robust for most MkDocs themes,
+the Mkdocs-Mermaid2 plugin systematically converts
 those segments directly into `<div>` elements:
 
-    <div class="mermaid">
-    ...
-    </div>
+```html
+<div class="mermaid">
+...
+</div>
+```
 
 !!! Note "Superfences extension"
     The principle remains the same 
-    when using the [Superfences](superfences) extension, except
+    when using the [Superfences](superfences) extension.
+
+    That extension is **not** mandatory, except
     when using the Material theme.
 
-    That extension is **not** mandatory.
-
-## Insertion of the Javascript Library
+## Automatic insertion of the Javascript Library
 The plugin then inserts a call to the
 [javascript library](https://github.com/mermaid-js/mermaid).
 
@@ -48,17 +62,29 @@ of Mermaid.js required:
     version: '10.1.0'
 ```
 
-
 !!! Note
-    The behavior of the plugin depends of the version of Mermaid.js, because
-    version 10.0.0 represents a significant change ([see changelog](https://github.com/mermaid-js/mermaid/blob/develop/CHANGELOG.md#1000)). 
+    Mkdocs-Macros inserts the Mermaid.js library into the HTML page
+    **only** when a Mermaid diagram is detected in the markdown page.
 
-=== "Mermaid.js > 10.0.0"
+!!! Warning "Change of distribution format"
+    The behavior of the plugin depends of the version of Mermaid.js.
 
-    > *From version 1.0 of mkdocs-mermaid2*
+    [As of version 10 of the Mermaid javascript library, the plugin uses the ESM format for distribution](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0) (see also the [changelog](https://github.com/mermaid-js/mermaid/blob/develop/CHANGELOG.md#1000)).
 
-    [For versions from 10.0.0 of the Mermaid javascript library, the plugin uses the ESM format](https://github.com/mermaid-js/mermaid/releases/tag/v10.0.0), since
-    it is the only one available. This requires a specific call from the HTML
+    More information can be found on [ECMAScript Module](https://nodejs.org/api/esm.html#modules-ecmascript-modules)
+    (or **ESM**), but for our purposes:
+
+    1. **The main file is recognizable because it has the `.mjs` extension.**
+    2. The HTML call must have the form: `<script src="<URL>", type="module">`
+    3. A module in ESM format is not a single file, but a hierarchy of directories/files.
+
+    **MkDocs-Mermaid2, as of version 1.0, takes this difference into account.**
+
+=== "ESM Library"
+
+    > For versions of MkDocs-Mermaid2 >= 1 and versions of Mermaid2.js >= 10
+    
+    This requires a specific call from the HTML
     page e.g.:
 
     ``` html
@@ -66,14 +92,16 @@ of Mermaid.js required:
     </script>
     ```
 
-
     The plugin automatically inserts this call.
 
-=== "Earlier versions"
+=== "All-in-one Library"
 
     For an earlier version of the Mermaid.js (<10),
-    the plugin uses the traditional call
-    from HTML:
+    the plugin continues to use the traditional version, which is an **all-in-one file**.
+    
+    Those library files are recognizable because they have the `.js` extension.
+    
+    The call in the HTML page is:
 
     ``` html
     <script src="https://unpkg.com/mermaid@8.8.2/dist/mermaid.min.js">
@@ -81,16 +109,24 @@ of Mermaid.js required:
     </script>
     ```
 
+
     The plugin automatically inserts this call.
 
+    ** This is still a valid method.** (Even though the very first versions after 10.0.0 no longer provided
+    this file, later versions have resumed providing it.)
 
-## Call to the Library
+
+
+
+## Initialization sequence
 
 ### Default sequence
 To start displaying of the diagrams, the plugin then automatically inserts 
 a separate call to initialize the Mermaid library:
 
-
+```javascript
+mermaid.initialize()
+```
 
 The user's browser will then read this code and render it on the fly.
 
@@ -124,10 +160,10 @@ plugins:
 
 The plugin then automatically adds the initialization sequence:
 
-=== "mermaid.js >= 10.0"
+=== "ESM modules"
 
     Both `import` and `mermaid.initialize()` must be in the same `<script>`
-    tag.
+    tag. This is the code produced by the plugin:
 
     ```html
     <script type="module">import mermaid from "https://unpkg.com/mermaid@10.1.0/dist/mermaid.esm.min.mjs";
@@ -144,9 +180,9 @@ The plugin then automatically adds the initialization sequence:
     });
     </script>
     ```
-=== "Earlier versions"
+=== "Traditional modules"
 
-    For versions of mermaid.js < 10, **two** calls to the `<script>` tag are required.
+    For traditional (all-in-one file) javascript modules, **two** calls to the `<script>` tag are required. This is the code produced by the plugin:
 
     ```html
     <script src="https://unpkg.com/mermaid@9.1.0/dist/mermaid.min.js"></script>
