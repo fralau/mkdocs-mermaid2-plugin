@@ -265,18 +265,23 @@ class MarkdownMermaidPlugin(BasePlugin):
             new_tag = soup.new_tag("script")
             js_code = [] # the code lines
             if not self.extra_javascript:
+                javascript = self.javascript.strip()
+                if not javascript.startswith("http"):
+                    # it is necessary to adapt the link
+                    javascript = os.path.relpath(javascript,
+                                            os.path.dirname(page.url))
                 # if no extra library mentioned,
                 # add the <SCRIPT> tag needed for mermaid
-                if self.javascript.endswith('.mjs'):
+                if javascript.endswith('.mjs'):
                     # <script type="module">
                     # import mermaid from ...
                     new_tag['type'] = "module"
                     js_code.append('import mermaid from "%s";' 
-                                   % self.javascript)
+                                   % javascript)
                 else:
                     # <script src="...">
                     # generally for self.mermaid_major_version < 10:
-                    new_tag['src'] = self.javascript
+                    new_tag['src'] = javascript
                     # it's necessary to close and reopen the tag:
                     soup.body.append(new_tag)
                     new_tag = soup.new_tag("script")
