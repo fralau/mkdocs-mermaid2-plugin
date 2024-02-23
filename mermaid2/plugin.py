@@ -137,14 +137,17 @@ class MarkdownMermaidPlugin(BasePlugin):
                 else:
                     # newer versions
                     javascript = JAVASCRIPT % self.mermaid_version
-                # make checks
-            if not url_exists(javascript, 
-                              local_base_dir=self.full_config['docs_dir']):
+            # make checks
+            # Try to found javascript in custom_dir and in doc_dir
+            local_dirs = self.full_config["theme"].dirs
+            local_dirs.append(self.full_config['docs_dir'])
+
+            if not url_exists(javascript, local_base_dirs=local_dirs):
                 raise FileNotFoundError("Cannot find Mermaid library: %s" %
                                         javascript)
             self._javascript = javascript
         return self._javascript
-    
+
 
     @property
     def activate_custom_loader(self) -> bool:

@@ -27,7 +27,7 @@ def info(*args) -> str:
     args = [MERMAID_LABEL] + [str(arg) for arg in args]
     msg = ' '.join(args)
     log.info(msg)
- 
+
 # -------------------
 # Paths and URLs
 # -------------------
@@ -42,11 +42,15 @@ def libname(lib:str) -> str:
 
 
 
-def url_exists(url:str, local_base_dir:str='') -> bool:
+def url_exists(url:str, local_base_dirs:list=[]) -> bool:
     "Checks that a url exists"
     if url.startswith('http'):
         request = requests.get(url)
         return request.status_code == 200
     else:
-        pathname = os.path.join(local_base_dir, url)
-        return os.path.exists(pathname)
+        for d in local_base_dirs:
+            info(f"Searching javascript in {d}")
+            if os.path.exists(os.path.join(d, url)):
+                return True
+
+        return False
