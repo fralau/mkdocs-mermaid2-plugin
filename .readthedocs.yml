@@ -5,8 +5,9 @@
 # Required
 version: 2
 
-version:
-  default_branch: "master"
+# Solve problem with compilation (detached head)
+defaults:
+  branch: "master"
 
 
 
