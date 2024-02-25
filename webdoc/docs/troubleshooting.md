@@ -59,7 +59,7 @@ In that case, the javascript library was probably not called.
 If you are using the superfences extension, but you see the source
 code, you probably forgot to declare the custom_fences, or declared the wrong
 one. 
-Se more explanations under [Declaring the superfences extension](superfences#specifying-the-mermaid-custom-fence)
+Se more explanations under [Declaring the superfences extension](superfences.md#specifying-the-mermaid-custom-fence)
 
 !!! Tip
     **Examine the HTML code produced in the page and see the next questions.**
@@ -100,12 +100,12 @@ Control the link used in the HTML page generated, e.g.:
 
 Check the version of the javascript mermaid library you are using (it's indicated
 in the error message; as a last resort, check in the html page). 
-You can [change the library version if needed](../#specifying-the-version-of-the-mermaid-library).
+You can [change the library version if needed](index.md/#specifying-the-version-of-the-mermaid-library).
 
 
 ### The arguments in the config file (color, etc.) do not work
 
-For example, the following specification ([see description](../#other-themes)) does not work:
+For example, the following specification ([see description](index.md/#other-themes)) does not work:
 
 ```yaml
 plugins:
@@ -145,19 +145,19 @@ This was fixed in version 1.0.8 of the mkdocs-mermaid2 library
 !!! Tip "Easy Fix"
 
     **Upgrade Mkdocs and Mkdocs-Macros to the latest 
-    version and stop using `extra_javascript`. Use the [`javascript` parameter instead](../library)**.
+    version and stop using `extra_javascript`. Use the [`javascript` parameter instead](library.md)**.
 
     Otherwise, read on.
 
 !!! Warning "Important"
-    If you [specify the version number in the config file](/#specifying-the-version-of-the-mermaid-library), then
-    the mkdocs-mermaid2 will insert the correct calls for you.
+    If you [specify the version number in the config file](index.md/#specifying-the-version-of-the-mermaid-library),
+    then the mkdocs-mermaid2 will insert the correct calls for you.
 
     Remember that explicit calls to the Mermaid.js
     (through `extra_javascript` in the config file) are **optional**
     and are considered a **hack** if the default procedure doesn't work.
 
-    **As of version 1.1 of Mkdocs-Mermaid2 the use of `extra_javascript` is DEPRECATED.** Use the [`javascript` parameter instead](../library).
+    **As of version 1.1 of Mkdocs-Mermaid2 the use of `extra_javascript` is DEPRECATED.** Use the [`javascript` parameter instead](library.md).
 
 
 
@@ -266,7 +266,7 @@ As an ESM javascript library, Mermaid.js requires an `import` statement.
     For some reason, they require the `mermaid2.fence_mermaid` function
     in order to work. It means that with the Material theme, 
     your diagrams will not inherit the theme's color
-    ([see more information on this subject](../superfences/#usage-for-the-material-theme)).
+    ([see more information on this subject](superfences.md/#usage-for-the-material-theme)).
 
 
 
@@ -275,11 +275,11 @@ As an ESM javascript library, Mermaid.js requires an `import` statement.
 
 ### Rich text diagrams, or links are not displayed properly?
 
-1. As a first step, [set the security level to 'loose'](../tips/#setting-the-security-level-to-loose).
+1. As a first step, [set the security level to 'loose'](tips.md/#setting-the-security-level-to-loose).
 2. Make sure you use a compatible version of the javascript library
    (8.6.4, 8.8.0, ~~8.7.0~~). In principle, the version used
    by the plugin is compatible (see instructions to 
-   [change the version](../#specifying-the-version-of-the-mermaid-library)).
+   [change the version](index.md/#specifying-the-version-of-the-mermaid-library)).
 
 
 ### With pymdownx.details, diagrams in collapsed elements are not displayed?

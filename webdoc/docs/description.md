@@ -43,7 +43,7 @@ those segments directly into `<div>` elements:
 
 !!! Note "Superfences extension"
     The principle remains the same 
-    when using the [Superfences](superfences) extension.
+    when using the [Superfences](superfences.md) extension.
 
     That extension is **not** mandatory, except
     when using the Material theme.

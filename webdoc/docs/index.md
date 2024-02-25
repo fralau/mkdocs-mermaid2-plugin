@@ -192,7 +192,7 @@ plugins:
       javascript: https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs
 ```
 
-For more details, [see the relative page](../library).
+For more details, [see the relative page](library.md).
 
 
 
@@ -220,7 +220,7 @@ markdown_extensions:
 
 ```
 
-See the [technical explanation](superfences/#usage-for-the-material-theme).
+See the [technical explanation](superfences.md/#usage-for-the-material-theme).
 
 
 ### Other Themes

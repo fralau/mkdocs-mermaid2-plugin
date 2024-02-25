@@ -2,7 +2,7 @@
 
 1. Contributions are welcome.
 2. Before submitting an issue, consider this documentation, and particularly 
-   the [troubleshooting](../troubleshooting) section.
+   the [troubleshooting](troubleshooting.md) section.
 3. Use the [Issues](https://github.com/fralau/mkdocs-mermaid2-plugin/issues) to signal a bug or propose a feature you believe is necessary.
 4. If this is a usage question, prefer the [discussions](https://github.com/fralau/mkdocs-mermaid2-plugin/discussions).
 5. **Before submitting a PR, always open an Issue and consider the answers.**

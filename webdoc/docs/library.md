@@ -4,7 +4,7 @@
 
 ## Introduction
 By default, MkDocs-Mermaid2 automatically inserts the proper calls to
-[the Mermaid.js library, according to the correct version](../description/#insertion-of-the-javascript-library) (all-in one file, or ESM),
+[the Mermaid.js library, according to the correct version](description.md/#insertion-of-the-javascript-library) (all-in one file, or ESM),
 so that the diagrams are correctly interpreted.
 
 You may, however, specify your own version, using to the
@@ -22,8 +22,8 @@ The files can be found on [unpkg](https://unpkg.com/browse/mermaid@10.4.0/) or [
 
 Mkdocs-Mermaid2 will still insert the appropriate call to the library
 into the HTML page, according to the type of library (as all-in-one
-javascript function, or [ESM module](../description/#automatic-insertion-of-the-javascript-library)), as well as the [initialization
-sequence](../description/#initialization-sequence).
+javascript function, or [ESM module](description.md/#automatic-insertion-of-the-javascript-library)), as well as the [initialization
+sequence](description.md/#initialization-sequence).
 
 To determine which version, it will use the extension:
 
