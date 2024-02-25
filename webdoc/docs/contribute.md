@@ -13,29 +13,56 @@ they are first [pushed on github](https://github.com/fralau/mkdocs-mermaid2-plug
 When assessing issues or bugs, it is important to understand which 
 components are involved.
 
+!!! Tip
+    The items marked with an asterisk (*) are clickable.
+
 ```mermaid
 
 graph TD
-    mkdocs-mermaid["mkdocs-mermaid2 plugin"]
-    mkdocs-mermaid -- plugin of--> mkdocs
-    mkdocs-mermaid -- "uses (in browser)"--> Mermaid.js
-    mkdocs --> Superfences
-    mkdocs --> Material
-    mkdocs -.extra_javascript.-> Mermaid.js
-    Superfences -.custom fence.-> Mermaid.js
-    subgraph libraries
-    Mermaid.js
+
+    subgraph plugins
+    mkdocs-mermaid["Mkdocs-Mermaid2"]
     end
-    subgraph extensions
-    Superfences
+
+    subgraph browser["Browser"]
+    rendering[/"HTML/css/Javascript engine"\]
+    html(HTML) ==> rendering
+    css(css) ==> rendering
+    javascript(Javascript) ==> rendering
     end
+
+    subgraph main
+    mkdocs["MkDocs*"] -- generates --> html
+    mkdocs -- generates --> javascript
+    end
+
+    mkdocs-mermaid -.plugin of.-> mkdocs
+    mkdocs -.-> Material
+    mkdocs -.extra_javascript.-> mermaid
+    Superfences -- custom fence --> mermaid
+    
+
+    
+    subgraph libraries["Javascript libraries"]
+    mermaid[Mermaid.js*]  -- provides --> javascript 
+    end
+    
+    subgraph extensions["Markdown extensions"]
+    mkdocs -.markdown_extensions.-> Superfences
+    Superfences["Superfences*"]
+    end
+    
     subgraph themes
-    Material
-    Material -.-> Superfences
+    Material[Material*] -- provides --> css 
+    Material --> html2("HTML (templates)") --> html
     end
+
+   
+
     click mkdocs "https://www.mkdocs.org/" _blank
     click Material "https://squidfunk.github.io/mkdocs-material/" _blank
     click Superfences "https://facelessuser.github.io/pymdown-extensions/extensions/superfences/" _blank
+    click mermaid "https://mermaid.js.org/intro/" _blank
 ```
 
 ## Credits
