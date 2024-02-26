@@ -5,12 +5,6 @@
 # Required
 version: 2
 
-# Solve problem with compilation (detached head)
-defaults:
-  branch: "master"
-
-
-
 # Build documentation in the docs/ directory with Sphinx
 # sphinx:
 #   configuration: docs/conf.py
