@@ -91,7 +91,7 @@ pie title Which animals do you prefer as pets?
 ### How to write Mermaid diagrams
 
 * For instructions on how to make a diagram, see [the official website](https://mermaid.js.org).
-* If you are not familiar, see the [Mermaid Overview for Beginners](https://mermaid.js.org/community/n00b-overview.html).
+* If you are not familiar, see the [Mermaid Overview for Beginners](https://mermaid.js.org/intro/getting-started.html).
 * In case of doubt, you will want to test your diagrams in the [Mermaid Live Editor](https://mermaid.live).
 
 
