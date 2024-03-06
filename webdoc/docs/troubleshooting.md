@@ -59,7 +59,7 @@ In that case, the javascript library was probably not called.
 If you are using the superfences extension, but you see the source
 code, you probably forgot to declare the custom_fences, or declared the wrong
 one. 
-Se more explanations under [Declaring the superfences extension](superfences.md#specifying-the-mermaid-custom-fence)
+See more explanations under [Declaring the superfences extension](superfences.md#specifying-the-mermaid-custom-fence)
 
 !!! Tip
     **Examine the HTML code produced in the page and see the next questions.**
