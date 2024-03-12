@@ -27,7 +27,19 @@ def info(*args) -> str:
     args = [MERMAID_LABEL] + [str(arg) for arg in args]
     msg = ' '.join(args)
     log.info(msg)
- 
+
+def warning(*args) -> str:
+    "Write information on the console, preceded by the signature label"
+    args = [MERMAID_LABEL] + [str(arg) for arg in args]
+    msg = ' '.join(args)
+    log.warning(msg)
+
+def critical(*args) -> str:
+    "Write information on the console, preceded by the signature label"
+    args = [MERMAID_LABEL] + [str(arg) for arg in args]
+    msg = ' '.join(args)
+    log.critical(msg)
+
 # -------------------
 # Paths and URLs
 # -------------------
@@ -45,8 +57,20 @@ def libname(lib:str) -> str:
 def url_exists(url:str, local_base_dir:str='') -> bool:
     "Checks that a url exists"
     if url.startswith('http'):
-        request = requests.get(url)
-        return request.status_code == 200
+        # requests can fail without HTTP code, list:
+        # https://docs.python-requests.org/en/latest/_modules/requests/exceptions/
+        try:
+            request = requests.get(url)
+        except Exception as ue:
+            if ue.__class__.__module__ == "requests.exceptions":
+                warning("Exception when making a GET request: %s" % ue)
+                return False
+            # Returning the rest
+            else:
+                raise
+        else:
+            return request.status_code == 200
+        
     else:
         pathname = os.path.join(local_base_dir, url)
         return os.path.exists(pathname)

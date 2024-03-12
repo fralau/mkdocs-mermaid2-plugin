@@ -10,7 +10,7 @@ from mkdocs.config.config_options import Type as PluginType
 from bs4 import BeautifulSoup
 
 from . import pyjs
-from .util import info, libname, url_exists
+from .util import info, libname, url_exists, critical
 
 
 # ------------------------
@@ -140,6 +140,8 @@ class MarkdownMermaidPlugin(BasePlugin):
                 # make checks
             if not url_exists(javascript, 
                               local_base_dir=self.full_config['docs_dir']):
+                critical("Cannot find Mermaid library: %s" %
+                                        javascript)
                 raise FileNotFoundError("Cannot find Mermaid library: %s" %
                                         javascript)
             self._javascript = javascript
