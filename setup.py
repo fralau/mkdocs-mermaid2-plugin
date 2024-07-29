@@ -31,7 +31,7 @@ setup(
     license='MIT',
     python_requires='>=3.6',
     install_requires=[
-        'setuptools>=18.5',
+        'setuptools>=18.5, <72',
         'beautifulsoup4>=4.6.3',
         'mkdocs>=1.0.4',
         'jsbeautifier',
