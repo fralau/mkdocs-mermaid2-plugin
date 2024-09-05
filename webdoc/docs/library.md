@@ -66,6 +66,7 @@ changing the version number to determine the version you want
 https://cdn.jsdelivr.net/npm/mermaid@10.2.0/dist/mermaid.min.js
 ```
 
+
 !!! Note
     No explicit call to `mermaid.initialize()` is required, since it is
     automatically inserted by the plugin.
@@ -80,6 +81,14 @@ https://cdn.jsdelivr.net/npm/mermaid@10.2.0/dist/mermaid.min.js
     on its ownlwill definitely **not** work, since there will be broken
     links.
 
+!!! Warning "Behavior in case of incorrect URL/no Internet access"
+    1. An incorrect URL will cause an error that aborts MkDocs.
+    2. If the address starts with http(s) and no Internet access
+       is available at time of compile, MkDocs-Mermaid will continue and issue
+       a WARNING. That behavior is for containers that do not
+       have necessarily have Internet access at compile time
+       (however, if you want to abort
+       in that case use the strict mode: `mkdocs build --strict`.
 
 ## Using `extra_javascript`
 
