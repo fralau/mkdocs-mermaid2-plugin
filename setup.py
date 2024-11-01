@@ -1,11 +1,12 @@
 from setuptools import setup, find_packages
 
 
-VERSION = '1.1.2'
+VERSION = '1.2.0'
 
 # required if you want to run tests
 # pip install 'mkdocs-mermaid2-plugin[test]'
-TEST_REQUIRE = ['mkdocs-material']
+TEST_REQUIRE = ['mkdocs-material', 'mkdocs-macros-test', 'requests-html',
+                'packaging']
 
 
 def readme():

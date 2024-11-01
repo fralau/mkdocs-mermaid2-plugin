@@ -99,6 +99,7 @@ venv.bak/
 
 # mkdocs documentation
 site/
+__test__/
 
 # mypy
 .mypy_cache/

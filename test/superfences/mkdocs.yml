@@ -1,10 +1,9 @@
-site_name: Mermaid test (SuperFences)
+site_name: Mermaid test (SuperFences) + custom loader
 site_description: Test for mermaid
 docs_dir: docs # indispensable or readthedocs will fail
 theme: 
   name: material
   language: en
-  font: "Open Sans"
 
 
 nav:
@@ -13,6 +12,7 @@ nav:
 
 plugins:
   - search
+  - test
   - mermaid2:
       custom_loader: true
       arguments:
@@ -29,6 +29,3 @@ markdown_extensions:
           class: mermaid
           format: !!python/name:mermaid2.fence_mermaid_custom
           # format: !!python/name:pymdownx.superfences.fence_div_format
-extra_javascript:
-     # - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
-     - js/loader.js

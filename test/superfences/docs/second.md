@@ -25,4 +25,5 @@ Click on the arrow, to reveal the diagram,
     graph TD
     A[Client] --> B[Load Balancer]
     ```
+    
     This is additional text.
