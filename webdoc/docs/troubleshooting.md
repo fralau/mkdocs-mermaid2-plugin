@@ -142,6 +142,9 @@ This was fixed in version 1.0.8 of the mkdocs-mermaid2 library
 
 ## Explicit calls of the Mermaid library with `extra_javascript`
 
+> For reference information see the [`extra_javascript` section](library.md/#using-extra_javascript)
+> in the JavaScript page. 
+
 !!! Tip "Easy Fix"
 
     **Upgrade Mkdocs and Mkdocs-Macros to the latest 
@@ -155,9 +158,11 @@ This was fixed in version 1.0.8 of the mkdocs-mermaid2 library
 
     Remember that explicit calls to the Mermaid.js
     (through `extra_javascript` in the config file) are **optional**
-    and are considered a **hack** if the default procedure doesn't work.
+    and are considered a **hack** (failsafe) mecanism 
+    for cases when the default procedure doesn't work.
 
-    **As of version 1.1 of Mkdocs-Mermaid2 the use of `extra_javascript` is DEPRECATED.** Use the [`javascript` parameter instead](library.md).
+    **As of version 1.1 of Mkdocs-Mermaid2 the use of `extra_javascript` is DEPRECATED, as a default solution.** 
+    Use the [`javascript` parameter instead](library.md).
 
 
 
