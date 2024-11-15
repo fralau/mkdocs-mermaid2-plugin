@@ -13,12 +13,12 @@ theme:
     accent: pink
 repo_url: https://github.com/fralau/mkdocs-mermaid2-plugin
 edit_uri: edit/master/webdoc/docs/
-copyright: © Laurent Franceschetti, 2023. This work is licensed under CC BY-SA 4.0.
+copyright: © Laurent Franceschetti, 2024. This work is licensed under CC BY-SA 4.0.
 nav:
     - How to get started: index.md
     - Detailed description: description.md
     - Superfences: superfences.md
-    - Specifying the javascript library: library.md
+    - Using the Mermaid library: library.md
     - Tips and tricks: tips.md
     - troubleshooting.md
     - How to contribute: contribute.md
