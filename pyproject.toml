@@ -3,7 +3,7 @@ name = "mkdocs-mermaid2-plugin"
 
 # This version number is the REFERENCE for the rest of the project,
 # particularly for update_pypi.sh
-version = "1.2.1"
+version = "1.2.2"
 
 description = "A MkDocs plugin for including mermaid graphs in markdown sources"
 readme = "README.md"
