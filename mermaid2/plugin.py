@@ -254,7 +254,7 @@ class MarkdownMermaidPlugin(BasePlugin):
                     new_tag = soup.new_tag("div", attrs={"class": "mermaid"})
                     new_tag.append(content)
                     # replace the parent:
-                    tag.parent.replaceWith(new_tag)
+                    tag.parent.replace_with(new_tag)
             # Count the diagrams <div class = 'mermaid'> ... </div>
             mermaids = len(soup.select("div.mermaid"))
         # if yes, add the javascript snippets:
