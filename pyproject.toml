@@ -3,21 +3,14 @@ name = "mkdocs-mermaid2-plugin"
 
 # This version number is the REFERENCE for the rest of the project,
 # particularly for update_pypi.sh
-version = "1.2.2"
+version = "1.2.3"
 
 description = "A MkDocs plugin for including mermaid graphs in markdown sources"
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.8"
-authors = [
-    { name = "Laurent Franceschetti"},
-]
-keywords = [
-    "markdown",
-    "mermaid",
-    "mkdocs",
-    "python",
-]
+authors = [{ name = "Laurent Franceschetti" }]
+keywords = ["markdown", "mermaid", "mkdocs", "python"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -42,17 +35,10 @@ dependencies = [
 packages = { find = { exclude = ["*.tests"] } }
 
 [project.optional-dependencies]
-test = [
-    "mkdocs-macros-test",
-    "mkdocs-material",
-    "packaging",
-    "requests-html",
-]
+test = ["mkdocs-macros-test", "mkdocs-material", "packaging", "requests-html"]
 
 [project.entry-points."mkdocs.plugins"]
 mermaid2 = "mermaid2.plugin:MarkdownMermaidPlugin"
 
 [project.urls]
 Homepage = "https://github.com/fralau/mkdocs-mermaid2-plugin"
-
-

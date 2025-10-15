@@ -1,6 +1,64 @@
 # Tips and Tricks
 
 
+## Using variables and macros in diagrams (MkDocs-Macros)
+
+What if your diagrams contain a repetitive string, like the URL of a website?
+
+Instead of writing:
+
+```
+graph TD;
+    Platform-->Gaming;
+    click Gaming "http://127.0.0.1:8000/Gaming/";
+```
+
+You might want to use a **variable**:
+
+```
+graph TD;
+    Platform-->Gaming;
+    click Gaming "{{ my_website }}/Gaming/";
+```
+
+With the variable defined in your project's config file:
+
+```yaml
+extra:
+  my_website: http://127.0.0.1:8000
+```
+
+
+In this way, you will be able to change that value whenenever you need it.
+
+To do that, you would have to use the [Mkdocs-Macros plugin](https://mkdocs-macros-plugin.readthedocs.io/).
+
+
+
+This requires [installing the plugin](https://mkdocs-macros-plugin.readthedocs.io/en/latest/#standard-installation), and declaring it in the config file.
+
+!!! Caution
+    Variables are **not** part of the Mermaid specification. The Macros plugin simply expands the variables in the
+    Markdown page, so that the result is a standard Mermaid diagram.
+
+    The same variables can be used in any part of the page, outside of Mermaid diagrams.
+
+
+Declare the plugins in the config file, in that order:
+
+```yaml
+plugins:
+    - search
+    - macros
+    - mermaid2
+```
+
+!!! Tip "Using macros to generate diagrams"
+    If you can program in Python, you could go further than that: you could use a Python module (`main.py`) to define
+    [**macros** (functions)](https://mkdocs-macros-plugin.readthedocs.io/en/latest/macros/)
+    that produce hyperlinks or pieces of diagrams from data,
+    or even complete diagrams from a source file.
+
 
 ## Setting the security level to "loose"
 
