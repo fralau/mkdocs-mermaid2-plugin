@@ -3,6 +3,8 @@
 
 ## Using variables and macros in diagrams (MkDocs-Macros)
 
+
+### Variables
 What if your diagrams contain a repetitive string, like the URL of a website?
 
 Instead of writing:
@@ -21,7 +23,7 @@ graph TD;
     click Gaming "{{ my_website }}/Gaming/";
 ```
 
-With the variable defined in your project's config file:
+You define that variable in your project's config file (`mkdocs.yml`):
 
 ```yaml
 extra:
@@ -29,7 +31,8 @@ extra:
 ```
 
 
-In this way, you will be able to change that value whenenever you need it.
+In this way, you will be able to change that value wherever it appears in the pages,
+simply by modifying the value in the config file.
 
 To do that, you would have to use the [Mkdocs-Macros plugin](https://mkdocs-macros-plugin.readthedocs.io/).
 
@@ -53,11 +56,60 @@ plugins:
     - mermaid2
 ```
 
-!!! Tip "Using macros to generate diagrams"
-    If you can program in Python, you could go further than that: you could use a Python module (`main.py`) to define
-    [**macros** (functions)](https://mkdocs-macros-plugin.readthedocs.io/en/latest/macros/)
-    that produce hyperlinks or pieces of diagrams from data,
-    or even complete diagrams from a source file.
+### Using macros to generate Mermaid code
+
+If you can program in Python, you could go further than that: you could use a Python module (`main.py`) to define
+[**macros** (functions)](https://mkdocs-macros-plugin.readthedocs.io/en/latest/macros/)
+that produce hyperlinks or pieces of diagrams from data,
+or even complete diagrams from a source file.
+
+
+For example the macro `make_choice()` would create a full diagram from three components.
+
+```python
+def define_env(env):
+
+
+    @env.macro
+    def make_choice(start, choice1, choice2):
+        """
+        Generate a Mermaid decision diagram with two choices from a starting point,
+        within a fenced code block.
+        """
+        lines = [
+            "```mermaid",
+            "graph TD",
+            f"    {start} -->|first| {choice1}",
+            f"    {start} -->|second| {choice2}",
+            "```"
+        ]
+        return "\n".join(lines)
+
+```
+
+Then you could write, in your markdown page:
+
+```markdown
+{{ make_choice("Start", "OptionA", "OptionB") }}
+```
+
+Which would be translated into:
+
+    ```mermaid
+    graph TD
+        Start -->|first| OptionA
+        Start -->|second| OptionB
+    ```
+
+And then rendered by your browser as:
+
+```mermaid
+graph TD
+    Start -->|first| OptionA
+    Start -->|second| OptionB
+```
+
+
 
 
 ## Setting the security level to "loose"
