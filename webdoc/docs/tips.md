@@ -1,11 +1,101 @@
 # Tips and Tricks
 
+## Advanced Mermaid Functions
+
+### Setting the security level to "loose"
+
+To access the following functions, you need to relax mermaid's security level,
+([since version 8.2](https://mermaid-js.github.io/mermaid/#/?id=special-note-regarding-version-82)).
+
+!!! Caution 
+    This requires you, of course, to take the responsibility 
+    for the security of the diagram source.
+
+If that is OK with you, you can set the argument in the configuration of the
+plugin:
+
+```yaml
+    - mermaid2:
+        arguments:
+          securityLevel: 'loose'
+```
+
+### Formatting text in diagrams
+
+> To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
+
+You may use HTML in the diagram.
+
+!!! Caution
+    This is guaranteed to work with Mermaid 8.6.4, but
+    does not work e.g. on 8.7.0.
+
+    It may not work on more recent versions.
+
+
+Use HTML formatting:
+
+    ```mermaid
+    graph LR
+        hello["<b>Hello</b>"] --> world["<big><i>World</i></big>"]
+        world --> mermaid[mermaid web site]
+    ```
+
+```mermaid
+graph LR
+    hello["<b>Hello</b>"] --> world["<big><i>World</i></big>"]
+    world --> mermaid[mermaid web site]
+```
+
+Use this in the config file:
+```yaml
+extra_javascript:
+     - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
+```
+
+
+
+### Adding Hyperlinks to a Diagram 
+
+> To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
+
+=== "Mermaid.js >~ 8.5.0"
+
+    Use the **click** directive in the language (for more information,
+    see [Interaction](https://mermaid-js.github.io/mermaid/#/flowchart?id=interaction) on the official mermaid website).
+
+        ```mermaid
+        graph LR
+            hello --> world
+            world --> mermaid[mermaid web site]
+            click mermaid "https://mermaid-js.github.io/mermaid" "Website"
+        ```
+
+
+    ```mermaid
+    graph LR
+        hello --> world
+        world --> mermaid[mermaid web site]
+        click mermaid "https://mermaid-js.github.io/mermaid" "Website"
+    ```
+
+
+
+=== "Mermaid.js < ~ 8.5.0"
+
+    It is possible to add hyperlinks to a  diagram, e.g.:
+
+    ```
+    box1[An <b>important</b> <a href="https://google.com">link</a>] 
+    ```
+
 
 ## Using variables and macros in diagrams (MkDocs-Macros)
 
 
 ### Variables
-What if your diagrams contain a repetitive string, like the URL of a website?
+What if your diagrams contain a repetitive string, such as the URL of a website
+[in your hyperlinks](#adding-hyperlinks-to-a-diagram)?
 
 Instead of writing:
 
@@ -44,7 +134,7 @@ This requires [installing the plugin](https://mkdocs-macros-plugin.readthedocs.i
     Variables are **not** part of the Mermaid specification. The Macros plugin simply expands the variables in the
     Markdown page, so that the result is a standard Mermaid diagram.
 
-    The same variables can be used in any part of the page, outside of Mermaid diagrams.
+
 
 
 Declare the plugins in the config file, in that order:
@@ -56,9 +146,23 @@ plugins:
     - mermaid2
 ```
 
+!!! Tip "Uses of variables"
+
+    You can use an MkDocs-Macros variable to represent _any_ string that you need to repeat
+    in Mermaid diagrams, or that could change (over time, or because you have two possible configs).
+    
+    Variables can be used in any part of a page, inside or outside of Mermaid diagrams.
+
+    MkDocs-Macros and Mkdocs-Mermaid2 are two plugins that work very well together.
+
+    Read the documentation of [MkDocs-Macros](https://mkdocs-macros-plugin.readthedocs.io/), 
+    to discover all its possibilities!
+
+
 ### Using macros to generate Mermaid code
 
-If you can program in Python, you could go further than that: you could use a Python module (`main.py`) to define
+If you can program in Python, you could go further than that with MkDocs-Macros:
+you could use a Python module (`main.py`) to define
 [**macros** (functions)](https://mkdocs-macros-plugin.readthedocs.io/en/latest/macros/)
 that produce hyperlinks or pieces of diagrams from data,
 or even complete diagrams from a source file.
@@ -110,79 +214,9 @@ graph TD
 ```
 
 
+## Switching between light and dark mode
 
-
-## Setting the security level to "loose"
-
-To access the following functions, you need to relax mermaid's security level,
-([since version 8.2](https://mermaid-js.github.io/mermaid/#/?id=special-note-regarding-version-82)).
-
-!!! Caution 
-    This requires you, of course, to take the responsibility 
-    for the security of the diagram source.
-
-If that is OK with you, you can set the argument in the configuration of the
-plugin:
-
-```yaml
-    - mermaid2:
-        arguments:
-          securityLevel: 'loose'
-```
-
-## Formatting text in diagrams
-
-> To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
-
-You may use HTML in the diagram.
-
-!!! Note
-    This is guaranteed to work with Mermaid 8.6.4, but
-    does not work e.g. on 8.7.0.
-
-
-```mermaid
-graph LR
-    hello["<b>Hello</b>"] --> world["<big><i>World</i></big>"]
-    world --> mermaid[mermaid web site]
-```
-
-Use this in the config file:
-```yaml
-extra_javascript:
-     - https://unpkg.com/mermaid@8.6.4/dist/mermaid.min.js
-```
-
-
-
-## Adding Hyperlinks to a Diagram 
-
-> To enable this function, you need to [relax mermaid's security level to 'loose'](#setting-the-security-level-to-loose).
-
-=== "Mermaid.js >~ 8.5.0"
-
-    Use the click directive in the language (for more information,
-    see [Interaction](https://mermaid-js.github.io/mermaid/#/flowchart?id=interaction) on the official mermaid website).
-
-    ```mermaid
-    graph LR
-        hello --> world
-        world --> mermaid[mermaid web site]
-        click mermaid "https://mermaid-js.github.io/mermaid" "Website"
-    ```
-
-
-
-=== "Mermaid.js < ~ 8.5.0"
-
-    It is possible to add hyperlinks to a  diagram, e.g.:
-
-    ```
-    box1[An <b>important</b> <a href="https://google.com">link</a>] 
-    ```
-
-
-## Auto-configure dark mode based on Host OS
+### Auto-configure dark mode based on Host OS
 
 Using a combination of the unquote (`^`) functionality of this plugin and the
 [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
@@ -202,7 +236,7 @@ This works well with the `scheme: preference` option in
 
 
 
-## Material Theme: Switching on the fly between light and dark mode
+### Material Theme: Switching on the fly between light and dark mode
 The Material theme for MkDocs allows [toggling between colors](https://squidfunk.github.io/mkdocs-material/setup/changing-the-colors/#color-palette-toggle).
 Unfortunately the Mermaid diagram will not switch out of the box from light to
 dark or vice versa. 

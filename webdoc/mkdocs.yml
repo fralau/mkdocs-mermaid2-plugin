@@ -43,6 +43,7 @@ markdown_extensions:
 plugins:
   - search
   - mermaid2:
-      version: '10.1.0'
-
+      arguments:
+        securitylevel: loose
+      version: '10.9.0'
 
