@@ -3,6 +3,7 @@ Main plugin module for mermaid2
 """
 
 import os
+import functools
 
 
 from mkdocs.plugins import BasePlugin
@@ -178,6 +179,8 @@ class MarkdownMermaidPlugin(BasePlugin):
                     custom_fences = superfence_config.get('custom_fences', [])
                     for fence in custom_fences:
                         format_fn = fence.get('format')
+                        if type(format_fn) is functools.partial:
+                            format_fn = format_fn.func
                         if format_fn.__name__ == CUSTOM_FENCE_FN:
                             self._activate_custom_loader = True
                             info("Found '%s' function: " 
