@@ -31,11 +31,38 @@ dependencies = [
     "setuptools>=18.5",
 ]
 
-[tool.setuptools]
-packages = { find = { exclude = ["*.tests"] } }
+
+[build-system]
+requires = ["uv_build>=0.10.6,<0.11.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "mermaid2"
+module-root = ""
+
+[tool.uv.workspace]
+members = [
+    ".",
+]
+
+[tool.uv.sources]
+mkdocs-mermaid2-plugin = { workspace = true }
+
+[dependency-groups]
+dev = [
+    "markdown-toc>=1.2.6",
+    "mkdocs-mermaid2-plugin[test]",
+]
 
 [project.optional-dependencies]
-test = ["mkdocs-macros-test", "mkdocs-material", "packaging", "requests-html"]
+test = [
+    "mkdocs-macros-test",
+    "mkdocs-material",
+    "mkdocs-test>=0.6.0",
+    "packaging",
+    "pytest>=8.3.5",
+    "requests-html",
+]
 
 [project.entry-points."mkdocs.plugins"]
 mermaid2 = "mermaid2.plugin:MarkdownMermaidPlugin"
