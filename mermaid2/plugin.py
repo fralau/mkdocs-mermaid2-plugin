@@ -10,7 +10,7 @@ from mkdocs.config.config_options import Type as PluginType
 from bs4 import BeautifulSoup
 
 from . import pyjs
-from .util import info, libname, url_exists
+from .util import info, trace, url_exists
 
 
 # ------------------------
@@ -233,7 +233,7 @@ class MarkdownMermaidPlugin(BasePlugin):
         if self.activate_custom_loader:
             # the custom loader has its specific marking
             # <pre class = 'mermaid'><code> ... </code></pre>
-            info("Custom loader activated")
+            trace("Custom loader activated", level='debug')
             mermaids = len(soup.select("pre.mermaid code"))
         else:
             # standard mermaid can accept two types of marking:
